@@ -1,0 +1,15 @@
+---
+title: "EPSY 630 Statistics II - Spring 2021"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<a href='https://epsy630.bryer.org'><img src='EPSY-630-Spring-2021.png' align="right" height="138.5" /></a>
+
+
