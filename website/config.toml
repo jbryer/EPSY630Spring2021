@@ -17,8 +17,6 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
 
-
-
 [params]
 
     # Description of course appears under title (optional)
@@ -56,7 +54,7 @@ enableMissingTranslationPlaceholders = false
 
     # Documentation Menu section
     # Menu style settings
-    menu_style = "slide-menu" # "open-menu" or "slide-menu" or "" blank is as no sidebar
+    menu_style = "open-menu" # "open-menu" or "slide-menu" or "" blank is as no sidebar
 
     # Date format
     dateformat = "Mon Jan 2, 2006" # default "2 Jan 2006"
