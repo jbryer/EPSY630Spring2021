@@ -21,10 +21,10 @@ At the completion of this course, students will be able to…
 
 * Identify and used appropriate statistical methods for inference.
 * Understand the differences between causal and correlational interpretations of statistical models.
-* Perform null hypothesis tests for quantiative and qualitative dependent variables.
+* Perform null hypothesis tests for quantitative and qualitative dependent variables.
 * Conduct data analysis using the R statistical software program.
 * Be able to describe the differences between frequentist and bayesian approaches to statistics.
-* Understand associated assuptions of statistical procedures and how to test them.
+* Understand associated assumptions of statistical procedures and how to test them.
 * Present the results of statistical analyses in written and verbal format.
 
 ### Prerequisites
@@ -34,12 +34,12 @@ One graduate level statistics course (EPSY 530 or equivalent).
 
 ### Grading
 
-* [DAACS](/assignments/daacs) (6%)
+* [DAACS](/assignments/daacs) (%)
 * [Participation](/assignments/participation) (10%)
-* [Homework](/assignments/homework) (18%)
-* [Labs](/assignments/labs) (36%)
-* [Data Project](/assignments/project) (20%)
-* [Final exam](assignments/final/) (10%)
+* [Homework](/assignments/homework) (%)
+* [Labs](/assignments/labs) (%)
+* [Data Project](/assignments/project) (%)
+* [Final exam](assignments/final/) (%)
 
 #### Grade Distribution
 
@@ -54,15 +54,6 @@ Poor                                       |      C+      | 75 - 79.9 | 2.3  |
 Poor                                       |      C       | 70 - 74.9 |  2   |
 Failure                                    |      F       |   < 70    |  0   |
 
-### How This Course Works
-
-This course is conducted entirely online. Each week, you will have various resources made available, including weekly readings from the textbooks and occasionally additional readings provided by the instructor. Most weeks will have homework assignments and labs to be submitted (although some chapters will take more than one week, see the [schedule](/course-overview/schedule/) for details). There will also be a presentation required and a forum post introduction required. You are expected to complete all assignments by their due dates.
-
-**You are expected to attend or watch every Meetup.** I highly recommend attending the Meetups live if possible but I understand that may not be possible for everyone. Recordings will be made available by the next morning on the [Meetups page](/course-overview/meetups/). In addition to highlighting key concepts from each learning module, some topics will be discussed that are not in the textbook. Moreover, I regularly make announcements in the Meetups that will be important to being successful in this course. At the end of each Meetup there will be a short reflective exercise. These will contribute to your participation grade.
-
-Meetup presentations will comprise the solution and presentation to the class of one of the suggested problems for study from the weekly materials (not the graded homework problems). Each student must present one problem during the semester. Problems are chosen by entering your name and problem in the Google Spreadsheet. Note there is a maximum of three presentations per meetup and presentations should be no more than five minutes. Prepare your presentation so that the slides or document (I suggest using R Markdown) will be shared on the course website. Problems are assigned first come, first served, so any problem not already chosen by another student is available.
-
-The culmination of the course will be the presentation of the analysis of a dataset of your choosing. There will be a number of time slots available to present. You will be **required to attend one presentation session**, present yoru analysis and provide peer feedback for other students in that timeslot. See the [project](/assignments/project/) for more information.
 
 ### Additional course policies
 
@@ -80,5 +71,5 @@ Reasonable accommodations will be provided for students with documented physical
 
 #### Emergency preparedness
 
-In the event of an emergency that leads to university closure, we will use an alternative method to disseminate course materials. I will communicate class-specific information via email. You are responsible for checking your email regularly for updates. In the event of a declared emergency, students should refer to the UAlbany website (www.albamy.edu/emergency) and the UAlbany emergency information line at (518) 442-7669.
+In the event of an emergency that leads to university closure, we will use an alternative method to disseminate course materials. I will communicate class-specific information via email. You are responsible for checking your email regularly for updates. In the event of a declared emergency, students should refer to the UAlbany website (www.albany.edu/emergency) and the UAlbany emergency information line at (518) 442-7669.
 
