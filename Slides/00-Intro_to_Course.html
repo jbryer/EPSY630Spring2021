@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jason Bryer, Ph.D." />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/mtheme_max.css" type="text/css" />
+    <link rel="stylesheet" href="assets/fonts_mtheme_max.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction
+## EPSY 630 - Statistics II
+### Jason Bryer, Ph.D.
+### Spring 2021
+
+---
+
+
+
+
+
+class: hide-logo, bottom, right, title-slide
+background-image: url(images/Greetings_from_Statistics.jpeg)
+background-size: contain
+
+.font70[
+
+[@skyetetra](https://twitter.com/ChelseaParlett/status/1340463322118856705)
+
+]
+
+---
+# Agenda
+
+* About your instructor
+* Syllabus
+* Class meetups
+* Course Schedule
+* Assignments (how you will be graded)
+	* Participation
+	* Homework
+	* Labs
+	* Data Project
+	* Final exam
+* Software
+	* Getting started with R
+	* The `DATA606` R Package
+	* Using R Markdown
+
+---
+
+# Introduction
+
+A little about me:
+
+* Assistant Professor at CUNY in Data Science and Information Systems
+* Principal Investigator for a Department of Education Grant (part of their FIPSE First in the World program) to develop a Diagnostic Assessment and Achievement of College Skills ([www.DAACS.net](http://www.daacs.net))  
+* Authored over a dozen R packages including:
+	* [likert](http://github.com/jbryer/likert)
+	* [sqlutils](http://github.com/jbryer/sqlutils)
+	* [timeline](http://github.com/jbryer/timeline)
+* Specialize in propensity score methods. Three new methods/R packages developed include:
+	* [multilevelPSA](http://github.com/jbryer/multilevelPSA)
+	* [TriMatch](http://github.com/jbryer/TriMatch)
+	* [PSAboot](http://github.com/jbryer/PSAboot)
+* Developer of a data dashboard for the NYS Office of Special Education and TAP for Data at Cornell University: https://data.osepartnership.org
+
+---
+
+# Also a Father...
+
+&lt;img src="images/BoysFall2019.jpg" width="65%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Runner...
+
+&lt;table border='0' width='100%'&gt;&lt;tr&gt;&lt;td&gt;
+&lt;center&gt;&lt;img src='images/2020Dopey.jpg' height='450'&gt;&lt;/center&gt;
+&lt;/td&gt;&lt;td&gt;
+&lt;center&gt;&lt;img src='images/2019NYCMarathon.jpg' height='450'&gt;&lt;/center&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+---
+
+# And photographer.
+
+&lt;img src="images/Sleeping_Empire.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Syllabus &lt;img src="images/hex/rmarkdown.png" class="title-hex"&gt;&lt;img src="images/hex/blogdown.png" class="title-hex"&gt;
+
+Syllabus and course materials are here: [https://epsy630.bryer.org](https://epsy630.bryer.org)
+
+We will use Blackboard primary for submitting assignments only.
+
+The site is built using the [Blogdown](https://bookdown.org/yihui/blogdown/) R package and hosted on [Github](https://github.com/jbryer/EPSY630Spring2021). Each page of the site has a "Improve this page" link at the bottom right, use that to start a pull request on Github.
+
+
+---
+
+# Class Meetings
+
+We will have meetups on Tuesdays evenings at 4:30pm. 
+
+Class meetings will be recorded and made available the next day on the [course website](https://epsy630.bryer.org/course-overview/meetups/).
+
+**One Minute Papers** - Complete the one minute paper after each Meetup (whether you watch live or watch the recordings). It should take approximately one to two minutes to complete. This allows me to 1) verify you have attended/watch the meetup and 2) get feedback about what you learned and what you may still be unclear.  
+Link: https://forms.gle/gY9SeBCPggHEtZYw6
+
+.font60[
+
+**Please note:** *Students who participate in this class with their camera on or use a profile image are agreeing to have their video or image recorded solely for the purpose of creating a record for students enrolled in the class to refer to, including those enrolled students who are unable to attend live.  If you are unwilling to consent to have your profile or video image recorded, be sure to keep your camera off and do not use a profile image. Likewise, students who un-mute during class and participate orally are agreeing to have their voices recorded.  If you are not willing to consent to have your voice recorded during class, you will need to keep your mute button activated and communicate exclusively using the "chat" feature, which allows students to type questions and comments live.*
+
+]
+
+---
+
+# Schedule*
+
+
+
+.font80[
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Date &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Topic &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, February 02, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Intro to the Course / Intro to R and RStudio &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, February 09, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Descriptive Statistics / Data Visualizaiton &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, February 16, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Central Limit Theorem &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, February 23, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Null hypotheis testing / confidence intervals /boostrapping &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, March 02, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Linear Regression &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, March 09, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Multiple Regression &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, March 16, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Maximum Likelihood Estimation / Logistic Regression &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, March 23, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANOVA - Chi-Squared Tests &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, March 30, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TBD &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, April 06, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NO CLASS &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, April 13, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TBD &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, April 20, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Propensity Score Analysis &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, April 27, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Bayesian Analysis &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, May 04, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Project Presenations &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Tuesday, May 11, 2021 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Project Presenations &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+.font50[*Tentative. Subject to change.]
+---
+
+# Textbooks &lt;img src="images/hex/openintro.png" class="title-hex"&gt;
+
+.pull-left[
+
+Diez, D.M., Barr, C.D., &amp; Çetinkaya-Rundel, M. (2019). *OpenIntro Statistics (4th Ed)*.
+
+.font70[
+
+This will be our primary textbook for most of the semesters. Our goal is to cover all the chapters.
+
+
+]
+
+.center[
+
+&lt;a href = "https://github.com/jbryer/DATA606Spring2021/blob/master/Resources/Textbooks/os4.pdf"&gt;&lt;img src = 'images/openintro.jpeg' alt = 'Open Intro Statistics' height = '375px' /&gt;&lt;/a&gt;
+
+]
+
+]
+
+.pull-right[
+
+Navarro, D. (2018, version 0.6). *Learning Statistics with R*
+
+.font70[
+
+This textbooks has a chapter on Bayesian analysis that we will use at the end of the semester. 
+
+]
+
+.center[
+
+&lt;a href = "https://github.com/jbryer/DATA606Spring2021/blob/master/Resources/Textbooks/lsr-0.6.pdf"&gt;&lt;img src = 'images/lsr.png' alt = 'Learning Statistics with R' height = '375px' /&gt;&lt;/a&gt;
+
+]
+
+]
+
+---
+
+# Assignments
+
+* [DAACS](https://spring2021.data606.net/assignments/daacs) (5%)
+* [Participation](https://spring2021.data606.net/assignments/participation) (5%)
+  * One Minute Papers
+* [Homework](https://spring2021.data606.net/assignments/homework) (20%)
+* [Labs](https://spring2021.data606.net/assignments/labs) (40%)
+	* Labs are designed to introduce to you doing statistics with R.
+	* Answer the questions in the main text as well as the "On Your Own" section.
+* [Data Project](https://spring2021.data606.net/assignments/project) (20%)
+	* This allows you to analyze a dataset of your choosing. Projects will be shared with the class. This provides an opportunity for everyone to see different approaches to analyzing different datasets.
+* [Final exam](https://spring2021.data606.net/assignments/final/) (10%)
+
+---
+
+# Communication
+
+* Slack Channel: https://epsy630spring2021.slack.com
+	* [Click here to join the group](https://join.slack.com/t/epsy630-spring2021/shared_invite/zt-lrleoomo-82Zok02xEmF_dWIilEAkrA)
+* Email: [jbryer@albany.edu](mailto:jbryer@albany.edu)
+* Phone/Zoom: Please email to schedule a time to meet.
+* Office hours will typically be:
+	* Fridays from 12:00am to 1:00pm
+	* I will use the same Zoom link that we use for the Tuesday night meetups.
+
+
+---
+# Familiarity with Statistical Topics &lt;img src="images/hex/googlesheets4.png" class="title-hex"&gt;
+
+
+
+
+
+
+```r
+likert(stats.results) %&gt;% plot(center = 2.5)
+```
+
+&lt;img src="00-Intro_to_Course_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Math Anxiety Survey Scale &lt;img src="images/hex/googlesheets4.png" class="title-hex"&gt;
+
+
+```r
+likert(mass.results) %&gt;% plot()
+```
+
+&lt;img src="00-Intro_to_Course_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Software &lt;img src="images/hex/tinytex.png" class="title-hex"&gt;&lt;img src="images/hex/RStudio.png" class="title-hex"&gt;&lt;img src="images/hex/rmarkdown.png" class="title-hex"&gt;
+
+This is an applied statistics course so we will make extensive use of the [R statistical programming language](https://www.r-project.org). You have two options for using R in this course:
+
+* Use the R Studio server available here: [r.bryer.org](https://r.bryer.org/rstudio). I will email everyone a username and password (if you haven't received it, let me know).
+
+* Install [R](https://cran.r-project.org) and [RStudio](https://rstudio.com) on your own computer. I encourage everyone to do this at some point by the end of the semester. I have instructions on the course website here: https://spring2021.data606.net/course-overview/software/
+
+You will also need to have [LaTeX](https://www.latex-project.org) installed as well in order to create PDFs. The [`tinytex`](https://yihui.org/tinytex/) R package helps with this process:
+
+```
+install.packages('tinytex')
+tinytex::install_tinytex()
+```
+
+---
+# What is R?
+
+"R is a language and environment for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT&amp;T, now Lucent Technologies) by John Chambers and colleagues..."
+
+"R provides a wide variety of statistical (linear and non linear modeling, classical statistical tests, time-series analysis, classification, clustering, ...) and graphical techniques, and is highly extensible. The S language is often the vehicle of choice for research in statistical methodology, and R provides an Open Source route to participation in that activity."  
+(R-project.org)
+
+---
+# Pros
+
+
+
+*  FREE!
+	*R is available as Free Software under the terms of the Free Software Foundation's GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.*
+*  Available for multiple platforms (i.e. Windows, Mac, Linux).
+*  Easily extensible with (currently) 17,037 packages listed on CRAN.
+*  Scriptable.
+*  Publication grade graphics.
+*  Multiple ways of doing the same thing.
+*  Quickly becoming the *de facto* standard among statistician.
+
+---
+# Cons
+
+*  Has a steeper learning curve.
+*  Multiple ways of doing the same thing.
+*  Can have difficulty with *very* large datasets.
+
+---
+# The Popularity of R
+
+
+&lt;img src="00-Intro_to_Course_files/figure-html/Rcitations-1.png" style="display: block; margin: auto;" /&gt;
+
+.font60[
+
+Firth, D (2011). R and citations. Weblog entry at URL https://statgeek.wordpress.com/2011/06/25/r-and-citations/.
+
+See also: Muenchen, R.A. (2017). The Popularity of Data Analysis Software. Welog entry at URL http://r4stats.com/articles/popularity/
+
+]
+
+---
+# R Packages
+
+One aspect that makes R popular is how (relatively) easy it is to extend it's functionality vis-à-vis R packages. R packages are collections of R functions, data, and documentation.
+
+The Comprehensive R Archive Network ([CRAN](http://cran.r-project.org)) is the central repository where R packages are published. However, it should be noted that there are mirrors located across the globe.
+
+Using packages requires two steps: first, install the package (required once per R installation); and second, load the package (once per R session).
+
+
+```r
+install.packages('likert')
+```
+
+```r
+library(likert)
+```
+
+
+---
+# Suggested Packages
+
+These are the packages we will make frequent use during the semester. If you use the hosted version of R Studio these packages will already be installed.
+
+
+```r
+pkgs &lt;- c('tidyverse','devtools','reshape2','RSQLite',
+		  'psa','multilevelPSA','PSAboot','TriMatch','likert',
+		  'openintro','OIdata','psych','knitr','markdown','rmarkdown','shiny')
+
+install.packages(pkgs)
+
+devtools::install_github('jbryer/ipeds')
+devtools::install_github('jbryer/sqlutils')
+devtools::install_github("seankross/lego")
+devtools::install_github("jbryer/DATA606")
+```
+
+
+---
+# DATA 606 Package &lt;img src="images/hex/rmarkdown.png" class="title-hex"&gt;&lt;img src="images/hex/devtools.png" class="title-hex"&gt;
+
+The [`DATA606`](https://github.com/jbryer/DATA606) R package contains many data sets and functions we will use throughout the semester. It also has a `startLab` function that will copy each of the labs to your current working directory. Use the following commands to install the package (only necessary once per R installation):
+
+```
+remotes::install_github('jbryer/DATA606')
+```
+
+To start the first lab...
+
+```
+DATA606::startLab('Lab1')
+```
+
+This will copy the R markdown file and any supporting files to your current working directory. Use the "Knit" button in R Studio to build a PDF of the document.
+
+---
+# R as a Big Calculator
+
+
+```r
+2 + 2
+```
+
+```
+## [1] 4
+```
+
+```r
+1 + sin(9)
+```
+
+```
+## [1] 1.412118
+```
+
+```r
+exp(1) ^ (1i * pi)
+```
+
+```
+## [1] -1+0i
+```
+
+---
+# Euler's Formula 
+
+&lt;font size='+3'&gt;
+$$ { e }^{ i\pi  }+1=0 $$
+&lt;/font&gt;
+
+"The most remarkable formula in mathematics"  
+- Richard Feyneman
+
+---
+# Getting Help
+
+R provides extensive documentation and help. The help.start() function will launch a webpage with links to:
+* The R manuals
+* The R FAQ
+* Search engine
+* and many other useful sites
+
+The help.search() function will search the help file for a particular word or phrase. For example:
+
+
+```r
+help.search('cross tabs')
+```
+
+To get documentation on a specific function, the `help()` function, or simply `?functionName` will open the documentation page in the web browser.
+
+Lastly, to search the R mailing lists, use the `RSiteSearch()` function.
+
+---
+# Reading Data
+
+Data File Type         | Extension  |  Function
+-----------------------|------------|--------------------------------------------
+R Data                 | rda, rdata | `base::load`, `base::readRDS`
+Comma separated values | csv        | `utils::read.csv`, `readr::read_csv`
+Other delimited files  |            | `utils::read.table`, `readr::read_delim`
+Tab separated files    |            | `readr::read_tsv`
+Fixed width files      |            | `utils::read.fwf`, `readr::read_fwf`
+SPSS                   | sav        | `foreign::read.spss`, `haven::read_sav`, `haven::read_por`
+SAS                    | sas        | `haven::read_sas`
+Read lines             |            | `base::scan`, `readr::read_lines`
+Microsoft Excel        | xls, xlsx  | `gdata::read.xls`, `readxl::read_excel`
+
+
+---
+# The R Language: Arithmetic Operators
+
+* `+` - addition
+* `-` - subtraction
+* `*` - multiplication
+* `/` - division
+* `^` or `**` - exponentiation
+* `x %% y` - modulus (x mod y) 5%%2 is 1  
+
+```r
+5 %% 2
+```
+
+```
+## [1] 1
+```
+* `x %/% y` - integer division  
+
+```r
+5%/%2
+```
+
+```
+## [1] 2
+```
+
+---
+# R Primitive Vectors
+
+* `logicial` (e.g. `TRUE`, `FALSE`)
+* `integer` - whole numbers, either positive or negative (e.g. `2112`, `42`, `-1`)
+* `double` or `numeric` - real number (e.g. `0.05`, `pi`, `-Inf`, `NaN`)
+* `complex` - complex number (e.g. `1i`)
+* `character` - sequence of characters, or a string (e.g. `"Hello EPSY887!"`)
+
+You can use the `class` function to determine the type of an object.
+
+
+```r
+tmp &lt;- c(2112, pi)
+class(tmp)
+```
+
+```
+## [1] "numeric"
+```
+
+
+---
+# R Primitive Vectors (cont.)
+
+To test if an object is of a particular class, use the `is.XXX` set of functions:
+
+
+```r
+is.double(tmp)
+```
+
+```
+## [1] TRUE
+```
+
+And to convert from one type to another, use the `as.XXX` set of functions:
+
+
+```r
+as.character(tmp)
+```
+
+```
+## [1] "2112"             "3.14159265358979"
+```
+
+---
+# Data Types in R
+
+&lt;center&gt;&lt;img src='images/DataTypesConceptModel.png' height='500'&gt;&lt;/center&gt;
+
+---
+# Lists
+
+A `list` is an object that contains a list of named values
+
+.pull-left[
+
+
+```r
+tmp &lt;- list(a = 2112, b = pi, z = "Hello EPSY887!")
+tmp
+```
+
+```
+## $a
+## [1] 2112
+## 
+## $b
+## [1] 3.141593
+## 
+## $z
+## [1] "Hello EPSY887!"
+```
+
+]
+
+.pull-right[
+
+
+```r
+tmp[1]; class(tmp[1]) # One square backet: return a list
+```
+
+```
+## $a
+## [1] 2112
+```
+
+```
+## [1] "list"
+```
+
+```r
+tmp[[1]]; class(tmp[[2]]) # Two square brackets: return as object at that position
+```
+
+```
+## [1] 2112
+```
+
+```
+## [1] "numeric"
+```
+
+]
+
+---
+# Factors
+
+A `factor` is a way for R to store a nominal, or categorical, variable. R stores the underlying data as an integer where each value corresponds to a label.
+
+
+```r
+gender &lt;- c(rep("male",4), rep("female", 6))
+gender
+```
+
+```
+##  [1] "male"   "male"   "male"   "male"   "female" "female" "female" "female"
+##  [9] "female" "female"
+```
+
+```r
+gender &lt;- factor(gender, levels=c('male','female','unknown')) 
+gender
+```
+
+```
+##  [1] male   male   male   male   female female female female female female
+## Levels: male female unknown
+```
+
+```r
+levels(gender)
+```
+
+```
+## [1] "male"    "female"  "unknown"
+```
+
+---
+# Factors can be ordered
+
+The `ordered` parameter indicates whether the levels in the factor should be ordered.
+
+.pull-left[
+
+
+```r
+library(TriMatch)
+data(tutoring, package='TriMatch')
+head(tutoring$Grade)
+```
+
+```
+## [1] 4 4 4 4 4 3
+```
+
+```r
+grade &lt;- tutoring$Grade
+table(grade, useNA='ifany')
+```
+
+```
+## grade
+##   0   1   2   3   4 
+## 187  25  86 271 573
+```
+
+```r
+grade &lt;- factor(tutoring$Grade,
+		levels=0:4,
+		labels=c('F','D','C','B','A'), 
+		ordered=TRUE)
+```
+
+]
+
+.pull-right[
+
+
+```r
+table(grade, useNA='ifany')
+```
+
+```
+## grade
+##   F   D   C   B   A 
+## 187  25  86 271 573
+```
+
+With an ordered factor, coercing it back to an integer will maintain the order, but the values start with one!
+
+
+```r
+head(grade)
+```
+
+```
+## [1] A A A A A B
+## Levels: F &lt; D &lt; C &lt; B &lt; A
+```
+
+```r
+table(as.integer(grade))
+```
+
+```
+## 
+##   1   2   3   4   5 
+## 187  25  86 271 573
+```
+
+]
+
+---
+# Dates
+
+R stores dates in `YYYY-MM-DD` format. The `as.Date` function will convert characters to `Date`s if they are in that form. If not, the `format` can be specified to help R coerce it to a `Date` format.
+
+.pull-left[
+
+
+```r
+today &lt;- Sys.Date()
+format(today, '%B %d, $Y')
+```
+
+```
+## [1] "February 02, $Y"
+```
+
+```r
+as.Date('2015-NOV-01', format='%Y-%b-%d')
+```
+
+```
+## [1] "2015-11-01"
+```
+
+]
+
+.pull-right[
+
+* `%d` - day as a number (i.e 0-31)
+* `%a` - abbreviated weekday (e.g. `Mon`)
+* `%A` - unabbreviated weekday (e.g. `Monday`)
+* `%m` - month (i.e. 00-12)
+* `%b` - abbreviated month (e.g. `Jan`)
+* `%B` - unabbreviated month (e.g. `January`)
+* `%y` - 2-digit year (e.g. `15`)
+* `%Y` - 4-digit year (e.g. `2015`)
+
+]
+
+
+---
+# NA versus NULL
+
+R is just as much a programming language as it is a statistical software package. As such it represents null differently for programming (using `NULL`) than for data (using `NA`).
+
+* `NULL` represents the null object in R: it is a reserved word. NULL is often returned by expressions and functions whose values are undefined.
+
+* `NA` is a logical constant of length 1 which contains a missing value indicator. `NA` can be freely coerced to any other vector type except raw. There are also constants `NA_integer` , `NA_real` , `NA_complex`, and `NA_character` of the other atomic vector types which support missing values: all of these are reserved words in the R language.
+
+For more details, see http://opendatagroup.com/2010/04/25/r-na-v-null/
+
+---
+# Handling Missing Data
+
+There are a number of functions available for finding and subsetting missing values:
+
+* `is.na` - function that takes one parameter and returns a logical vector of the same length where `TRUE` indicates the value is missing in the original vector.
+* `complete.cases` - function that takes a data frame or matrix and returns `TRUE` if the entire row has *no* missing values.
+* `na.omit` - function that takes a data frame and matrix and returns a subset of that data frame or matrix with any rows containing missing values removed.
+
+Many statistical functions (e.g. `mean`, `sd`, `cor`) have a `na.rm` parameter that, when `TRUE`, will remove any missing values before calculating the statistic.
+
+There are two very good R packages for imputing missing values:
+
+* [`mice`](https://cran.r-project.org/web/packages/mice/index.html) - [Multivariate Imputation by Chained Equations](https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=3&amp;cad=rja&amp;uact=8&amp;ved=0CDIQFjACahUKEwinhILMt-3IAhUCbSYKHYY9Bxc&amp;url=http%3A%2F%2Fwww.jstatsoft.org%2Farticle%2Fview%2Fv045i03%2Fv45i03.pdf&amp;usg=AFQjCNHzwk41fSeCTmRPowZFig2zPBTl8g&amp;sig2=VyDV7NMsIZXdwP8jd0uaJA)
+* [`Amelia II`](https://cran.r-project.org/web/packages/Amelia/index.html) - [A Program for Missing Data](https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=6&amp;cad=rja&amp;uact=8&amp;ved=0CE4QFjAFahUKEwjHn8aiuO3IAhWF8CYKHZzhABs&amp;url=http%3A%2F%2Fwww.jstatsoft.org%2Farticle%2Fview%2Fv045i07&amp;usg=AFQjCNE7Dn7a_YfAactbLSLRr3Fm3Rej2w&amp;sig2=t5NWLZMkyf_8MpCjSHAYFg&amp;bvm=bv.106379543,d.eWE)
+
+---
+# Data Frames
+
+Data frames are collection of vectors, thereby making them two dimensional. Unlike matrices (see `?matrix`) where all data elements are of the same type (i.e. numeric, character, logical, complex), each column in a data frame can be of a different type.
+
+
+```r
+class(mass.results)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+dim(mass.results) # Dimension of the data frame (row by column)
+```
+
+```
+## [1] 19 14
+```
+
+```r
+nrow(mass.results) # Number of rows
+```
+
+```
+## [1] 19
+```
+
+```r
+ncol(mass.results) # Number of columns
+```
+
+```
+## [1] 14
+```
+
+---
+# `str`
+
+The `str` is perhaps the most useful function in R. It displays the structure of an R object.
+
+
+```r
+str(mass.results)
+```
+
+```
+## 'data.frame':	19 obs. of  14 variables:
+##  $ I find math interesting.                                                 : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 2 5 3 4 1 4 2 2 1 4 ...
+##  $ I get uptight during math tests.                                         : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 1 4 4 3 4 2 3 4 5 2 ...
+##  $ I think that I will use math in the future.                              : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 3 4 5 5 4 2 4 5 2 4 ...
+##  $ Mind goes blank and I am unable to think clearly when doing my math test.: Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 3 2 4 3 2 1 2 2 4 2 ...
+##  $ Math relates to my life.                                                 : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 2 4 3 1 4 1 4 5 3 4 ...
+##  $ I worry about my ability to solve math problems.                         : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 4 2 4 5 5 1 4 3 5 2 ...
+##  $ I get a sinking feeling when I try to do math problems.                  : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 3 2 3 4 4 1 2 2 5 2 ...
+##  $ I find math challenging.                                                 : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 4 3 3 4 5 2 2 3 5 2 ...
+##  $ Mathematics makes me feel nervous.                                       : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 4 2 4 5 4 2 4 3 5 2 ...
+##  $ I would like to take more math classes.                                  : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 2 4 2 3 1 1 3 2 1 3 ...
+##  $ Mathematics makes me feel uneasy.                                        : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 4 2 3 4 5 2 3 3 5 2 ...
+##  $ Math is one of my favorite subjects.                                     : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 2 4 3 3 1 3 2 2 1 4 ...
+##  $ I enjoy learning with mathematics.                                       : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 2 5 3 3 1 2 3 3 1 4 ...
+##  $ Mathematics makes me feel confused.                                      : Ord.factor w/ 5 levels "Strongly Disagree"&lt;..: 4 2 3 4 2 1 2 2 5 2 ...
+```
+
+Although we now have the "Environment" tab in Rstudio!
+
+---
+# Exploring the Data in Data Frames
+
+
+```r
+head(mass.results)
+```
+
+```
+##   I find math interesting. I get uptight during math tests.
+## 1                 Disagree                Strongly Disagree
+## 2           Strongly Agree                            Agree
+## 3                  Neutral                            Agree
+## 4                    Agree                          Neutral
+## 5        Strongly Disagree                            Agree
+## 6                    Agree                         Disagree
+##   I think that I will use math in the future.
+## 1                                     Neutral
+## 2                                       Agree
+## 3                              Strongly Agree
+## 4                              Strongly Agree
+## 5                                       Agree
+## 6                                    Disagree
+##   Mind goes blank and I am unable to think clearly when doing my math test.
+## 1                                                                   Neutral
+## 2                                                                  Disagree
+## 3                                                                     Agree
+## 4                                                                   Neutral
+## 5                                                                  Disagree
+## 6                                                         Strongly Disagree
+##   Math relates to my life. I worry about my ability to solve math problems.
+## 1                 Disagree                                            Agree
+## 2                    Agree                                         Disagree
+## 3                  Neutral                                            Agree
+## 4        Strongly Disagree                                   Strongly Agree
+## 5                    Agree                                   Strongly Agree
+## 6        Strongly Disagree                                Strongly Disagree
+##   I get a sinking feeling when I try to do math problems.
+## 1                                                 Neutral
+## 2                                                Disagree
+## 3                                                 Neutral
+## 4                                                   Agree
+## 5                                                   Agree
+## 6                                       Strongly Disagree
+##   I find math challenging. Mathematics makes me feel nervous.
+## 1                    Agree                              Agree
+## 2                  Neutral                           Disagree
+## 3                  Neutral                              Agree
+## 4                    Agree                     Strongly Agree
+## 5           Strongly Agree                              Agree
+## 6                 Disagree                           Disagree
+##   I would like to take more math classes. Mathematics makes me feel uneasy.
+## 1                                Disagree                             Agree
+## 2                                   Agree                          Disagree
+## 3                                Disagree                           Neutral
+## 4                                 Neutral                             Agree
+## 5                       Strongly Disagree                    Strongly Agree
+## 6                       Strongly Disagree                          Disagree
+##   Math is one of my favorite subjects. I enjoy learning with mathematics.
+## 1                             Disagree                           Disagree
+## 2                                Agree                     Strongly Agree
+## 3                              Neutral                            Neutral
+## 4                              Neutral                            Neutral
+## 5                    Strongly Disagree                  Strongly Disagree
+## 6                              Neutral                           Disagree
+##   Mathematics makes me feel confused.
+## 1                               Agree
+## 2                            Disagree
+## 3                             Neutral
+## 4                               Agree
+## 5                            Disagree
+## 6                   Strongly Disagree
+```
+
+```r
+tail(mass.results, n=3)
+```
+
+```
+##    I find math interesting. I get uptight during math tests.
+## 17           Strongly Agree                            Agree
+## 18           Strongly Agree                         Disagree
+## 19                  Neutral                          Neutral
+##    I think that I will use math in the future.
+## 17                                       Agree
+## 18                              Strongly Agree
+## 19                                     Neutral
+##    Mind goes blank and I am unable to think clearly when doing my math test.
+## 17                                                                  Disagree
+## 18                                                                   Neutral
+## 19                                                                   Neutral
+##    Math relates to my life. I worry about my ability to solve math problems.
+## 17                    Agree                                         Disagree
+## 18           Strongly Agree                                          Neutral
+## 19                  Neutral                                          Neutral
+##    I get a sinking feeling when I try to do math problems.
+## 17                                                Disagree
+## 18                                       Strongly Disagree
+## 19                                                 Neutral
+##    I find math challenging. Mathematics makes me feel nervous.
+## 17                 Disagree                           Disagree
+## 18                  Neutral                  Strongly Disagree
+## 19                  Neutral                            Neutral
+##    I would like to take more math classes. Mathematics makes me feel uneasy.
+## 17                                 Neutral                          Disagree
+## 18                          Strongly Agree                 Strongly Disagree
+## 19                                 Neutral                           Neutral
+##    Math is one of my favorite subjects. I enjoy learning with mathematics.
+## 17                                Agree                              Agree
+## 18                       Strongly Agree                     Strongly Agree
+## 19                              Neutral                            Neutral
+##    Mathematics makes me feel confused.
+## 17                            Disagree
+## 18                            Disagree
+## 19                             Neutral
+```
+
+The `View` function will provide a (read-only) spreadsheet view of the data frame.
+
+
+```r
+View(mass.results)
+```
+
+---
+# Subsetting Data Frames
+
+Using square brackets will allow you to subset from a data frame. The first parameter is for rows, the second for columns. Leaving one blank will return all rows or columns.
+
+
+```r
+mass.results[c(1:2,10),] # Return the first, second, and tenth row
+```
+
+```
+##    I find math interesting. I get uptight during math tests.
+## 1                  Disagree                Strongly Disagree
+## 2            Strongly Agree                            Agree
+## 10                    Agree                         Disagree
+##    I think that I will use math in the future.
+## 1                                      Neutral
+## 2                                        Agree
+## 10                                       Agree
+##    Mind goes blank and I am unable to think clearly when doing my math test.
+## 1                                                                    Neutral
+## 2                                                                   Disagree
+## 10                                                                  Disagree
+##    Math relates to my life. I worry about my ability to solve math problems.
+## 1                  Disagree                                            Agree
+## 2                     Agree                                         Disagree
+## 10                    Agree                                         Disagree
+##    I get a sinking feeling when I try to do math problems.
+## 1                                                  Neutral
+## 2                                                 Disagree
+## 10                                                Disagree
+##    I find math challenging. Mathematics makes me feel nervous.
+## 1                     Agree                              Agree
+## 2                   Neutral                           Disagree
+## 10                 Disagree                           Disagree
+##    I would like to take more math classes. Mathematics makes me feel uneasy.
+## 1                                 Disagree                             Agree
+## 2                                    Agree                          Disagree
+## 10                                 Neutral                          Disagree
+##    Math is one of my favorite subjects. I enjoy learning with mathematics.
+## 1                              Disagree                           Disagree
+## 2                                 Agree                     Strongly Agree
+## 10                                Agree                              Agree
+##    Mathematics makes me feel confused.
+## 1                                Agree
+## 2                             Disagree
+## 10                            Disagree
+```
+
+```r
+mass.results[,2] # Return the second column
+```
+
+```
+##  [1] Strongly Disagree Agree             Agree             Neutral          
+##  [5] Agree             Disagree          Neutral           Agree            
+##  [9] Strongly Agree    Disagree          Neutral           Agree            
+## [13] Agree             Neutral           Agree             Strongly Agree   
+## [17] Agree             Disagree          Neutral          
+## 5 Levels: Strongly Disagree &lt; Disagree &lt; Neutral &lt; ... &lt; Strongly Agree
+```
+
+You can also subset columns using the dollar sign (`$`) notation.
+
+
+```r
+mass.results$`I find math interesting.`
+```
+
+```
+##  [1] Disagree          Strongly Agree    Neutral           Agree            
+##  [5] Strongly Disagree Agree             Disagree          Disagree         
+##  [9] Strongly Disagree Agree             Agree             Agree            
+## [13] Neutral           Strongly Agree    Neutral           Disagree         
+## [17] Strongly Agree    Strongly Agree    Neutral          
+## 5 Levels: Strongly Disagree &lt; Disagree &lt; Neutral &lt; ... &lt; Strongly Agree
+```
+
+---
+# Subsetting Missing Values
+
+Using the `complete.cases` function, we can return rows with at least one missing values.
+
+
+```r
+mass.results[!complete.cases(mass.results),]
+```
+
+```
+##  [1] I find math interesting.                                                 
+##  [2] I get uptight during math tests.                                         
+##  [3] I think that I will use math in the future.                              
+##  [4] Mind goes blank and I am unable to think clearly when doing my math test.
+##  [5] Math relates to my life.                                                 
+##  [6] I worry about my ability to solve math problems.                         
+##  [7] I get a sinking feeling when I try to do math problems.                  
+##  [8] I find math challenging.                                                 
+##  [9] Mathematics makes me feel nervous.                                       
+## [10] I would like to take more math classes.                                  
+## [11] Mathematics makes me feel uneasy.                                        
+## [12] Math is one of my favorite subjects.                                     
+## [13] I enjoy learning with mathematics.                                       
+## [14] Mathematics makes me feel confused.                                      
+## &lt;0 rows&gt; (or 0-length row.names)
+```
+
+---
+# Subsetting Missing Values
+
+
+Using the `is.na`, we can change replace the missing values.
+
+
+```r
+(tmp &lt;- sample(c(1:5, NA)))
+```
+
+```
+## [1]  4  2  3  5  1 NA
+```
+
+```r
+tmp[is.na(tmp)] &lt;- 2112
+tmp
+```
+
+```
+## [1]    4    2    3    5    1 2112
+```
+
+---
+# Tip: One Column Data Frame
+
+When selecting one column from a data frame, R will convert the returned object to a vector.
+
+
+```r
+class(mass.results[,1])
+```
+
+```
+## [1] "ordered" "factor"
+```
+
+You can use the `drop=FALSE` parameter keep the subset as a data frame.
+
+
+```r
+class(mass.results[,1,drop=FALSE])
+```
+
+```
+## [1] "data.frame"
+```
+
+---
+# Subsetting with Logical Operators
+
+You can subset using logical vectors. For example, there are 1142 rows in the `tutoring` data frame loaded from the `TriMatch` package You can pass a logical vector of length 1142 where `TRUE` indicates to return the row and `FALSE` to not. For example, we wish to return the rows where students received an F:
+
+
+```r
+row &lt;- tutoring$GradeCode == 'F'
+length(row)
+```
+
+```
+## [1] 1142
+```
+
+Here we are using the `==` logical operator. This will test each element in the `tutoring$GradeCode` and return `TRUE` if it is equal to `F`, `FALSE` otherwise.
+
+
+```r
+tutoring[row, ]
+```
+
+```
+##        treat  Course Grade Gender Ethnicity Military   ESL EdMother EdFather
+## 40   Control ENG*201     0 FEMALE     White     TRUE FALSE        5        6
+## 55   Control ENG*201     0 FEMALE     Other    FALSE FALSE        4        4
+## 119  Control ENG*201     0 FEMALE     Other    FALSE FALSE        4        3
+## 140  Control ENG*201     0 FEMALE     White    FALSE FALSE        4        3
+## 145  Control ENG*201     0 FEMALE     White    FALSE FALSE        8        4
+## 147  Control ENG*201     0 FEMALE     Other    FALSE FALSE        2        4
+## 157  Control ENG*201     0 FEMALE     Black    FALSE FALSE        2        3
+## 223  Control ENG*201     0 FEMALE     White    FALSE FALSE        2        4
+## 286  Control ENG*201     0 FEMALE     White    FALSE FALSE        1        1
+## 338  Control ENG*201     0   MALE     Other    FALSE FALSE        3        3
+## 345  Control ENG*201     0 FEMALE     White    FALSE FALSE        6        6
+## 435   Treat1 ENG*201     0 FEMALE     White    FALSE FALSE        4        3
+## 455  Control ENG*201     0   MALE     White    FALSE FALSE        8        8
+## 529  Control ENG*201     0 FEMALE     White    FALSE FALSE        2        2
+## 570  Control ENG*201     0 FEMALE     Black    FALSE FALSE        3        3
+## 682  Control ENG*101     0   MALE     Black     TRUE FALSE        3        6
+## 789  Control ENG*201     0 FEMALE     Black    FALSE FALSE        3        3
+## 795  Control ENG*201     0 FEMALE     White    FALSE FALSE        6        8
+## 845  Control ENG*101     0   MALE     Other     TRUE FALSE        6        3
+## 1024 Control ENG*201     0 FEMALE     White    FALSE FALSE        6        4
+## 1102 Control ENG*101     0   MALE     Other     TRUE  TRUE        6        4
+## 1318 Control ENG*101     0   MALE     Other     TRUE FALSE        3        3
+## 1451 Control ENG*101     0   MALE     Black    FALSE FALSE        8        6
+## 1635 Control ENG*201     0 FEMALE     Black    FALSE FALSE        6        6
+## 1636 Control ENG*201     0 FEMALE     Black    FALSE FALSE        6        6
+## 1687 Control ENG*201     0 FEMALE     Other    FALSE FALSE        2        3
+## 1688  Treat1 ENG*101     0   MALE     Other     TRUE  TRUE        4        4
+## 1713 Control ENG*201     0 FEMALE     White     TRUE FALSE        4        2
+## 1744 Control ENG*101     0   MALE     White    FALSE FALSE        3        3
+## 1818 Control ENG*201     0   MALE     Other    FALSE FALSE        4        3
+## 1819 Control ENG*201     0 FEMALE     Other    FALSE FALSE        6        6
+## 1832 Control ENG*101     0   MALE     Black     TRUE  TRUE        2        2
+## 1837 Control ENG*201     0 FEMALE     Other    FALSE FALSE        4        3
+## 1867 Control ENG*101     0   MALE     White    FALSE FALSE        3        3
+## 1885 Control ENG*201     0   MALE     White    FALSE FALSE        4        2
+## 1937 Control ENG*201     0 FEMALE     White    FALSE FALSE        3        3
+## 1972 Control ENG*101     0 FEMALE     Black     TRUE FALSE        5        3
+## 1990 Control ENG*201     0 FEMALE     White    FALSE FALSE        5        2
+## 2029 Control ENG*101     0   MALE     Other     TRUE  TRUE        5        2
+## 2037 Control ENG*101     0   MALE     White    FALSE FALSE        6        5
+## 2044 Control ENG*201     0   MALE     Black    FALSE FALSE        4        3
+## 2050 Control ENG*201     0 FEMALE     White    FALSE FALSE        4        6
+## 2065 Control ENG*201     0 FEMALE     White    FALSE FALSE        4        4
+## 2067 Control HSC*310     0   MALE     White    FALSE FALSE        8        5
+## 2082  Treat2 ENG*101     0   MALE     Black     TRUE FALSE        4        3
+## 2138 Control ENG*201     0 FEMALE     White    FALSE  TRUE        3        3
+## 2143 Control ENG*201     0 FEMALE     Other     TRUE FALSE        3        4
+## 2156 Control ENG*101     0   MALE     Other     TRUE FALSE        6        3
+## 2181 Control ENG*201     0   MALE     White    FALSE FALSE        4        6
+## 2299 Control HSC*310     0   MALE     White    FALSE FALSE        6        8
+## 2330 Control ENG*101     0   MALE     Other     TRUE FALSE        2        1
+## 2338  Treat1 ENG*101     0   MALE     White     TRUE FALSE        4        3
+## 2388 Control ENG*201     0   MALE     White    FALSE FALSE        3        3
+## 2449 Control ENG*101     0 FEMALE     Black    FALSE FALSE        3        3
+## 2574 Control ENG*101     0   MALE     Black     TRUE FALSE        5        3
+## 2642 Control ENG*101     0   MALE     Other     TRUE FALSE        3        3
+## 2650 Control ENG*201     0   MALE     White     TRUE FALSE        3        3
+## 2775  Treat1 ENG*101     0   MALE     White     TRUE FALSE        3        3
+## 2843  Treat1 ENG*101     0   MALE     White    FALSE FALSE        4        3
+## 2889 Control ENG*101     0   MALE     Other     TRUE  TRUE        3        2
+## 2904 Control ENG*101     0   MALE     Other     TRUE FALSE        1        1
+## 2913 Control ENG*101     0   MALE     Other     TRUE  TRUE        4        4
+## 2921  Treat2 ENG*101     0   MALE     White    FALSE FALSE        2        2
+## 2948 Control ENG*101     0   MALE     Black     TRUE FALSE        6        1
+##      Age Employment Income Transfer  GPA GradeCode Level   ID
+## 40    42          3      5    36.63 2.36         F Lower 1018
+## 55    50          3      6    25.98 2.37         F Lower  801
+## 119   40          2      9    54.00 2.85         F Lower  978
+## 140   35          2      8    37.98 2.73         F Lower  174
+## 145   41          1      1   115.00 2.82         F Lower  336
+## 147   45          3      5    43.00 2.61         F Lower  320
+## 157   47          3      5    26.00 2.45         F Lower  177
+## 223   43          1      2    50.00 3.18         F Lower  206
+## 286   53          3      5    27.00 3.42         F Lower  940
+## 338   36          3      5    52.00 3.15         F Lower   31
+## 345   36          3      4    57.00 3.33         F Lower 1124
+## 435   39          2      7    44.00 2.86         F Lower  899
+## 455   36          2      3    53.00 2.46         F Lower  289
+## 529   34          3      9     9.00 2.67         F Lower  784
+## 570   34          3      4    45.33 3.08         F Lower 1048
+## 682   28          3      5   112.00 2.93         F Lower  857
+## 789   38          3      5    45.30 2.08         F Lower 1078
+## 795   28          3      4    32.98 2.64         F Lower  467
+## 845   41          3      4   105.00 3.00         F Lower  428
+## 1024  23          1      4    23.33 3.27         F Lower  764
+## 1102  31          3      3    56.00 2.83         F Lower  931
+## 1318  41          3      5    99.00 3.14         F Lower  163
+## 1451  53          3      5    24.00 0.83         F Lower  916
+## 1635  43          2      2    47.00 2.39         F Lower  217
+## 1636  43          2      2    47.00 2.39         F Lower  194
+## 1687  35          3      3    51.00 2.40         F Lower  665
+## 1688  38          3      3    64.00 1.50         F Lower 1098
+## 1713  39          3      9    94.33 3.15         F Lower  984
+## 1744  28          3      4   104.00 3.74         F Lower 1001
+## 1818  43          3      5    38.00 2.02         F Lower  827
+## 1819  26          1      1   126.00 2.82         F Lower  954
+## 1832  29          3      6    81.00 0.00         F Lower  100
+## 1837  43          3      8    39.00 2.86         F Lower  896
+## 1867  26          3      9    17.00 3.00         F Lower  756
+## 1885  29          3      6    33.00 3.23         F Lower  692
+## 1937  33          3      3    23.00 2.71         F Lower  327
+## 1972  29          3      5    51.00 0.00         F Lower   33
+## 1990  31          3      5    42.00 2.41         F Lower  513
+## 2029  27          3      1    32.00 1.67         F Lower 1119
+## 2037  32          3      6    40.00 3.00         F Lower 1086
+## 2044  48          3      6    15.00 4.00         F Lower  416
+## 2050  39          3      5    56.00 2.76         F Lower  835
+## 2065  21          3      3    39.00 2.74         F Lower  150
+## 2067  25          3      9    97.00 2.78         F Upper 1064
+## 2082  46          3      6    46.00 0.75         F Lower 1112
+## 2138  30          3      8    33.00 2.51         F Lower  651
+## 2143  23          2      2    14.00 2.33         F Lower  434
+## 2156  32          3      6    50.00 2.50         F Lower 1121
+## 2181  39          1      1    15.00 2.82         F Lower 1138
+## 2299  28          1      1    68.00 3.17         F Upper  688
+## 2330  30          3      2    24.00 1.62         F Lower  539
+## 2338  28          3      3    40.00 3.50         F Lower  898
+## 2388  31          3      6    22.66 2.92         F Lower  776
+## 2449  29          2      1    22.00 2.00         F Lower  981
+## 2574  46          2      3    87.00 2.48         F Lower  635
+## 2642  39          3      7    53.00 1.29         F Lower 1120
+## 2650  36          3      2    33.00 0.40         F Lower  578
+## 2775  40          3      1    42.00 1.00         F Lower  496
+## 2843  41          3      8    73.00 2.00         F Lower  204
+## 2889  30          3      4    48.00 2.50         F Lower  979
+## 2904  31          3      1    48.00 2.00         F Lower  101
+## 2913  31          1      2    11.00 0.33         F Lower  829
+## 2921  39          1      1    78.00 0.50         F Lower  249
+## 2948  35          3      6    66.00 2.29         F Lower  533
+```
+
+---
+# `which`
+
+The `which` command will return an `integer` vector with the positions within the `logical` vector that are `TRUE`.
+
+
+```r
+which(row)
+```
+
+```
+##  [1]   17   22   49   57   59   60   67   90  119  144  149  180  191  217  230
+## [16]  264  301  306  325  386  404  443  469  504  505  520  521  530  534  564
+## [31]  565  568  572  583  588  613  632  640  656  664  666  671  679  681  689
+## [46]  720  724  731  743  809  828  833  863  897  962  999 1005 1045 1081 1103
+## [61] 1112 1117 1120 1140
+```
+
+
+```r
+tutoring[17, 1:16]
+```
+
+```
+##      treat  Course Grade Gender Ethnicity Military   ESL EdMother EdFather Age
+## 40 Control ENG*201     0 FEMALE     White     TRUE FALSE        5        6  42
+##    Employment Income Transfer  GPA GradeCode Level
+## 40          3      5    36.63 2.36         F Lower
+```
+
+---
+# Logical Operators
+
+* `!a` - TRUE if a is FALSE
+* `a == b` - TRUE if a and be are equal
+* `a != b` - TRUE if a and b are not equal
+* `a &gt; b` - TRUE if a is larger than b, but not equal
+* `a &gt;= b` - TRUE if a is larger or equal to b
+* `a &lt; b` - TRUE if a is smaller than be, but not equal
+* `a &lt;= b` - TRUE if a is smaller or equal to b
+* `a %in% b` - TRUE if a is in b where b is a vector  
+
+```r
+which( letters %in% c('a','e','i','o','u') )
+```
+
+```
+## [1]  1  5  9 15 21
+```
+* `a | b` - TRUE if a *or* b are TRUE
+* `a &amp; b` - TRUE if a *and* b are TRUE
+* `isTRUE(a)` - TRUE if a is TRUE
+
+---
+# Side Note: Operators are Functions
+
+All operations (e.g. `+`, `-`, `*`, `/`, `[`, `&lt;-`) are functions. 
+
+
+```r
+class(`+`)
+```
+
+```
+## [1] "function"
+```
+
+```r
+`+`
+```
+
+```
+## function (e1, e2)  .Primitive("+")
+```
+
+```r
+`+`(2, 3)
+```
+
+```
+## [1] 5
+```
+
+You can redefine these functions, but probably not a good idea ;-)
+
+---
+# Sorting Data
+
+The `order` function will take one or more vectors (usually in the form of a data frame) and return an integer vector indicating the new order. There are two parameters to adjust where `NA`s are placed (`na.last=FALSE`) and whether to sort in increasing or decreasing order (`decreasing=FALSE`).
+
+
+```r
+(randomLetters &lt;- sample(letters))
+```
+
+```
+##  [1] "h" "a" "r" "p" "e" "s" "k" "x" "v" "t" "w" "f" "n" "o" "u" "q" "b" "y" "c"
+## [20] "j" "d" "l" "g" "m" "z" "i"
+```
+
+```r
+randomLetters[order(randomLetters)]
+```
+
+```
+##  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+## [20] "t" "u" "v" "w" "x" "y" "z"
+```
+
+```r
+randomLetters[order(randomLetters, decreasing=TRUE)]
+```
+
+```
+##  [1] "z" "y" "x" "w" "v" "u" "t" "s" "r" "q" "p" "o" "n" "m" "l" "k" "j" "i" "h"
+## [20] "g" "f" "e" "d" "c" "b" "a"
+```
+
+
+---
+# Lab 1
+
+Let's start working on Lab 1.
+
+Login the RStudio server.
+
+Run the following commands:
+
+
+```r
+library(DATA606)
+startLab('Lab1')
+```
+
+Click the `Knit` button to build the R Markdown file.
+
+
+---
+class: middle
+
+# One Minute Paper
+
+Complete the one minute paper: 
+https://forms.gle/yB3ds6MYE89Z1pURA
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+
+
+---
+class: inverse, right, middle, hide-logo
+
+# Good luck with the semester!
+
+[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M440 6.5L24 246.4c-34.4 19.9-31.1 70.8 5.7 85.9L144 379.6V464c0 46.4 59.2 65.5 86.6 28.6l43.8-59.1 111.9 46.2c5.9 2.4 12.1 3.6 18.3 3.6 8.2 0 16.3-2.1 23.6-6.2 12.8-7.2 21.6-20 23.9-34.5l59.4-387.2c6.1-40.1-36.9-68.8-71.5-48.9zM192 464v-64.6l36.6 15.1L192 464zm212.6-28.7l-153.8-63.5L391 169.5c10.7-15.5-9.5-33.5-23.7-21.2L155.8 332.6 48 288 464 48l-59.4 387.3z"&gt;&lt;/path&gt;&lt;/svg&gt; jbryer@albany.edu](mailto:jbryer@albany.edu)  
+[&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"&gt;&lt;/path&gt;&lt;/svg&gt; data606spring2021.slack.com](https://epsy630spring2021.slack.com)  
+[&lt;svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; @jbryer](https://github.com/jbryer)  
+[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; @jbryer](https://twitter.com/jbryer)  
+[&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"&gt;&lt;/path&gt;&lt;/svg&gt; @jasonbryer](https://www.linkedin.com/in/jasonbryer/)  
+[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"&gt;&lt;/path&gt;&lt;/svg&gt; epsy630.bryer.org](https://epsy630.bryer.org)   
+[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"&gt;&lt;/path&gt;&lt;/svg&gt; bryer.org](https://bryer.org)   
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "solarized-light",
+"highlightLanguage": "R",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- Source: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/ -->
+<style>
+.logo {
+  background-image: url(images/hex/EPSY630.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 2em;
+  right: 0.5em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
