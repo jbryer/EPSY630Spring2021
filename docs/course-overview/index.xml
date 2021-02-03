@@ -61,9 +61,8 @@ Please note: Students who participate in this class with their camera on or use 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/course-overview/software/</guid>
-      <description>R and RStudio We will make use of R, an open source statistics program and language. Be sure to install R and RStudio on your own computers within the first few days of the class.
- R - download for Windows, Mac, or Linux. RStudio - Download Windows, Mac, or Linux versions from here  If using Windows, you also need to download RTools and ActivePerl.
-LaTeX LaTeX is a typesetting language for preparing documents.</description>
+      <description>R and RStudio We will make use of R, an open source statistics program and language. For this course you have two options: 1. Use RStudio on the web or 2. Install it on your own computer.
+RStudio on the Web Go to r.bryer.org to login to RStudio on the web. You should have received your username and password during the first class. If you have any issues email me.</description>
     </item>
     
     <item>

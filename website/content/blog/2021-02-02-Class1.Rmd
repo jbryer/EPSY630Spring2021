@@ -1,0 +1,12 @@
+---
+title: "Class 1 - Introduction"
+author: "Jason Bryer"
+date: 2021-02-02
+draft: false
+categories: ["R"]
+tags: ["Annoucement"]
+---
+
+[Click here](/slides/00-Intro_to_Course.html) for the slides.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kxa3gb7kSCU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

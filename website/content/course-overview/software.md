@@ -6,7 +6,15 @@ weight: 40
 
 ### R and RStudio
 
-We will make use of [R](http://r-project.org), an open source statistics program and language. Be sure to [install R](http://cran.r-project.org/) and [RStudio](http://rstudio.com) on your own computers within the first few days of the class.
+We will make use of [R](http://r-project.org), an open source statistics program and language. For this course you have two options: 1. Use RStudio on the web or 2. Install it on your own computer.
+
+#### RStudio on the Web
+
+Go to [r.bryer.org](https://r.bryer.org/rstudio) to login to RStudio on the web. You should have received your username and password during the first class. If you have any issues email me.
+
+#### Install R and RStudio on your computer
+
+Although I recommend using the RStudio web version for the first part of the class, I do recommend eventually trying to [install R](http://cran.r-project.org/) and [RStudio](http://rstudio.com) on your own computers as I will be able to help you troubleshoot any issues. Links to download the software are provided below:
 
 * R - download for [Windows](http://cran.r-project.org/bin/windows/base/), [Mac](http://cran.r-project.org/bin/macosx/), or [Linux](https://cran.r-project.org).
 * RStudio - [Download Windows, Mac, or Linux versions from here](https://rstudio.com/products/rstudio/download/#download)

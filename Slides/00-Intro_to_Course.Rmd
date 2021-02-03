@@ -122,6 +122,15 @@ knitr::include_graphics('images/BoysFall2019.jpg')
 knitr::include_graphics('images/Sleeping_Empire.jpg')
 ```
 
+---
+class: inverse, middle, center
+# Your turn
+
+Your name?
+
+What program are you in and level (Master's or Doctorate)?
+
+Something we wouldn't otherwide know about you?
 
 ---
 
@@ -218,7 +227,7 @@ start_day <- lubridate::floor_date(min(meetups$day), "month")
 end_day <- lubridate::ceiling_date(max(meetups$day), "month") - 1
 ```
 
-.font80[
+.font60[
 
 ```{r printTopics, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 # topics$Start <- format(topics$Start, format = '%A, %B %d, %Y')
@@ -249,7 +258,7 @@ This will be our primary textbook for most of the semesters. Our goal is to cove
 
 .center[
 
-<a href = "https://github.com/jbryer/DATA606Spring2021/blob/master/Resources/Textbooks/os4.pdf"><img src = 'images/openintro.jpeg' alt = 'Open Intro Statistics' height = '375px' /></a>
+<a href = "https://github.com/jbryer/DATA606Spring2021/blob/master/Resources/Textbooks/os4.pdf" target="_new"><img src = 'images/openintro.jpeg' alt = 'Open Intro Statistics' height = '375px' /></a>
 
 ]
 
@@ -267,7 +276,7 @@ This textbooks has a chapter on Bayesian analysis that we will use at the end of
 
 .center[
 
-<a href = "https://github.com/jbryer/DATA606Spring2021/blob/master/Resources/Textbooks/lsr-0.6.pdf"><img src = 'images/lsr.png' alt = 'Learning Statistics with R' height = '375px' /></a>
+<a href = "https://github.com/jbryer/DATA606Spring2021/blob/master/Resources/Textbooks/lsr-0.6.pdf" target="_new"><img src = 'images/lsr.png' alt = 'Learning Statistics with R' height = '375px' /></a>
 
 ]
 
@@ -302,7 +311,7 @@ This textbooks has a chapter on Bayesian analysis that we will use at the end of
 
 
 ---
-# Familiarity with Statistical Topics `r hexes(c('googlesheets4'))`
+# Familiarity with Statistical Topics `r hexes(c('googlesheets4','likert'))`
 
 ```{r, echo = FALSE, cache = TRUE, message = FALSE, warning = FALSE}
 results <- read_sheet('https://docs.google.com/spreadsheets/d/1HfAFxvGex_33GxKtIjJBdxDP2KVFjCAsIYhe6cTWlT4/edit#gid=1826761801') %>% as.data.frame()
@@ -365,7 +374,7 @@ likert(stats.results) %>% plot(center = 2.5)
 ```
 
 ---
-# Math Anxiety Survey Scale `r hexes(c('googlesheets4'))`
+# Math Anxiety Survey Scale `r hexes(c('googlesheets4','likert'))`
 
 ```{r, fig.width = 12, fig.align='center'}
 likert(mass.results) %>% plot()
@@ -448,13 +457,41 @@ See also: Muenchen, R.A. (2017). The Popularity of Data Analysis Software. Welog
 ]
 
 ---
-# Getting Started with RStudio
+# Getting Started with RStudio `r hexes(c('rstudio'))`
 
 Go to https://r.bryer.org. You should have received an email with your username and password.
 
 Once you login in, click the `Terminal` tab and type `passwd` to change your password.
 
 Click back to the `Console` tab. This is where you type R commands.
+
+.center[
+
+<a href = "https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf" target="_new"><img src = 'images/rstudio-ide.png' alt = 'R Studio Cheat Sheet' height = '375px' /></a>
+
+]
+
+---
+# R Markdown `r hexes(c('rmarkdown'))`
+
+[R Markdown](https://rmarkdown.rstudio.com) are a special type of document that allows you to combine your text with analysis. They are plain text documents where R code can be used to analyze and generate output (e.g. tables, figures) within the document. Text formatting uses simple markup called [Markdown](https://www.google.com/search?client=safari&rls=en&q=markdown&ie=UTF-8&oe=UTF-8). You can then render the document to many output formats including MS Word, HTML, PDF, PowerPoint, HTML Slides (like this slide deck), and many more.
+
+.pull-left[
+.center[
+
+<a href = "https://bookdown.org/yihui/rmarkdown/" target="_new"><img src = 'images/rmarkdown_book.png' alt = 'R Markdown The Definitive Guide' height = '350px' /></a>
+
+]
+]
+
+.pull-right[
+.center[
+
+<a href = "https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf" target="_new"><img src = 'images/rmarkdown-2.0.png' alt = 'R Markdown Cheat Sheet' height = '350px' /></a>
+
+
+]
+]
 
 ---
 # R Packages
@@ -521,12 +558,19 @@ exp(1) ^ (1i * pi)
 ---
 # Euler's Formula 
 
-<font size='+3'>
+.font200[
+
 $$ { e }^{ i\pi  }+1=0 $$
 </font>
 
+]
+
+.left[
+
 "The most remarkable formula in mathematics"  
 - Richard Feyneman
+
+]
 
 ---
 # Getting Help
@@ -690,7 +734,7 @@ table(as.integer(grade))
 ]
 
 ---
-# Dates
+# Dates `r hexes(c('lubridate'))`
 
 R stores dates in `YYYY-MM-DD` format. The `as.Date` function will convert characters to `Date`s if they are in that form. If not, the `format` can be specified to help R coerce it to a `Date` format.
 
@@ -924,7 +968,7 @@ Click the `Knit` button to build the R Markdown file.
 
 
 ---
-class: middle
+class: middle, left
 
 # One Minute Paper
 
