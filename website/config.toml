@@ -91,6 +91,11 @@ enableMissingTranslationPlaceholders = false
         weight = 2
 
     [[menu.main]]
+        name = 'RStudio'
+        url = 'https://r.bryer.org/rstudio'
+        weight = 4
+
+    [[menu.main]]
         name = "Slack"
         url = "https://epsy630spring2021.slack.com"
         weight = 5
