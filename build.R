@@ -11,7 +11,7 @@ for(i in tocopy) {
 	success <- FALSE
 	if(!file_test("-f", from)) { # Directory
 		dir.create(to, recursive = TRUE)
-		success <- file.copy(from, 'docs/slides/', recursive = TRUE)
+		success <- file.copy(from, 'docs/slides/', recursive = TRUE, overwrite = TRUE)
 	} else { # File
 		success <- file.copy(from, to, overwrite = TRUE)
 
