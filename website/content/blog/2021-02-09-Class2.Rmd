@@ -1,0 +1,12 @@
+---
+title: "Class 2 - Descriptive Statistics and Data Visualization"
+author: "Jason Bryer"
+date: 2021-02-02
+draft: false
+categories: ["R"]
+tags: ["Annoucement"]
+---
+
+[Click here](/slides/2021-02-09-Intro_to_R.html) for the slides. [Click here](https://github.com/jbryer/EPSY630Spring2021/blob/master/R/2021-02-09.R) for the R script.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kxa3gb7kSCU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
