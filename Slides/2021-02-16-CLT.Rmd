@@ -1,0 +1,1077 @@
+---
+title: "Central Limit Theorem"
+subtitle: "EPSY 630 - Statistics II"
+author: Jason Bryer, Ph.D.
+date: "February 16, 2021"
+# knit: (function(inputFile, encoding) { source('myknit.R'); myknit(inputFile, encode); } )
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "EPSY630Spring2021"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=7, fig.align = 'center',
+					  digits = 3) 
+options(width = 120)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+```
+
+# Agenda
+
+* Probability (Chatper 3)
+* Distributions (Chapter 4)
+* **Central Limit Theorem (Chapter 5)**
+* Next lab and homework
+* One minute papers
+
+---
+# Probability
+
+There are two key properties of probability models:
+
+1. P(A) = The probability of event A
+2. $0 \le P(A) \le 1$
+
+This semester we will examine two interpretations of probabilty:
+
+* **Frequentist interpretation**: The probability of an outcome is the proportion of times the outcome would occur if we observed the random process an infinite number of times.
+
+* **Bayesian interpretation**: A Bayesian interprets probability as a subjective degree of belief: For the same event, two separate people could have different viewpoints and so assign different probabilities. Largely popularized by revolutionary advance in computational technology and methods during the last twenty years.
+
+---
+# Law of Large Numbers
+
+Law of large numbers states that as more observations are collected, the proportion of occurrences with a particular outcome, ${\hat{p}}_n$, converges to the probability of that outcome, $p$.
+
+--
+
+When tossing a fair coin, if heads comes up on each of the first 10 tosses, what do you think the chance is that another head will come up on the next coin toss? 0.5, less 0.5, or greater 0.5?
+
+--
+
+When tossing a fair coin, if heads comes up on each of the first 10 tosses, what do you think the chance is that another head will come up on the next coin toss? 0.5, less 0.5, or greater 0.5?
+
+* The probability is still 0.5, or there is still a 50% chance that another head will come up on the next toss.
+* The coin is not "due"" for a tail.
+* The common misunderstanding of the LLN is that random processes are supposed to compensate for whatever happened in the past; this is just not true and is also called **gambler’s fallacy** (or **law of averages**).
+
+---
+# Coin Toss Demo
+
+```{r, eval=FALSE}
+library(DATA606)
+shiny_demo('gambler')
+```
+
+---
+# Coin Tosses
+
+```{r, fig.width=8, fig.height=3.5}
+coins <- sample(c(-1,1), 1000, replace=TRUE)
+plot(1:length(coins), cumsum(coins), type='l')
+abline(h=0)
+```
+
+---
+# Coin Tosses (Full Range) 
+
+```{r, fig.width=8, fig.height=3.5}
+plot(1:length(coins), cumsum(coins), type='l', ylim=c(-1000, 1000))
+abline(h=0)
+```
+
+---
+# Disjoint and non-disjoint outcomes
+
+**Disjoint** (mutually exclusive) outcomes: Cannot happen at the same time.
+
+* The outcome of a single coin toss cannot be a head and a tail. A student both cannot fail and pass a class.
+* A single card drawn from a deck cannot be an ace and a queen.
+
+**Non-disjoint** outcomes: Can happen at the same time.
+
+* A student can get an A in Stats and A in Econ in the same semester.
+
+---
+# Probability Distributions
+
+A probability distribution lists all possible events and the probabilities with which they occur.
+
+* The probability distribution for the gender of one kid:
+
+Event      | Male | Female
+-----------|------|---------
+Probabilty | 0.5  | 0.5
+
+Rules for probability distributions: 
+
+1. The events listed must be disjoint
+2. Each probability must be between 0 and 1 
+3. The probabilities must total 1
+
+---
+# Probabilty Distrubtions (cont.)
+
+The probability distribution for the genders of two kids:
+
+Event       | MM   | FF   | MF   | FM
+------------|------|------|------|------
+Probability | 0.25 | 0.25 | 0.25 | 0.25
+
+---
+# Independence
+
+Two processes are independent if knowing the outcome of one provides no useful information about the outcome of the other.
+
+* Knowing that the coin landed on a head on the first toss does not provide any useful information for determining what the coin will land on in the second toss. → Outcomes of two tosses of a coin are independent.
+* Knowing that the first card drawn from a deck is an ace does provide useful information for determining the probability of drawing an ace in the second draw. → Outcomes of two draws from a deck of cards (without replacement) are dependent.
+
+
+---
+# Checking for Independence
+
+If P(A occurs, given that B is true) = P(A | B) = P(A), then A and B are independent.
+
+* P(protects citizens) = 0.58
+* P(randomly selected NC resident says gun ownership protects citizens, given that the resident is white) = P(protects citizens | White) = 0.67
+* P(protects citizens | Black) = 0.28
+* P(protects citizens | Hispanic) = 0.64
+
+P(protects citizens) varies by race/ethnicity, therefore opinion on gun ownership and race ethnicity are most likely dependent.
+
+---
+# Lottery
+
+```{r, eval=FALSE}
+DATA606::shiny_demo('lottery')
+```
+
+---
+# Random Variables
+
+A random variable is a numeric quantity whose value depends on the outcome of a random event
+
+* We use a capital letter, like X, to denote a random variable
+* The values of a random variable are denoted with a lowercase letter, in this case x
+* For example, P(X = x)
+
+There are two types of random variables:
+
+* **Discrete random variables** often take only integer values  
+Example: Number of credit hours, Difference in number of credit hours this term vs last
+* **Continuous random variables** take real (decimal) values  
+Example: Cost of books this term, Difference in cost of books this term vs last
+
+---
+# Expectation
+
+* We are often interested in the average outcome of a random variable.
+* We call this the expected value (mean), and it is a weighted average of the possible outcomes
+
+$$ \mu =E\left( X \right) =\sum _{ i=1 }^{ k }{ { x }_{ i }P\left( X={ x }_{ i } \right)  } $$
+
+---
+# Expected value of a discrete random variable
+
+In a game of cards you win $1 if you draw a heart, $5 if you draw an ace (including the ace of hearts), $10 if you draw the king of spades and nothing for any other card you draw. Write the probability model for your winnings, and calculate your expected winning.
+
+Event           | X  | P(X)  | X P(X)
+----------------|----|-------|--------
+Heart (not Ace) | 1  | 12/52 | 12/52
+Ace             | 5  |  4/52 | 20/52
+King of Spades  | 10 |  1/52 | 10/52
+All else        | 0  | 35/52 | 0
+Total           |    |       | $E(X) = \frac{42}{52} \approx 0.81$
+
+---
+# Expected value of a discrete random variable
+
+```{r, fig.width=8, fig.height=3}
+cards <- data.frame(Event = c('Heart (not ace)','Ace','King of Spades','All else'),
+	X = c(1, 5, 10, 0),	pX = c(12/52, 5/52, 1/52, 32/52) )
+cards$XpX <- cards$X * cards$pX
+cards2 <- rep(0, 11)
+cards2[cards$X + 1] <- cards$pX
+names(cards2) <- 0:10
+barplot(cards2, main='Probability of Winning Game')
+```
+
+---
+# Estimating Expected Values with Simulations
+
+```{r}
+tickets <- as.data.frame(rbind(
+	c(    '$1',    1,     15),
+	c(    '$2',    2,     11),
+	c(    '$4',    4,     62),
+	c(    '$5',    5,    100),
+	c(   '$10',   10,    143),
+	c(   '$20',   20,    250),
+	c(   '$30',   30,    562),
+	c(   '$50',   50,   3482),
+	c(  '$100',  100,   6681),
+	c(  '$500',  500,  49440),
+	c('$1500',  1500, 375214),
+	c('$2500',  2500, 618000)
+), stringsAsFactors=FALSE)
+names(tickets) <- c('Winnings', 'Value', 'Odds')
+tickets$Value <- as.integer(tickets$Value)
+tickets$Odds <- as.integer(tickets$Odds)
+```
+
+---
+# Estimating Expected Values with Simulations
+
+```{r, fig.width=8, fig.height=3}
+odds <- sample(max(tickets$Odds), 1000, replace=TRUE)
+vals <- rep(-1, length(odds))
+for(i in 1:nrow(tickets)) {
+	vals[odds %% tickets[i,'Odds'] == 0] <- tickets[i,'Value'] - 1 
+}
+head(vals, n=20)
+mean(vals)
+```
+
+---
+# Estimating Expected Values with Simulations
+
+```{r, fig.width=8, fig.height=3}
+ggplot(data.frame(Winnings=vals), aes(x=Winnings)) + geom_bar(binwidth=1)
+```
+
+---
+# Expected Value of Lottery Example
+
+$$ \mu =E\left( X \right) =\sum _{ i=1 }^{ k }{ { x }_{ i }P\left( X={ x }_{ i } \right)  }  $$
+```{r, echo=FALSE}
+tickets <- as.data.frame(rbind(
+	c(    '$1',    1,     15),
+	c(    '$2',    2,     11),
+	c(    '$4',    4,     62),
+	c(    '$5',    5,    100),
+	c(   '$10',   10,    143),
+	c(   '$20',   20,    250),
+	c(   '$30',   30,    562),
+	c(   '$50',   50,   3482),
+	c(  '$100',  100,   6681),
+	c(  '$500',  500,  49440),
+	c('$1500',  1500, 375214),
+	c('$2500',  2500, 618000)
+), stringsAsFactors=FALSE)
+names(tickets) <- c('Winnings', 'Value', 'Odds')
+tickets$Value <- as.integer(tickets$Value)
+tickets$Odds <- as.integer(tickets$Odds)
+
+tickets$xPx <- tickets$Value * (1 / tickets$Odds)
+```
+
+```{r}
+tickets
+sum(tickets$xPx) - 1 # Expected value for one ticket
+```
+
+---
+# Expected Value of Lottery Example (cont)
+
+```{r}
+sum(tickets$xPx) - 1 # Expected value for one ticket
+```
+
+Simulated
+
+```{r}
+nGames <- 1
+runs <- numeric(10000)
+for(j in seq_along(runs)) {
+	odds <- sample(max(tickets$Odds), nGames, replace = TRUE)
+	vals <- rep(-1, length(odds))
+	for(i in 1:nrow(tickets)) {
+		vals[odds %% tickets[i,'Odds'] == 0] <- tickets[i,'Value'] - 1
+	}
+	runs[j] <- cumsum(vals)[nGames]
+}
+mean(runs)
+```
+
+---
+# Coin Tosses Revisited
+
+```{r}
+coins <- sample(c(-1,1), 100, replace=TRUE)
+plot(1:length(coins), cumsum(coins), type='l')
+abline(h=0)
+cumsum(coins)[length(coins)]
+```
+
+---
+# Many Random Samples
+
+```{r}
+samples <- rep(NA, 1000)
+for(i in seq_along(samples)) {
+	coins <- sample(c(-1,1), 100, replace=TRUE)
+	samples[i] <- cumsum(coins)[length(coins)]
+}
+head(samples)
+```
+
+---
+# Histogram of Many Random Samples
+
+```{r, fig.width=10, fig.height=6}
+hist(samples)
+```
+
+---
+# Properties of Distribution 
+
+```{r}
+(m.sam <- mean(samples))
+(s.sam <- sd(samples))
+```
+
+---
+# Properties of Distribution (cont.)
+
+```{r}
+within1sd <- samples[samples >= m.sam - s.sam & samples <= m.sam + s.sam]
+length(within1sd) / length(samples)
+within2sd <- samples[samples >= m.sam - 2 * s.sam & samples <= m.sam + 2* s.sam]
+length(within2sd) / length(samples)
+within3sd <- samples[samples >= m.sam - 3 * s.sam & samples <= m.sam + 3 * s.sam]
+length(within3sd) / length(samples)
+```
+
+
+---
+# Standard Normal Distribution
+
+$$ f\left( x|\mu ,\sigma  \right) =\frac { 1 }{ \sigma \sqrt { 2\pi  }  } { e }^{ -\frac { { \left( x-\mu  \right)  }^{ 2 } }{ { 2\sigma  }^{ 2 } }  } $$
+
+```{r, fig.width=8, fig.height=4}
+x <- seq(-4,4,length=200); y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
+```
+
+---
+# Standard Normal Distribution
+
+```{r, fig.width=8, fig.height=4, echo=FALSE}
+x <- seq(-4,4,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
+lb <- -1; ub <- 1
+i <- x >= lb & x <= ub
+polygon(c(lb,x[i],ub), c(0,y[i],0), col="grey90") 
+text(0, .1, "68%")
+```
+
+---
+# Standard Normal Distribution
+
+```{r, fig.width=8, fig.height=4, echo=FALSE}
+x <- seq(-4,4,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
+lb <- -2; ub <- 2
+i <- x >= lb & x <= ub
+polygon(c(lb,x[i],ub), c(0,y[i],0), col="grey90") 
+text(0, .1, "95%")
+```
+
+---
+# Standard Normal Distribution
+
+```{r, fig.width=8, fig.height=4, echo=FALSE}
+x <- seq(-4,4,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
+lb <- -3; ub <- 3
+i <- x >= lb & x <= ub
+polygon(c(lb,x[i],ub), c(0,y[i],0), col="grey90") 
+text(0, .1, "99.7%")
+```
+
+---
+# What's the likelihood of ending with less than 15?
+
+```{r}
+pnorm(15, mean=mean(samples), sd=sd(samples))
+```
+
+```{r, echo=FALSE, fig.width=8, fig.height=4, echo=FALSE}
+x <- seq(-4,4,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
+lb <- min(x); ub <- (15 - mean(samples)) / sd(samples)
+i <- x >= lb & x <= ub
+polygon(c(lb,x[i],ub), c(0,y[i],0), col="grey90") 
+```
+
+---
+# What's the likelihood of ending with more than 15?
+
+```{r}
+1 - pnorm(15, mean=mean(samples), sd=sd(samples))
+```
+
+```{r, echo=FALSE, fig.width=8, fig.height=4, echo=FALSE}
+x <- seq(-4,4,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
+ub <- max(x); lb <- (15 - mean(samples)) / sd(samples)
+i <- x >= lb & x <= ub
+polygon(c(lb,x[i],ub), c(0,y[i],0), col="grey90") 
+```
+
+---
+# Comparing Scores on Different Scales
+
+SAT scores are distributed nearly normally with mean 1500 and standard deviation 300. ACT scores are distributed nearly normally with mean 21 and standard deviation 5. A college admissions officer wants to determine which of the two applicants scored better on their standardized test with respect to the other test takers: Pam, who earned an 1800 on her SAT, or Jim, who scored a 24 on his ACT?
+
+---
+# Z-Scores
+
+* Z-scores are often called standard scores:
+
+$$ Z = \frac{observation - mean}{SD} $$
+
+* Z-Scores have a mean = 0 and standard deviation = 1.
+
+Converting Pam and Jim's scores to z-scores:
+
+$$ Z_{Pam} = \frac{1800 - 1500}{300} = 1 $$
+
+$$ Z_{Jim} = \frac{24-21}{5} = 0.6 $$
+
+---
+# Standard Normal Parameters
+
+```{r, echo=FALSE, fig.width=10, fig.height=3.5}
+par.orig <- par(mfrow=c(1,2), mar=c(2,1,1.5,1))
+x <- seq(-4,4,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, ylab='', xlab='', yaxt='n', col='green',
+	 main=expression(paste(plain("N("), mu, plain(" = 0, "), sigma, plain(" = 1)"))))
+x <- seq(5,33,length=200)
+y <- dnorm(x,mean=19, sd=4)
+plot(x, y, type = "l", lwd = 2, ylab='', xlab='', yaxt='n', col='blue',
+	 main=expression(paste(plain("N("), mu, plain(" = 19, "), sigma, plain(" = 4)"))))
+par(par.orig)
+
+x <- seq(-4,30,length=200)
+y <- dnorm(x,mean=0, sd=1)
+plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,30), ylab='', xlab='', yaxt='n', col='green')
+x <- seq(-4,30,length=200)
+y <- dnorm(x,mean=19, sd=4)
+lines(x, y, type = "l", lwd = 2, xlim = c(-3.5,30), ylab='', xlab='', yaxt='n', col='blue')
+```
+
+---
+# SAT Variability
+
+SAT scores are distributed nearly normally with mean 1500 and standard deviation 300.
+
+* 68% of students score between 1200 and 1800 on the SAT. 
+* 95% of students score between 900 and 2100 on the SAT.
+* 99.7% of students score between 600 and 2400 on the SAT.
+
+---
+# Evaluating Normal Approximation
+
+```{r, echo=FALSE, results='hide'}
+heights <- c(180.34, 170.18, 175.26, 177.8, 172.72, 160.02, 172.72, 182.88, 177.8, 177.8, 167.64, 180.34, 180.34, 172.72, 165.1, 154.94, 180.34, 172.72, 165.1, 167.64, 182.88, 175.26, 182.88, 177.8, 175.26, 185.42, 175.26, 167.64, 187.96, 175.26, 180.34, 175.26, 198.12, 177.8, 185.42, 175.26, 180.34, 187.96, 182.88, 187.96, 177.8, 182.88, 187.96, 170.18, 182.88, 182.88, 175.26, 170.18, 182.88, 180.34, 180.34, 170.18, 180.34, 187.96, 193.04, 175.26, 193.04, 182.88, 177.8, 167.64, 170.18, 160.02, 172.72, 193.04, 187.96, 190.5, 172.72, 175.26, 193.04, 180.34, 162.56, 187.96, 182.88, 180.34, 177.8, 172.72, 185.42, 180.34, 180.34, 182.88, 185.42, 180.34, 195.58, 185.42, 170.18, 170.18, 172.72, 180.34, 190.5, 172.72, 182.88, 170.18, 177.8, 175.26, 162.56, 162.56, 175.26, 167.64, 170.18, 177.8)/2.54
+```
+
+To use the 68-95-99 rule, we must verify the normality assumption. We will want to do this also later when we talk about various (parametric) modeling. Consider a sample of `r length(heights)` male heights (in inches).
+
+```{r, echo=FALSE, fig.width=10, fig.height=6}
+hist(heights, main=paste0('Male Heights (mean = ', round(mean(heights), digits=1), ', sd = ', round(sd(heights), digits=2), ')'))
+```
+
+
+---
+# Evaluating Normal Approximation
+
+Histogram looks normal, but we can overlay a standard normal curve to help evaluation.
+
+```{r, echo=FALSE, fig.width=10, fig.height=6}
+h <- hist(heights, xlim=c(60, 80))
+x <- seq(min(heights)-5, max(heights)+5, 0.01)
+y <- dnorm(x, mean(heights), sd(heights))
+y <- y * diff(h$mids[1:2]) * length(heights)
+lines(x, y, lwd=1.5, col='blue')
+```
+
+---
+# Normal Q-Q Plot 
+
+.pull-left[
+* Data are plotted on the y-axis of a normal probability plot, and theoretical quantiles (following a normal distribution) on the x-axis.
+* If there is a linear relationship in the plot, then the data follow a nearly normal distribution.
+* Constructing a normal probability plot requires calculating percentiles and corresponding z-scores for each observation, which is tedious. Therefore we generally rely on software when making these plots.
+]
+.pull-right[
+```{r, echo=FALSE, fig.width=6, fig.height=6}
+qqnorm(heights, cex=0.5, main='', axes=F, ylab='Male heights (in)', pch=19)
+axis(1)
+axis(2)
+abline(mean(heights), sd(heights), col="blue", lwd=1.5)
+```
+]
+---
+# Skewness
+
+```{r, echo=FALSE, fig.width=8, fig.height=8}
+set.seed(2112)
+rs <- rgamma(100,1)
+ls <- rbeta(100,3,0.5)
+
+temp <- sort(rnorm(100))
+
+st <- c(temp[16:85], rnorm(30,0,0.1))
+lt <- c(temp[1:20]-rgamma(20,1), temp[21:80], temp[81:100]+rev(rgamma(20,1)))
+
+par.orig <- par(mfrow=c(2,2), mgp=c(2,.7,0), mar=c(1,1,1,1))
+qqnorm(rs, axes=F, xlab="", ylab="", pch=19, main="Right Skewed")
+qqline(rs, col='blue')
+qqnorm(ls, axes=F, xlab="", ylab="", pch=19, main="Left Skewed")
+qqline(rs, col='blue')
+qqnorm(st, axes=F, xlab="", ylab="", pch=19, main="Short Tails")
+qqline(rs, col='blue')
+qqnorm(lt, axes=F, xlab="", ylab="", pch=19, main="Long Tails")
+qqline(rs, col='blue')
+par(par.orig)
+```
+
+---
+# Simulated Normal Q-Q Plots
+
+```{r, fig.width=8, fig.height=7}
+DATA606::qqnormsim(heights)
+```
+
+
+```{r setup2, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+set.seed(2112)
+library(ggplot2)
+library(openintro)
+library(DATA606)
+library(tidyverse)
+par(mar=c(2.5,1,2,1))
+
+PlotDist <- function(alpha, from = -5, to = 5, n = 1000, filename = NULL,
+    alternative = c("two.tailed", "greater", "lesser"), 
+    distribution = c("normal", "t", "F", "chisq", "binomial"), 
+    colour = "black", fill = "skyblue2",
+    ...)
+{
+    alternative <- match.arg(alternative)
+    alt.alpha <- switch(alternative, two.tailed = alpha/2, greater = alpha,
+        lesser = alpha)
+    MyDen <- switch(distribution, normal = dnorm, t = dt, F = df,
+        chisq = dchisq, binomial = dbinom)
+    MyDist <- switch(distribution, normal = qnorm, t = qt, F = qf,
+        chisq = qchisq, binomial = qbinom)
+    crit.lower <- MyDist(p = alt.alpha, lower.tail = TRUE, ...)
+    crit.upper <- MyDist(p = alt.alpha, lower.tail = FALSE, ...)
+    cord.x1 <- c(from, seq(from = from, to = crit.lower, length.out = 100),
+        crit.lower)
+    cord.y1 <- c(0, MyDen(x = seq(from = from, to = crit.lower,
+        length.out = 100), ...), 0)
+    cord.x2 <- c(crit.upper, seq(from = crit.upper, to = to,
+        length.out = 100), to)
+    cord.y2 <- c(0, MyDen(x = seq(from = crit.upper, to = to,
+        length.out = 100), ...), 0)
+    if (!is.null(filename)) pdf(file = filename)
+    curve(MyDen(x, ...), from = from, to = to, n = n, col = colour,
+        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
+    if (!identical(alternative, "greater")) {
+        polygon(x = cord.x1, y = cord.y1, col = fill)
+    }
+    if (!identical(alternative, "lesser")) {
+        polygon(x = cord.x2, y = cord.y2, col = fill)
+    }
+    if (!is.null(filename)) dev.off()
+}
+```
+
+
+---
+# Population Distribution (Uniform)
+
+```{r}
+n <- 1e5
+pop <- runif(n, 0, 1)
+mean(pop)
+```
+
+<center>
+```{r, echo=FALSE, fig.width=8,fig.height=3.5}
+d <- density(pop)
+h <- hist(pop, plot=FALSE)
+hist(pop, main='Population Distribution', xlab="", freq=FALSE, 
+     ylim=c(0, max(d$y, h$density)+.5), col=COL[1,2], border = "white", 
+	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
+lines(d, lwd=3)
+```
+</center>
+
+
+
+---
+# Random Sample (n=10)
+
+```{r, fig.width=10, fig.height=5}
+samp1 <- sample(pop, size=10)
+mean(samp1)
+```
+
+<center>
+```{r, fig.width=8,fig.height=3.5}
+hist(samp1)
+```
+</center>
+
+---
+# Random Sample (n=30)
+
+```{r, fig.width=8,fig.height=3.5}
+samp2 <- sample(pop, size=30)
+mean(samp2)
+```
+
+<center>
+```{r, fig.width=8,fig.height=3.5}
+hist(samp2)
+```
+</center>
+
+---
+# Lots of Random Samples
+
+```{r, echo=TRUE}
+M <- 1000
+samples <- numeric(length=M)
+for(i in seq_len(M)) {
+	samples[i] <- mean(sample(pop, size=30))
+}
+head(samples, n=8)
+```
+
+
+---
+# Sampling Distribution
+
+<center>
+```{r, fig.width=10, fig.height=5}
+hist(samples)
+```
+</center>
+
+
+---
+# Central Limit Theorem (CLT)
+
+Let $X_1$, $X_2$, ..., $X_n$ be independent, identically distributed random variables with mean $\mu$ and variance $\sigma^2$, both finite. Then for any constant $z$,
+
+$$ \underset { n\rightarrow \infty  }{ lim } P\left( \frac { \bar { X } -\mu  }{ \sigma /\sqrt { n }  } \le z \right) =\Phi \left( z \right)  $$
+
+where $\Phi$ is the cumulative distribution function (cdf) of the standard normal distribution.
+
+
+---
+# In other words...
+
+The distribution of the sample mean is well approximated by a normal model:
+
+$$ \bar { x } \sim N\left( mean=\mu ,SE=\frac { \sigma  }{ \sqrt { n }  }  \right)  $$
+
+where SE represents the **standard error**, which is defined as the standard deviation of the sampling distribution. In most cases $\sigma$ is not known, so use $s$.
+
+
+---
+# CLT Shiny App
+
+```{r, eval=FALSE}
+shiny_demo('sampdist')
+shiny_demo('CLT_mean')
+```
+
+---
+# Standard Error
+
+```{r}
+samp2 <- sample(pop, size=30)
+mean(samp2)
+(samp2.se <- sd(samp2) / sqrt(length(samp2)))
+```
+
+---
+# Confidence Interval
+
+The confidence interval is then $\mu \pm CV \times SE$ where CV is the critical value. For a 95% confidence interval, the critical value is ~1.96 since
+
+$$\int _{ -1.96 }^{ 1.96 }{ \frac { 1 }{ \sigma \sqrt { 2\pi  }  } { d }^{ -\frac { { \left( x-\mu  \right)  }^{ 2 } }{ 2{ \sigma  }^{ 2 } }  } } \approx 0.95$$
+
+```{r}
+qnorm(0.025) # Remember we need to consider the two tails, 2.5% to the left, 2.5% to the right.
+```
+
+```{r}
+(samp2.ci <- c(mean(samp2) - 1.96 * samp2.se, mean(samp2) + 1.96 * samp2.se))
+```
+
+
+---
+# Confidence Intervals (cont.)
+
+We are 95% confident that the true population mean is between `r samp2.ci`. 
+
+That is, if we were to take 100 random samples, we would expect at least 95% of those samples to have a mean within `r samp2.ci`.
+
+```{r}
+ci <- data.frame(mean=numeric(), min=numeric(), max=numeric())
+for(i in seq_len(100)) {
+	samp <- sample(pop, size=30)
+	se <- sd(samp) / sqrt(length(samp))
+	ci[i,] <- c(mean(samp),
+				mean(samp) - 2 * se, 
+				mean(samp) + 2 * se)
+}
+ci$sample <- 1:nrow(ci)
+ci$sig <- ci$min < 0.5 & ci$max > 0.5
+```
+
+
+---
+# Confidence Intervals 
+
+```{r, eval=TRUE, fig.width=10, fig.height=4}
+ggplot(ci, aes(x=min, xend=max, y=sample, yend=sample, color=sig)) + 
+	geom_vline(xintercept=0.5) + 
+	geom_segment() + xlab('CI') + ylab('') +
+	scale_color_manual(values=c('TRUE'='grey', 'FALSE'='red'))
+```
+
+
+
+---
+# Hypothesis Testing
+
+* We start with a null hypothesis ($H_0$) that represents the status quo.
+* We also have an alternative hypothesis ($H_A$) that represents our research question, i.e. what we???re testing for.
+* We conduct a hypothesis test under the assumption that the null hypothesis is true, either via simulation or traditional methods based on the central limit theorem.
+* If the test results suggest that the data do not provide convincing evidence for the alternative hypothesis, we stick with the null hypothesis. If they do, then we reject the null hypothesis in favor of the alternative.
+
+
+---
+# Hypothesis Testing (using CI)
+
+$H_0$: The mean of `samp2` = 0.5  
+$H_A$: The mean of `samp2` $\ne$ 0.5
+
+Using confidence intervals, if the *null* value is within the confidence interval, then we *fail* to reject the *null* hypothesis.
+
+```{r}
+(samp2.ci <- c(mean(samp2) - 2 * sd(samp2) / sqrt(length(samp2)),
+			   mean(samp2) + 2 * sd(samp2) / sqrt(length(samp2))))
+```
+
+Since 0.5 fall within `r samp2.ci`, we *fail* to reject the null hypothesis.
+
+
+---
+# Hypothesis Testing (using *p*-values)
+
+$$ \bar { x } \sim N\left( mean=0.49,SE=\frac { 0.27 }{ \sqrt { 30 } = 0.049 }  \right)  $$
+
+$$ Z=\frac { \bar { x } -null }{ SE } =\frac { 0.49-0.50 }{ 0.049 } = -.204081633 $$
+
+```{r}
+pnorm(-.204) * 2
+```
+
+---
+# Hypothesis Testing (using *p*-values)
+
+<center>
+```{r, fig.width=10, fig.height=5}
+normalPlot(bounds=c(-.204, .204), tails=TRUE)
+```
+</center>
+
+
+---
+# Type I and II Errors
+
+There are two competing hypotheses: the null and the alternative. In a hypothesis test, we make a decision about which might be true, but our choice might be incorrect.
+
+
+
+|                    | fail to reject H<sub>0</sub> | reject H<sub>0</sub> |
+|--------------------|:----------------------------:|:--------------------:|
+| H<sub>0</sub> true |        	&#10004;            |  Type I Error        |
+| H<sub>A</sub> true |     Type II Error            |      	&#10004;       |
+
+
+<br /><br />
+
+* Type I Error: **Rejecting** the null hypothesis when it is **true**.
+* Type II Error: **Failing to reject** the null hypothesis when it is **false**.
+
+
+---
+# Hypothesis Test
+
+If we again think of a hypothesis test as a criminal trial then it
+makes sense to frame the verdict in terms of the null and
+alternative hypotheses:
+
+<p style="padding-left:150px">
+H<sub>0</sub> : Defendant is innocent<br/>
+H<sub>A</sub> : Defendant is guilty
+</p>
+
+Which type of error is being committed in the following
+circumstances?
+
+* Declaring the defendant innocent when they are actually guilty  
+<center>Type 2 error</center>
+
+* Declaring the defendant guilty when they are actually innocent  
+<center>Type 1 error</center>
+
+Which error do you think is the worse error to make? 
+
+
+---
+# Null Distribution
+
+```{r, fig.width=6, fig.height=3.5}
+(cv <- qnorm(0.05, mean=0, sd=1, lower.tail=FALSE))
+PlotDist(alpha=0.05, distribution='normal', alternative='greater')
+abline(v=cv, col='blue')
+```
+
+---
+# Alternative Distribution
+
+```{r, fig.width=6, fig.height=3.5}
+cord.x1 <- c(-5, seq(from = -5, to = cv, length.out = 100), cv)
+cord.y1 <- c(0, dnorm(mean=cv, x=seq(from=-5, to=cv, length.out = 100)), 0)
+curve(dnorm(x, mean=cv), from = -5, to = 5, n = 1000, col = "black",
+        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
+polygon(x = cord.x1, y = cord.y1, col = 'lightgreen')
+abline(v=cv, col='blue')
+```
+
+```{r}
+pnorm(cv, mean=cv, lower.tail = FALSE)
+```
+
+---
+# Another Example (mu = 2.5)
+
+.pull-left[
+```{r}
+mu <- 2.5
+(cv <- qnorm(0.05, 
+			 mean=0, 
+			 sd=1, 
+			 lower.tail=FALSE))
+```
+]
+.pull-right[
+```{r, echo=FALSE, fig.width=3.5, fig.height=3.5, fig.show='hold'}
+pv <- pnorm(mu, mean=0, sd=1, lower.tail=FALSE)
+
+PlotDist(alpha=pv, distribution='normal', alternative='greater')
+abline(v=mu, col='blue')
+title('Null Distribution')
+
+cord.x1 <- c(-5, seq(from = -5, to = cv, length.out = 100), cv)
+cord.y1 <- c(0, dnorm(mean=mu, x=seq(from=-5, to=cv, length.out = 100)), 0)
+curve(dnorm(x, mean=mu), from = -5, to = 5, n = 1000, col = "black",
+        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
+polygon(x = cord.x1, y = cord.y1, col='lightgreen')
+abline(v=mu, col='blue')
+title('Alternative Distribution')
+```
+]
+
+---
+# Numeric Values
+
+Type I Error
+
+```{r}
+pnorm(mu, mean=0, sd=1, lower.tail=FALSE)
+```
+
+Type II Error
+
+```{r}
+pnorm(cv, mean=mu, lower.tail = TRUE)
+```
+
+---
+# Shiny Application
+
+Visualizing Type I and Type II errors: [https://bcdudek.net/betaprob/](https://bcdudek.net/betaprob/)
+
+---
+# Why p < 0.05?
+
+Check out this page: https://www.openintro.org/stat/why05.php
+
+See also:
+
+Kelly M. [*Emily Dickinson and monkeys on the stair Or: What is the significance of the 5% significance level?*](http://www.acsu.buffalo.edu/~grant/5pcMarkKelley.pdf) Significance 10:5. 2013.
+
+
+---
+# Statistical vs. Practical Significance
+
+* Real differences between the point estimate and null value are easier to detect with larger samples.
+* However, very large samples will result in statistical significance even for tiny differences between the sample mean and the null value (effect size), even when the difference is not practically significant.
+* This is especially important to research: if we conduct a study, we want to focus on finding meaningful results (we want observed differences to be real, but also large enough to matter).
+* The role of a statistician is not just in the analysis of data, but also in planning and design of a study.
+
+
+---
+# Review: Sampling Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE, fig.width = 8, fig.height=5.5}
+set.seed(123)
+n <- 1e5
+pop2 <- runif(n, 0, 5)
+# pop2 <- rnorm(n, mean = 100, sd = 15)
+samp <- sample(pop2, size = 30)
+se <- sd(samp) / sqrt(length(samp))
+
+hist.samp <- density(samp, 
+				  from = mean(samp) - 1.96 * sd(samp), 
+				  to = mean(samp) + 1.96 * sd(samp))
+hist.samp <- data.frame(x = hist.samp$x, y = hist.samp$y)
+hist.sampdist <- data.frame(x = seq(mean(samp) - 1.96 * se,
+									mean(samp) + 1.96 * se, 0.01))
+hist.sampdist$y <- dnorm(hist.sampdist$x, mean = mean(samp), sd = se)
+
+
+ggplot(data = data.frame(x = range(samp)), aes(x)) +
+	geom_density(data = data.frame(x = pop2), alpha = 0.2) +
+	geom_vline(xintercept = mean(pop2)) +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(hist.sampdist$y))) +
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+	ggtitle('Distribution of Population (in black)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+---
+# Review: Sampling Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE, fig.width = 8, fig.height=5.5}
+ggplot(data = data.frame(x = range(samp)), aes(x)) +
+	geom_density(data = data.frame(x = pop2), alpha = 0.2) +
+	geom_vline(xintercept = mean(pop2)) +
+	geom_ribbon(data = hist.samp, aes(x = x, ymin = 0, ymax = y), fill = 'blue', alpha = 0.5) +
+	geom_density(data = data.frame(x = samp), color = 'blue') +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(hist.sampdist$y))) + 
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+		ggtitle('Distribution of Population (in black), Sample (in blue)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+
+---
+# Review: Sampling Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE, fig.width = 8, fig.height=5.5}
+ggplot(data = data.frame(x = range(samp)), aes(x)) +
+	geom_density(data = data.frame(x = pop2), alpha = 0.2) +
+	geom_vline(xintercept = mean(pop2)) +
+	geom_ribbon(data = hist.samp, aes(x = x, ymin = 0, ymax = y), fill = 'blue', alpha = 0.5) +
+	geom_density(data = data.frame(x = samp), color = 'blue') +
+	geom_ribbon(data = hist.sampdist, aes(x = x, ymin = 0, ymax = y), fill = 'maroon', alpha = 0.5) +
+	stat_function(fun = dnorm, n = 1000,
+				  args = list(mean = mean(samp), sd = se), color = 'maroon') +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(hist.sampdist$y))) +
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+	ggtitle('Distribution of Population (in black), Sample (in blue), and Sampling Distribution (in maroon)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+
+---
+# Assignments
+
+Lab 5 is in two parts: A) Sampling Distributions and B) Confidence Levels. To get started, run the following commands:
+
+```{r, eval=FALSE}
+DATA606::startLab('Lab5a')
+DATA606::startLab('Lab5b')
+```
+
+Chapter 5 homework: https://epsy630.bryer.org/assignments/homework/
+
+
+---
+class: left
+# One Minute Paper
+
+.font140[
+Complete the one minute paper: 
+https://forms.gle/yB3ds6MYE89Z1pURA
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+]
+
+ 
