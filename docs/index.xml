@@ -61,9 +61,9 @@ I am currently an Assistant Professor in Data Science and Information Systems at
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/course-overview/schedule/</guid>
-      <description>Note: Schedule is subject to change. Last updated February 02, 2021 10:27PM.
+      <description>Note: Schedule is subject to change. Last updated February 09, 2021 08:37PM.
 UAlbany Academic Calendar
- document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-02-09&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;Intro to the Course / Intro to R and RStudio&#34;</description>
+ document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-02-16&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;Intro to the Course / Intro to R and RStudio&#34;</description>
     </item>
     
     <item>
@@ -114,7 +114,7 @@ Please note: Students who participate in this class with their camera on or use 
       
       <guid>/assignments/labs/</guid>
       <description>These mini projects will have you explore statistical topics using R. You can use the startLab function in the DATA606 package to get started, or copy the templates from the links below. Please submit a PDF (preferred) or HTML file along with your Rmarkdown file. Be sure to answer all questions in lab, not just the on your own section. Labs should be submitted on Blackboard.
-Introduction to R and RStudio (Template) Introduction to Data (Template) Probability (Template) Distributions of Random Variables (Template) Foundations for Statistical Inference Sampling Distributions (Template) Confidence Levels (Template)  Inference for Categorical Data (Template) Inference for Numerical Data (Template) Introduction to Linear Regression (Template) Multiple Linear Regerssion (Template)  -- </description>
+Introduction to R and RStudio (Template) Introduction to Data (Template) Probability (Template) Distributions of Random Variables (Template) -- Foundations for Statistical Inference Sampling Distributions (Template) Confidence Levels (Template)  Inference for Categorical Data (Template) Inference for Numerical Data (Template) Introduction to Linear Regression (Template) Multiple Linear Regerssion (Template)  -- </description>
     </item>
     
     <item>
