@@ -208,7 +208,7 @@ Example: Cost of books this term, Difference in cost of books this term vs last
 * We are often interested in the average outcome of a random variable.
 * We call this the expected value (mean), and it is a weighted average of the possible outcomes
 
-$$ \mu =E\left( X \right) =\sum _{ i=1 }^{ k }{ { x }_{ i }P\left( X={ x }_{ i } \right)  } $$
+$$\mu =E(X)=\sum^{k}_{i=1} x_{i}P(X=x_{i})$$
 
 ---
 # Expected value of a discrete random variable
@@ -282,7 +282,8 @@ ggplot(data.frame(Winnings=vals), aes(x=Winnings)) + geom_bar(binwidth=1)
 ---
 # Expected Value of Lottery Example
 
-$$ \mu =E\left( X \right) =\sum _{ i=1 }^{ k }{ { x }_{ i }P\left( X={ x }_{ i } \right)  }  $$
+$$\mu =E(X)=\sum^{k}_{i=1} x_{i}P(X=x_{i})$$
+
 ```{r, echo=FALSE}
 tickets <- as.data.frame(rbind(
 	c(    '$1',    1,     15),
@@ -305,10 +306,17 @@ tickets$Odds <- as.integer(tickets$Odds)
 tickets$xPx <- tickets$Value * (1 / tickets$Odds)
 ```
 
+.pull-left[
 ```{r}
 tickets
-sum(tickets$xPx) - 1 # Expected value for one ticket
 ```
+]
+.pull-right[
+Expected value for one ticket
+```{r}
+sum(tickets$xPx) - 1 
+```
+]
 
 ---
 # Expected Value of Lottery Example (cont)
@@ -352,7 +360,7 @@ for(i in seq_along(samples)) {
 	coins <- sample(c(-1,1), 100, replace=TRUE)
 	samples[i] <- cumsum(coins)[length(coins)]
 }
-head(samples)
+head(samples, n = 10)
 ```
 
 ---
@@ -388,7 +396,7 @@ length(within3sd) / length(samples)
 
 $$ f\left( x|\mu ,\sigma  \right) =\frac { 1 }{ \sigma \sqrt { 2\pi  }  } { e }^{ -\frac { { \left( x-\mu  \right)  }^{ 2 } }{ { 2\sigma  }^{ 2 } }  } $$
 
-```{r, fig.width=8, fig.height=4}
+```{r, fig.width=10, fig.height=5}
 x <- seq(-4,4,length=200); y <- dnorm(x,mean=0, sd=1)
 plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
 ```
@@ -396,7 +404,7 @@ plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yax
 ---
 # Standard Normal Distribution
 
-```{r, fig.width=8, fig.height=4, echo=FALSE}
+```{r, fig.width=10, fig.height=6, echo=FALSE}
 x <- seq(-4,4,length=200)
 y <- dnorm(x,mean=0, sd=1)
 plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
@@ -409,7 +417,7 @@ text(0, .1, "68%")
 ---
 # Standard Normal Distribution
 
-```{r, fig.width=8, fig.height=4, echo=FALSE}
+```{r, fig.width=10, fig.height=6, echo=FALSE}
 x <- seq(-4,4,length=200)
 y <- dnorm(x,mean=0, sd=1)
 plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
@@ -422,7 +430,7 @@ text(0, .1, "95%")
 ---
 # Standard Normal Distribution
 
-```{r, fig.width=8, fig.height=4, echo=FALSE}
+```{r, fig.width=10, fig.height=6, echo=FALSE}
 x <- seq(-4,4,length=200)
 y <- dnorm(x,mean=0, sd=1)
 plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
@@ -439,7 +447,7 @@ text(0, .1, "99.7%")
 pnorm(15, mean=mean(samples), sd=sd(samples))
 ```
 
-```{r, echo=FALSE, fig.width=8, fig.height=4, echo=FALSE}
+```{r, echo=FALSE, fig.width=10, fig.height=6, echo=FALSE}
 x <- seq(-4,4,length=200)
 y <- dnorm(x,mean=0, sd=1)
 plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
@@ -472,12 +480,14 @@ SAT scores are distributed nearly normally with mean 1500 and standard deviation
 ---
 # Z-Scores
 
-* Z-scores are often called standard scores:
+Z-scores are often called standard scores:
 
 $$ Z = \frac{observation - mean}{SD} $$
 
-* Z-Scores have a mean = 0 and standard deviation = 1.
+Z-Scores have a mean = 0 and standard deviation = 1.
 
+--
+ 
 Converting Pam and Jim's scores to z-scores:
 
 $$ Z_{Pam} = \frac{1800 - 1500}{300} = 1 $$
@@ -640,14 +650,14 @@ PlotDist <- function(alpha, from = -5, to = 5, n = 1000, filename = NULL,
 ---
 # Population Distribution (Uniform)
 
-```{r}
+```{r, fig.width=10, fig.height=6}
 n <- 1e5
 pop <- runif(n, 0, 1)
 mean(pop)
 ```
 
-<center>
-```{r, echo=FALSE, fig.width=8,fig.height=3.5}
+
+```{r, echo=FALSE, fig.width=10,fig.height=5, fig.align='center'}
 d <- density(pop)
 h <- hist(pop, plot=FALSE)
 hist(pop, main='Population Distribution', xlab="", freq=FALSE, 
@@ -655,37 +665,31 @@ hist(pop, main='Population Distribution', xlab="", freq=FALSE,
 	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
 lines(d, lwd=3)
 ```
-</center>
-
-
 
 ---
 # Random Sample (n=10)
 
-```{r, fig.width=10, fig.height=5}
+```{r, fig.width=10, fig.height=5,fig.align='center'}
 samp1 <- sample(pop, size=10)
 mean(samp1)
 ```
 
-<center>
-```{r, fig.width=8,fig.height=3.5}
+```{r, fig.width=10,fig.height=5,fig.align='center'}
 hist(samp1)
 ```
-</center>
 
 ---
 # Random Sample (n=30)
 
-```{r, fig.width=8,fig.height=3.5}
+```{r, fig.width=10,fig.height=5,fig.align='center'}
 samp2 <- sample(pop, size=30)
 mean(samp2)
 ```
 
-<center>
-```{r, fig.width=8,fig.height=3.5}
+
+```{r, fig.width=10,fig.height=5,fig.align='center'}
 hist(samp2)
 ```
-</center>
 
 ---
 # Lots of Random Samples
@@ -703,11 +707,11 @@ head(samples, n=8)
 ---
 # Sampling Distribution
 
-<center>
-```{r, fig.width=10, fig.height=5}
+
+```{r, fig.width=10, fig.height=5,fig.align='center'}
 hist(samples)
 ```
-</center>
+
 
 
 ---
@@ -734,6 +738,7 @@ where SE represents the **standard error**, which is defined as the standard dev
 # CLT Shiny App
 
 ```{r, eval=FALSE}
+library(DATA606)
 shiny_demo('sampdist')
 shiny_demo('CLT_mean')
 ```
@@ -776,8 +781,8 @@ for(i in seq_len(100)) {
 	samp <- sample(pop, size=30)
 	se <- sd(samp) / sqrt(length(samp))
 	ci[i,] <- c(mean(samp),
-				mean(samp) - 2 * se, 
-				mean(samp) + 2 * se)
+				mean(samp) - 1.96 * se, 
+				mean(samp) + 1.96 * se)
 }
 ci$sample <- 1:nrow(ci)
 ci$sig <- ci$min < 0.5 & ci$max > 0.5
@@ -787,7 +792,7 @@ ci$sig <- ci$min < 0.5 & ci$max > 0.5
 ---
 # Confidence Intervals 
 
-```{r, eval=TRUE, fig.width=10, fig.height=4}
+```{r, eval=TRUE, fig.width=10, fig.height=6}
 ggplot(ci, aes(x=min, xend=max, y=sample, yend=sample, color=sig)) + 
 	geom_vline(xintercept=0.5) + 
 	geom_segment() + xlab('CI') + ylab('') +
@@ -835,11 +840,10 @@ pnorm(-.204) * 2
 ---
 # Hypothesis Testing (using *p*-values)
 
-<center>
-```{r, fig.width=10, fig.height=5}
+
+```{r, fig.width=10, fig.height=5, fig.align='center'}
 normalPlot(bounds=c(-.204, .204), tails=TRUE)
 ```
-</center>
 
 
 ---
@@ -888,8 +892,11 @@ Which error do you think is the worse error to make?
 ---
 # Null Distribution
 
-```{r, fig.width=6, fig.height=3.5}
+```{r, fig.width=10, fig.height=5}
 (cv <- qnorm(0.05, mean=0, sd=1, lower.tail=FALSE))
+```
+
+```{r, fig.width=10, fig.height=5,echo=FALSE}
 PlotDist(alpha=0.05, distribution='normal', alternative='greater')
 abline(v=cv, col='blue')
 ```
@@ -897,7 +904,7 @@ abline(v=cv, col='blue')
 ---
 # Alternative Distribution
 
-```{r, fig.width=6, fig.height=3.5}
+```{r, echo=FALSE, fig.width=10, fig.height=5}
 cord.x1 <- c(-5, seq(from = -5, to = cv, length.out = 100), cv)
 cord.y1 <- c(0, dnorm(mean=cv, x=seq(from=-5, to=cv, length.out = 100)), 0)
 curve(dnorm(x, mean=cv), from = -5, to = 5, n = 1000, col = "black",
@@ -923,7 +930,7 @@ mu <- 2.5
 ```
 ]
 .pull-right[
-```{r, echo=FALSE, fig.width=3.5, fig.height=3.5, fig.show='hold'}
+```{r, echo=FALSE, fig.width=6, fig.height=3.5, fig.show='hold'}
 pv <- pnorm(mu, mean=0, sd=1, lower.tail=FALSE)
 
 PlotDist(alpha=pv, distribution='normal', alternative='greater')
@@ -963,7 +970,7 @@ Visualizing Type I and Type II errors: [https://bcdudek.net/betaprob/](https://b
 ---
 # Why p < 0.05?
 
-Check out this page: https://www.openintro.org/stat/why05.php
+Check out this page: https://r.bryer.org/shiny/Why05/
 
 See also:
 

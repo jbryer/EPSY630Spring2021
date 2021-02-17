@@ -6,7 +6,7 @@
     <description>Recent content in Home on EPSY 630 Statistics II - Spring 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 1</title>
       <link>/chapters/chapter1/</link>
@@ -230,6 +230,16 @@ Occasionally you will need to type equations in homework and labs. R Markdown su
       <guid>/course-overview/materials/</guid>
       <description>  These are supplemental materials. Click to download.
  ggplot_aesthetics_cheatsheet.png R_Syntax_Comparison.jpeg  </description>
+    </item>
+    
+    <item>
+      <title>Class 2 - Descriptive Statistics and Data Visualization</title>
+      <link>/blog/2021-02-16-class2/</link>
+      <pubDate>Tue, 16 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-02-16-class2/</guid>
+      <description>  Click here for the slides.
+ </description>
     </item>
     
     <item>

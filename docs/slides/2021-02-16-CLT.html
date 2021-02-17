@@ -184,7 +184,7 @@ Example: Cost of books this term, Difference in cost of books this term vs last
 * We are often interested in the average outcome of a random variable.
 * We call this the expected value (mean), and it is a weighted average of the possible outcomes
 
-$$ \mu =E\left( X \right) =\sum _{ i=1 }^{ k }{ { x }_{ i }P\left( X={ x }_{ i } \right)  } $$
+`$$\mu =E(X)=\sum^{k}_{i=1} x_{i}P(X=x_{i})$$`
 
 ---
 # Expected value of a discrete random variable
@@ -253,7 +253,7 @@ head(vals, n=20)
 ```
 
 ```
-##  [1] -1  4 -1 -1 -1 -1 -1 -1 -1 19 -1 -1  1  0  1 -1 -1 -1 -1 -1
+##  [1] -1  0 -1 -1 -1 -1 -1 -1 -1  0 -1  1  1  1 -1 -1  9 -1 -1 -1
 ```
 
 ```r
@@ -261,7 +261,7 @@ mean(vals)
 ```
 
 ```
-## [1] -0.458
+## [1] -0.373
 ```
 
 ---
@@ -277,9 +277,11 @@ ggplot(data.frame(Winnings=vals), aes(x=Winnings)) + geom_bar(binwidth=1)
 ---
 # Expected Value of Lottery Example
 
-$$ \mu =E\left( X \right) =\sum _{ i=1 }^{ k }{ { x }_{ i }P\left( X={ x }_{ i } \right)  }  $$
+`$$\mu =E(X)=\sum^{k}_{i=1} x_{i}P(X=x_{i})$$`
 
 
+
+.pull-left[
 
 ```r
 tickets
@@ -300,14 +302,18 @@ tickets
 ## 11    $1500  1500 375214 0.003997719
 ## 12    $2500  2500 618000 0.004045307
 ```
+]
+.pull-right[
+Expected value for one ticket
 
 ```r
-sum(tickets$xPx) - 1 # Expected value for one ticket
+sum(tickets$xPx) - 1 
 ```
 
 ```
 ## [1] -0.3862045
 ```
+]
 
 ---
 # Expected Value of Lottery Example (cont)
@@ -339,7 +345,7 @@ mean(runs)
 ```
 
 ```
-## [1] -0.4688
+## [1] -0.4721
 ```
 
 ---
@@ -352,14 +358,14 @@ plot(1:length(coins), cumsum(coins), type='l')
 abline(h=0)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
 cumsum(coins)[length(coins)]
 ```
 
 ```
-## [1] -16
+## [1] -8
 ```
 
 ---
@@ -372,11 +378,11 @@ for(i in seq_along(samples)) {
 	coins &lt;- sample(c(-1,1), 100, replace=TRUE)
 	samples[i] &lt;- cumsum(coins)[length(coins)]
 }
-head(samples)
+head(samples, n = 10)
 ```
 
 ```
-## [1] -22 -12 -14  -2 -10  14
+##  [1]  -8 -12 -10  -2   6   2  12   8  -8   8
 ```
 
 ---
@@ -387,7 +393,7 @@ head(samples)
 hist(samples)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Properties of Distribution 
@@ -398,7 +404,7 @@ hist(samples)
 ```
 
 ```
-## [1] -0.178
+## [1] -0.052
 ```
 
 ```r
@@ -406,7 +412,7 @@ hist(samples)
 ```
 
 ```
-## [1] 10.24643
+## [1] 9.827201
 ```
 
 ---
@@ -419,7 +425,7 @@ length(within1sd) / length(samples)
 ```
 
 ```
-## [1] 0.723
+## [1] 0.633
 ```
 
 ```r
@@ -428,7 +434,7 @@ length(within2sd) / length(samples)
 ```
 
 ```
-## [1] 0.962
+## [1] 0.951
 ```
 
 ```r
@@ -437,7 +443,7 @@ length(within3sd) / length(samples)
 ```
 
 ```
-## [1] 0.999
+## [1] 0.996
 ```
 
 
@@ -452,11 +458,6 @@ x &lt;- seq(-4,4,length=200); y &lt;- dnorm(x,mean=0, sd=1)
 plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yaxt='n')
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
-
----
-# Standard Normal Distribution
-
 &lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -470,6 +471,11 @@ plot(x, y, type = "l", lwd = 2, xlim = c(-3.5,3.5), ylab='', xlab='z-score', yax
 &lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
+# Standard Normal Distribution
+
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+
+---
 # What's the likelihood of ending with less than 15?
 
 
@@ -478,10 +484,10 @@ pnorm(15, mean=mean(samples), sd=sd(samples))
 ```
 
 ```
-## [1] 0.9307362
+## [1] 0.9371977
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # What's the likelihood of ending with more than 15?
@@ -492,10 +498,10 @@ pnorm(15, mean=mean(samples), sd=sd(samples))
 ```
 
 ```
-## [1] 0.06926378
+## [1] 0.0628023
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Comparing Scores on Different Scales
@@ -505,12 +511,14 @@ SAT scores are distributed nearly normally with mean 1500 and standard deviation
 ---
 # Z-Scores
 
-* Z-scores are often called standard scores:
+Z-scores are often called standard scores:
 
 $$ Z = \frac{observation - mean}{SD} $$
 
-* Z-Scores have a mean = 0 and standard deviation = 1.
+Z-Scores have a mean = 0 and standard deviation = 1.
 
+--
+ 
 Converting Pam and Jim's scores to z-scores:
 
 $$ Z_{Pam} = \frac{1800 - 1500}{300} = 1 $$
@@ -520,7 +528,7 @@ $$ Z_{Jim} = \frac{24-21}{5} = 0.6 $$
 ---
 # Standard Normal Parameters
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-26-2.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-27-2.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # SAT Variability
@@ -538,7 +546,7 @@ SAT scores are distributed nearly normally with mean 1500 and standard deviation
 
 To use the 68-95-99 rule, we must verify the normality assumption. We will want to do this also later when we talk about various (parametric) modeling. Consider a sample of 100 male heights (in inches).
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -546,7 +554,7 @@ To use the 68-95-99 rule, we must verify the normality assumption. We will want 
 
 Histogram looks normal, but we can overlay a standard normal curve to help evaluation.
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Normal Q-Q Plot 
@@ -557,12 +565,12 @@ Histogram looks normal, but we can overlay a standard normal curve to help evalu
 * Constructing a normal probability plot requires calculating percentiles and corresponding z-scores for each observation, which is tedious. Therefore we generally rely on software when making these plots.
 ]
 .pull-right[
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 ]
 ---
 # Skewness
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Simulated Normal Q-Q Plots
@@ -572,7 +580,7 @@ Histogram looks normal, but we can overlay a standard normal curve to help evalu
 DATA606::qqnormsim(heights)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -592,11 +600,8 @@ mean(pop)
 ## [1] 0.5008915
 ```
 
-&lt;center&gt;
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
-&lt;/center&gt;
 
-
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Random Sample (n=10)
@@ -611,14 +616,12 @@ mean(samp1)
 ## [1] 0.5462923
 ```
 
-&lt;center&gt;
 
 ```r
 hist(samp1)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
-&lt;/center&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Random Sample (n=30)
@@ -633,14 +636,13 @@ mean(samp2)
 ## [1] 0.5130467
 ```
 
-&lt;center&gt;
+
 
 ```r
 hist(samp2)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
-&lt;/center&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Lots of Random Samples
@@ -663,14 +665,14 @@ head(samples, n=8)
 ---
 # Sampling Distribution
 
-&lt;center&gt;
+
 
 ```r
 hist(samples)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
-&lt;/center&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+
 
 
 ---
@@ -698,6 +700,7 @@ where SE represents the **standard error**, which is defined as the standard dev
 
 
 ```r
+library(DATA606)
 shiny_demo('sampdist')
 shiny_demo('CLT_mean')
 ```
@@ -763,8 +766,8 @@ for(i in seq_len(100)) {
 	samp &lt;- sample(pop, size=30)
 	se &lt;- sd(samp) / sqrt(length(samp))
 	ci[i,] &lt;- c(mean(samp),
-				mean(samp) - 2 * se, 
-				mean(samp) + 2 * se)
+				mean(samp) - 1.96 * se, 
+				mean(samp) + 1.96 * se)
 }
 ci$sample &lt;- 1:nrow(ci)
 ci$sig &lt;- ci$min &lt; 0.5 &amp; ci$max &gt; 0.5
@@ -782,7 +785,7 @@ ggplot(ci, aes(x=min, xend=max, y=sample, yend=sample, color=sig)) +
 	scale_color_manual(values=c('TRUE'='grey', 'FALSE'='red'))
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -835,14 +838,13 @@ pnorm(-.204) * 2
 ---
 # Hypothesis Testing (using *p*-values)
 
-&lt;center&gt;
+
 
 ```r
 normalPlot(bounds=c(-.204, .204), tails=TRUE)
 ```
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
-&lt;/center&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -900,27 +902,12 @@ Which error do you think is the worse error to make?
 ## [1] 1.644854
 ```
 
-```r
-PlotDist(alpha=0.05, distribution='normal', alternative='greater')
-abline(v=cv, col='blue')
-```
-
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Alternative Distribution
 
-
-```r
-cord.x1 &lt;- c(-5, seq(from = -5, to = cv, length.out = 100), cv)
-cord.y1 &lt;- c(0, dnorm(mean=cv, x=seq(from=-5, to=cv, length.out = 100)), 0)
-curve(dnorm(x, mean=cv), from = -5, to = 5, n = 1000, col = "black",
-        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
-polygon(x = cord.x1, y = cord.y1, col = 'lightgreen')
-abline(v=cv, col='blue')
-```
-
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ```r
@@ -949,7 +936,7 @@ mu &lt;- 2.5
 ```
 ]
 .pull-right[
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-54-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-54-2.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-56-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-56-2.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -985,7 +972,7 @@ Visualizing Type I and Type II errors: [https://bcdudek.net/betaprob/](https://b
 ---
 # Why p &lt; 0.05?
 
-Check out this page: https://www.openintro.org/stat/why05.php
+Check out this page: https://r.bryer.org/shiny/Why05/
 
 See also:
 
@@ -1004,18 +991,18 @@ Kelly M. [*Emily Dickinson and monkeys on the stair Or: What is the significance
 ---
 # Review: Sampling Distribution
 
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
-
----
-# Review: Sampling Distribution
-
-&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-58-1.png" style="display: block; margin: auto;" /&gt;
-
-
----
-# Review: Sampling Distribution
-
 &lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Review: Sampling Distribution
+
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-60-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Review: Sampling Distribution
+
+&lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-61-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
