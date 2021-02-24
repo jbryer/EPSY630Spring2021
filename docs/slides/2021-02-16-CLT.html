@@ -253,7 +253,7 @@ head(vals, n=20)
 ```
 
 ```
-##  [1] -1  0 -1 -1 -1 -1 -1 -1 -1  0 -1  1  1  1 -1 -1  9 -1 -1 -1
+##  [1] -1 -1 -1 -1 -1  1 -1 -1 -1  0  0  1  0  0 -1 -1 -1 -1 -1 -1
 ```
 
 ```r
@@ -261,7 +261,7 @@ mean(vals)
 ```
 
 ```
-## [1] -0.373
+## [1] -0.396
 ```
 
 ---
@@ -345,7 +345,7 @@ mean(runs)
 ```
 
 ```
-## [1] -0.4721
+## [1] -0.4904
 ```
 
 ---
@@ -365,7 +365,7 @@ cumsum(coins)[length(coins)]
 ```
 
 ```
-## [1] -8
+## [1] 4
 ```
 
 ---
@@ -382,7 +382,7 @@ head(samples, n = 10)
 ```
 
 ```
-##  [1]  -8 -12 -10  -2   6   2  12   8  -8   8
+##  [1]   6  -4  -8  -4   4  10  28   0 -14  24
 ```
 
 ---
@@ -404,7 +404,7 @@ hist(samples)
 ```
 
 ```
-## [1] -0.052
+## [1] 0.662
 ```
 
 ```r
@@ -412,7 +412,7 @@ hist(samples)
 ```
 
 ```
-## [1] 9.827201
+## [1] 10.20813
 ```
 
 ---
@@ -425,7 +425,7 @@ length(within1sd) / length(samples)
 ```
 
 ```
-## [1] 0.633
+## [1] 0.678
 ```
 
 ```r
@@ -434,7 +434,7 @@ length(within2sd) / length(samples)
 ```
 
 ```
-## [1] 0.951
+## [1] 0.95
 ```
 
 ```r
@@ -443,7 +443,7 @@ length(within3sd) / length(samples)
 ```
 
 ```
-## [1] 0.996
+## [1] 0.997
 ```
 
 
@@ -484,7 +484,7 @@ pnorm(15, mean=mean(samples), sd=sd(samples))
 ```
 
 ```
-## [1] 0.9371977
+## [1] 0.9199249
 ```
 
 &lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
@@ -498,7 +498,7 @@ pnorm(15, mean=mean(samples), sd=sd(samples))
 ```
 
 ```
-## [1] 0.0628023
+## [1] 0.08007512
 ```
 
 &lt;img src="2021-02-16-CLT_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
