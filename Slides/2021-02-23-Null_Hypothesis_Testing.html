@@ -103,10 +103,10 @@ mean(pop)
 ```
 
 ```
-## [1] 0.497626
+## [1] 0.5012519
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Bootstrapping Example (Sample)
@@ -118,7 +118,7 @@ We observe one random sample from the population.
 samp1 &lt;- sample(pop, size = 50)
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Bootsrapping Example (Estimate)
@@ -134,7 +134,7 @@ head(boot.samples)
 ```
 
 ```
-## [1] 0.6304353 0.6564145 0.6129776 0.5374264 0.6545937 0.5905804
+## [1] 0.5541522 0.5224922 0.5698420 0.5386104 0.4624742 0.5406412
 ```
 
 ---
@@ -150,7 +150,7 @@ hist(boot.samples, main='Bootstrap Distribution', xlab="", freq=FALSE,
 lines(d, lwd=3)
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # 95% confidence interval
@@ -162,7 +162,7 @@ c(mean(boot.samples) - 1.96 * sd(boot.samples),
 ```
 
 ```
-## [1] 0.4973109 0.6609981
+## [1] 0.4558440 0.6328191
 ```
 
 ---
@@ -179,7 +179,7 @@ head(boot.samples.median)
 ```
 
 ```
-## [1] 0.6489791 0.6343944 0.6729596 0.6284430 0.7611343 0.6402692
+## [1] 0.6991149 0.6623520 0.3587462 0.3587462 0.6623520 0.6623520
 ```
 
 95% confidence interval for the median
@@ -191,7 +191,7 @@ c(mean(boot.samples.median) - 1.96 * sd(boot.samples.median),
 ```
 
 ```
-## [1] 0.5327587 0.7278847
+## [1] 0.2810075 0.8015061
 ```
 
 
@@ -330,7 +330,7 @@ Conditions:
 ---
 # 95% Confidence Interval
 
-Construct a 95% confidence interval for the difference between the proportions of Duke students and Americans who would be bothered a great deal by the melting of the northern ice cap ($p_{Duke} - p_{US}$).
+Construct a 95% confidence interval for the difference between the proportions of Duke students and Americans who would be bothered a great deal by the melting of the northern ice cap ( `\(p_{Duke} - p_{US}\)` ).
 
 Data             |  Duke |  US
 -----------------|------:|-----:
@@ -339,7 +339,7 @@ Not a great deal |   36  | 226
 Total            |  105  | 680
 `\(\hat{p}\)`        | 0.657 | 0.668
 
-$$ \left(\hat{p}_{Duke} - \hat{p}_{US}\right) \pm z* \times \sqrt{ \frac{p_{Duke}\left(1 - p_{Duke}\right)}{n_{Duke}} + \frac{p_{US}\left(1 - p_{US}\right)}{n_{US}} } $$
+`$$\left(\hat{p}_{Duke} - \hat{p}_{US}\right) \pm z* \times \sqrt{ \frac{p_{Duke}\left(1 - p_{Duke}\right)}{n_{Duke}} + \frac{p_{US}\left(1 - p_{US}\right)}{n_{US}} }$$`
 
 `$$(0.657 - 0.668) \pm 1.96 \times \sqrt{\frac{0.657 \times 0.343}{105} + \frac{0.668 \times 0.332}{680}} = \left(-0.108,\; 0.086\right)$$`
 
@@ -443,7 +443,7 @@ In order to determine if the `\(\chi^2\)` statistic we calculated is considered 
 
 * The chi-square distribution has just one parameter called **degrees of freedom (df)**, which influences the shape, center, and spread of the distribution.
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Degrees of freedom for a goodness of fit test
@@ -455,7 +455,7 @@ When conducting a goodness of fit test to evaluate how well the observed data fo
 For dice outcomes, `\(k = 6\)`, therefore `\(df = 6 - 1 = 5\)`
 
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 
 p-value = `\(P(\chi^2_{df = 5} &gt; 24.67)\)` is less than 0.001
 
@@ -477,7 +477,7 @@ p-value = `\(P(\chi^2_{df = 5} &gt; 24.67)\)` is less than 0.001
 * This is because the test statistic is always positive, and a higher test statistic means a stronger deviation from the null hypothesis.
 
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -529,7 +529,7 @@ mean(sampA$response)
 ```
 
 ```
-## [1] 0.542
+## [1] 0.534
 ```
 
 `\(\hat{p}\)` for the population sample, excluding group B 
@@ -540,7 +540,7 @@ mean(sampA[sampA$group == 'A',]$response)
 ```
 
 ```
-## [1] 0.5409505
+## [1] 0.5308392
 ```
 
 `\(\hat{p}\)` for group B sample
@@ -551,7 +551,7 @@ mean(sampB$response)
 ```
 
 ```
-## [1] 0.58
+## [1] 0.54
 ```
 
 ---
@@ -559,7 +559,7 @@ mean(sampB$response)
 
 
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -580,7 +580,7 @@ ggplot(hsb2.melt, aes(x=variable, y=value)) + 	geom_boxplot() +
 	geom_point(alpha=0.2, color='blue') + xlab('Test') + ylab('Score')
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -627,7 +627,7 @@ head(hsb2$diff)
 hist(hsb2$diff)
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -659,7 +659,7 @@ What are the hypothesis for testing if there is a difference between the average
 The observed average difference between the two scores is -0.545 points and the standard deviation of the difference is 8.8866664 points. Do these data provide confincing evidence of a difference between the average scores ont eh two exams (use `\(\alpha = 0.05\)`)?
 ]
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Calculating the test-statistic and the p-value 
@@ -733,7 +733,7 @@ describeBy(sat$Math.SAT, group=sat$Sex, mat=TRUE, skew=FALSE)[,c(2,4:7)]
 ggplot(sat, aes(x=Sex, y=Math.SAT)) + geom_boxplot()
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Distributions  
@@ -744,7 +744,7 @@ ggplot(sat, aes(x=Sex, y=Math.SAT)) + geom_boxplot()
 ggplot(sat, aes(x=Math.SAT)) + geom_histogram(binwidth=50) + facet_wrap(~ Sex)
 ```
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # 95% Confidence Interval
@@ -760,8 +760,8 @@ Assumptions:
 ---
 # Confidence Interval for Difference Between Two Means
 
-* All confidence intervals have the same form: point estimate ?? ME
-* And all ME = critical value ?? SE of point estimate
+* All confidence intervals have the same form: point estimate X ME
+* And all ME = critical value X SE of point estimate
 * In this case the point estimate is `\(\bar{x}_1 - \bar{x}_2\)`
 Since the sample sizes are large enough, the critical value is z*
 So the only new concept is the standard error of the difference between two means...
@@ -800,7 +800,7 @@ Where *df* is the degrees of freedom (*df* = *n* -1)
 ---
 # *t*-Distributions
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # *t*-test in R
@@ -856,259 +856,26 @@ t.test(Math.SAT ~ Sex, data = sat)
 ]
 
 
-
 ---
-# Analysis of Variance (ANOVA)
+# Review: Sampling Distribution
 
-The goal of ANOVA is to test whether there is a discernible difference between the means of several groups.
-
-## Example
-
-Is there a difference between washing hands with:  water only, regular soap, antibacterial soap (ABS), and antibacterial spray (AS)?
-
-* Each tested with 8 replications
-* Treatments randomly assigned
-
-For ANOVA:
-
-* The means all differ.
-* Is this just natural variability?
-* Null hypothesis:  All themeans are the same.
-* Alternative hypothesis:  The means are not all the same.
-
-
----
-# Hand Washing Comparison 
-
-
-
-```r
-ggplot(hand, aes(x=Method, y=Bacterial.Counts)) + geom_boxplot()
-```
-
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/hand-boxplot-1.png" style="display: block; margin: auto;" /&gt;
-
----
-# Hand Washing Comparison (cont.) 
-
-
-```r
-desc &lt;- describeBy(hand$Bacterial.Counts, hand$Method, mat=TRUE)[,c(2,4,5,6)]
-desc$Var &lt;- desc$sd^2
-print(desc, row.names=FALSE)
-```
-
-```
-##              group1 n  mean       sd       Var
-##       Alcohol Spray 8  37.5 26.55991  705.4286
-##  Antibacterial Soap 8  92.5 41.96257 1760.8571
-##                Soap 8 106.0 46.95895 2205.1429
-##               Water 8 117.0 31.13106  969.1429
-```
-
-
----
-# Washing type all the same?
-
-* `\(H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4\)`
-* By Central Limit Theorem:   
-$$ Var(\bar{y}) = \frac{\sigma^2}{n} = \frac{\sigma^2}{8} $$
-* Variance of {37.5, 92.5, 106.0, 117.0} is 1245.08.
-* `\(\frac{\sigma^2}{8} = 1245.08\)`
-* `\(\sigma^2 = 9960.64\)`
-* This estimate for `\(\sigma^2\)` is called the Treatment Mean Square, Between Mean Square, or `\(MS_T\)`
-* Is this very high compared to what we would expect?
-
-
----
-# How can we decide what `\(\sigma^2\)` should be?
-
-* Assume each washing method has the same variance.
-* Then we can pool them all together to get the pooled variance `\({ s }_{ p }^{ 2 }\)`
-* Since the sample sizes are all equal, we can average the four variances: `\({ s }_{ p }^{ 2 } = 1410.10\)`
-* Other names for `\({ s }_{ p }^{ 2 }\)`:  Error Mean Square, Within Mean Square, `\(MS_E\)`.
-
-
----
-# Comparing `\(MS_T\)` (between) and `\(MS_E\)` (within)
-
-`\(MS_T\)`
-
-* Estimates `\(s^2\)` if `\(H_0\)` is true
-* Should be larger than `\(s^2\)` if `\(H_0\)` is false
-
-`\(MS_E\)`
-
-* Estimates `\(s^2\)` whether `\(H_0\)` is true or not
-* If `\(H_0\)` is true, both close to `\(s^2\)`, so `\(MS_T\)` is close to `\(MS_E\)`
-
-Comparing
-
-* If `\(H_0\)` is true, `\(\frac{MS_T}{MS_E}\)` should be close to 1
-* If `\(H_0\)` is false, `\(\frac{MS_T}{MS_E}\)` tends to be &gt; 1
-
-
----
-# The F-Distribution 
-
-* How do we tell whether `\(\frac{MS_T}{MS_E}\)` is larger enough to not be due just to random chance
-* `\(\frac{MS_T}{MS_E}\)` follows the F-Distribution
-	* Numerator df:  k - 1 (k = number of groups)
-	* Denominator df:  k(n - 1)  
-	* n = # observations in each group
-* `\(F = \frac{MS_T}{MS_E}\)` is called the F-Statistic.
-
-A Shiny App by Dr. Dudek to explore the F-Distribution: &lt;a href='https://shiny.rit.albany.edu/stat/fdist/' window='_new'&gt;https://shiny.rit.albany.edu/stat/fdist/&lt;/a&gt;
-
----
-# The F-Distribution (cont.) 
-
-
-```r
-df.numerator &lt;- 4 - 1
-df.denominator &lt;- 4 * (8 - 1)
-plot(function(x)(df(x,df1=df.numerator,df2=df.denominator)),
-	 xlim=c(0,5), xlab='x', ylab='f(x)', main='F-Distribution')
-```
-
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/fdistribution-1.png" style="display: block; margin: auto;" /&gt;
-
-
----
-# Back to Bacteria
-
-* `\(MS_T = 9960.64\)`
-* `\(MS_E = 1410.14\)`
-* Numerator df = 4 - 1 = 3
-* Denominator df = 4(8 - 1) = 28.
-
-
-
-```r
-(f.stat &lt;- 9960.64 / 1410.14)
-```
-
-```
-## [1] 7.063582
-```
-
-```r
-1 - pf(f.stat, 3, 28)
-```
-
-```
-## [1] 0.001111464
-```
-
-### P-value for `\(F_{3,28} = 0.0011\)`
-
----
-# Assumptions and Conditions
-
-.font120[
-* To check the assumptions and conditions for ANOVA, always look at  the side-by-side boxplots.
-	* Check for outliers within any group.
-	* Check for similar spreads.
-	* Look for skewness.
-	* Consider re-expressing.
-* Independence Assumption
-	* Groups must be independent of each other.
-	* Data within each group must be independent.
-	* Randomization Condition
-* Equal Variance Assumption
-	* In ANOVA, we pool the variances.  This requires equal variances from each group:  Similar Spread Condition.
-]
-
----
-# ANOVA in R
-
-
-```r
-aov.out &lt;- aov(Bacterial.Counts ~ Method, data=hand)
-summary(aov.out)
-```
-
-```
-##             Df Sum Sq Mean Sq F value  Pr(&gt;F)   
-## Method       3  29882    9961   7.064 0.00111 **
-## Residuals   28  39484    1410                   
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-
----
-# Graphical ANOVA 
-
-
-```r
-hand.anova &lt;- granova.1w(hand$Bacterial.Counts, group=hand$Method)
-```
-
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/hand-granova-1.png" style="display: block; margin: auto;" /&gt;
-
----
-# Graphical ANOVA 
-
-
-
-```r
-hand.anova
-```
-
-```
-## $grandsum
-##     Grandmean        df.bet       df.with        MS.bet       MS.with        F.stat        F.prob SS.bet/SS.tot 
-##         88.25          3.00         28.00       9960.67       1410.14          7.06          0.00          0.43 
-## 
-## $stats
-##                    Size Contrast Coef Wt'd Mean  Mean Trim'd Mean    Var. St. Dev.
-## Alcohol Spray         8        -50.75      37.5  37.5       35.50  705.43    26.56
-## Antibacterial Soap    8          4.25      92.5  92.5       92.67 1760.86    41.96
-## Soap                  8         17.75     106.0 106.0       98.33 2205.14    46.96
-## Water                 8         28.75     117.0 117.0      115.33  969.14    31.13
-```
-
-
----
-# What Next? 
-
-.font120[
-* P-value large -&gt; Nothing left to say
-* P-value small -&gt; Which means are large and which means are small?
-* We can perform a t-test to compare two of them.
-* We assumed the standard deviations are all equal.
-* Use `\(s_p\)`, for pooled standard deviations.
-* Use the Students t-model, df = N - k.
-* If we wanted to do a t-test for each pair:
-	* P(Type I Error) = 0.05 for each test.
-	* Good chance at least one will have a Type I error.
-* **Bonferroni to the rescue!**
-	* Adjust a to `\(\alpha/J\)` where J is the number of comparisons.
-	* 95% confidence (1 - 0.05) with 3 comparisons adjusts to `\((1 - 0.05/3) \approx  0.98333\)`.
-	* Use this adjusted value to find t**.
-]
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Review: Sampling Distribution
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
-
----
-# Review: Sampling Distribution
-
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
 # Review: Sampling Distribution
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Review: Add Bootstrap Distribution
 
-&lt;img src="2021-02-16-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2021-02-23-Null_Hypothesis_Testing_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Assignments
