@@ -348,7 +348,9 @@ Plot our regression line with lines representing the residuals. The line of best
 &lt;img src="2021-03-02-Linear_Regression_files/figure-html/scatterwithresiduals-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-# What does it mean to minimize the sum of squared residuals?
+# Minimizing Sum of Squared Residuals
+
+## What does it mean to minimize the sum of squared residuals?
 
 To show that `\(m = r \frac{S_y}{S_x}\)` minimizes the sum of squared residuals, this loop will calculate the sum of squared residuals for varying values of between -1 and 1.
 
@@ -456,7 +458,7 @@ newX &lt;- 550
 &lt;img src="2021-03-02-Linear_Regression_files/figure-html/predictnew-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-# Using R's built in functionality for linear modeling
+# Using R's built in function for linear modeling
 
 .code70[
 
@@ -535,7 +537,7 @@ head(cbind(sat.lm.residuals,
 ]
 
 ---
-# Re-evaluating the Residuals - Implications for Grouping Variables
+#Residuals - Implications for Grouping Variables
 
 First, let's look at the scatter plot but with a gender indicator.
 
