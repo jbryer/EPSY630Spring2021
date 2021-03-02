@@ -7,22 +7,22 @@
 
 body {
   font-family: 'Fira Sans','Droid Serif', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif;
-  font-size: 120%;
+  font-size: 130%;
 }
 
 p {
   font-family: 'Fira Sans','Droid Serif', 'Palatino Linotype', 'Book Antiqua', 'Palatino', 'Microsoft YaHei', 'Songti SC', serif;
-  font-size: 120%;
+  font-size: 130%;
 }
 
 ul, ol {
   font-family: 'Fira Sans','Droid Serif', 'Palatino Linotype', 'Book Antiqua', 'Palatino', 'Microsoft YaHei', 'Songti SC', serif;
-  font-size: 100%;
+  font-size: 120%;
 }
 
 .remark-code, .remark-inline-code {
   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
-  font-size: 80%;
+  font-size: 100%;
 }
 
 .remark-inline-code {

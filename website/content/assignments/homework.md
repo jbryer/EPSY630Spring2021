@@ -10,6 +10,9 @@ The solutions to the practice problems are at the end of the book and do not nee
 
 * [Chapter 5 - Foundations for Inference](https://github.com/jbryer/DATA606Spring2021/blob/master/Homework/Homework5.pdf) ([Template](https://raw.githubusercontent.com/jbryer/DATA606Spring2021/master/Homework/Homework5.Rmd))
 
+* [Chapter 8 - Introduction to Linear Regression](https://github.com/jbryer/DATA606Spring2021/blob/master/Homework/Homework8.pdf) ([Template](https://raw.githubusercontent.com/jbryer/DATA606Spring2021/master/Homework/Homework8.Rmd))
+
+
 <!-- 
 
 * [Chapter 1 - Introduction to Data](https://github.com/jbryer/DATA606Spring2021/blob/master/Homework/Homework1.pdf) ([Template](https://raw.githubusercontent.com/jbryer/DATA606Spring2021/master/Homework/Homework1.Rmd))
