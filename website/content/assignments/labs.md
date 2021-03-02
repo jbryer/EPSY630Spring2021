@@ -26,6 +26,9 @@ These mini projects will have you explore statistical topics using R. You can us
 <li value='B'> <a href='https://htmlpreview.github.io/?https://github.com/jbryer/DATA606/blob/master/inst/labs/Lab5b/Lab5b_confidence_intervals.html'>Confidence Levels</a> (<a href='https://github.com/jbryer/DATA606/blob/master/inst/labs/Lab5b/Lab5b_confidence_intervals.Rmd?raw=true'>Template</a>)</li>
 </ol></li>
 
+<li value='8'> <a href='https://htmlpreview.github.io/?https://github.com/jbryer/DATA606/blob/master/inst/labs/Lab8/Lab8_simple_regression.html'>Introduction to Linear Regression</a> (<a href='https://github.com/jbryer/DATA606/blob/master/inst/labs/Lab8/Lab8_simple_regression.Rmd?raw=true'>Template</a>)</li>
+
+
 <!--
 <li value='6'> <a href='https://htmlpreview.github.io/?https://github.com/jbryer/DATA606/blob/master/inst/labs/Lab6/Lab6_inf_for_categorical_data.html'>Inference for Categorical Data</a> (<a href='https://github.com/jbryer/DATA606/blob/master/inst/labs/Lab6/Lab6_inf_for_categorical_data.Rmd?raw=true'>Template</a>)</li>
 
