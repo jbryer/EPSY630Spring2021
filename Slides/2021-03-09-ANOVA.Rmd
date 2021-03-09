@@ -1,0 +1,595 @@
+---
+title: "Linear Regression & Analysis of Variance"
+subtitle: "EPSY 630 - Statistics II"
+author: Jason Bryer, Ph.D.
+date: "March 9, 2021"
+# knit: (function(inputFile, encoding) { source('myknit.R'); myknit(inputFile, encode); } )
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "EPSY630Spring2021"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+library(reshape2)
+library(latex2exp)
+library(psych)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6, fig.align = 'center',
+					  digits = 3) 
+options(width = 90)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+```
+
+# Agenda
+
+* Linear regression review
+* Analysis of Variance
+* New lab
+* One minute papers
+
+---
+class: inverse, middle, center
+
+# Linear Regression (cont.)
+
+---
+# NYS Report Card
+
+NYS publishes data for each school in the state. We will look at the grade 8 math scores for 2012 and 2013. 2013 was the first year the tests were aligned with the Common Core Standards. There was a lot of press about how the passing rates for most schools dropped. Two questions we wish to answer:
+
+1. Did the passing rates drop in a predictable manner?
+2. Were the drops different for charter and public schools?
+
+```{r}
+load('../course_data/NYSReportCard-Grade7Math.Rda')
+names(reportCard)
+```
+
+---
+# `reportCard` Data Frame
+
+.font70[
+```{r, echo=FALSE}
+DT::datatable(reportCard, rownames = FALSE, fillContainer = FALSE,
+			  options = list(pageLength = 3, selectable = FALSE))
+```
+]
+
+---
+# Descriptive Statistics
+
+```{r}
+summary(reportCard$Pass2012)
+summary(reportCard$Pass2013)
+```
+
+---
+# Histograms 
+
+```{r, warning=FALSE, warning=FALSE, message=FALSE}
+melted <- melt(reportCard[,c('Pass2012', 'Pass2013')])
+ggplot(melted, aes(x=value)) + geom_histogram() + facet_wrap(~ variable, ncol=1)
+```
+
+---
+# Log Transformation
+
+Since the distribution of the 2013 passing rates is skewed, we can log transfor that variable to get a more reasonably normal distribution.
+
+```{r, fig.height = 5}
+reportCard$LogPass2013 <- log(reportCard$Pass2013 + 1)
+ggplot(reportCard, aes(x=LogPass2013)) + geom_histogram(binwidth=0.5)
+```
+
+---
+# Scatter Plot 
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013, color=Charter)) + 
+	geom_point(alpha=0.5) + coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+---
+# Scatter Plot (log transform) 
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=LogPass2013, color=Charter)) + 
+	geom_point(alpha=0.5) + xlim(c(0,100)) + ylim(c(0, log(101)))
+```
+
+---
+# Correlation
+
+```{r}
+cor.test(reportCard$Pass2012, reportCard$Pass2013)
+```
+
+
+---
+# Correlation (log transform)
+
+```{r}
+cor.test(reportCard$Pass2012, reportCard$LogPass2013)
+```
+
+---
+# Linear Regression
+
+.code80[
+```{r}
+lm.out <- lm(Pass2013 ~ Pass2012, data=reportCard)
+summary(lm.out)
+```
+]
+
+---
+# Linear Regression (log transform)
+
+.code80[
+```{r}
+lm.log.out <- lm(LogPass2013 ~ Pass2012, data=reportCard)
+summary(lm.log.out)
+```
+]
+
+---
+# Did the passing rates drop in a predictable manner?
+
+Yes! Whether we log tranform the data or not, the correlations are statistically significant with regression models with $R^2$ creater than 62%.
+
+To answer the second question, whether the drops were different for public and charter schools, we'll look at the residuals.
+
+```{r}
+reportCard$residuals <- resid(lm.out)
+reportCard$residualsLog <- resid(lm.log.out)
+```
+
+---
+# Distribution of Residuals 
+
+```{r}
+ggplot(reportCard, aes(x=residuals, color=Charter)) + geom_density()
+```
+
+---
+# Distribution of Residuals 
+
+```{r}
+ggplot(reportCard, aes(x=residualsLog, color=Charter)) + geom_density()
+```
+
+---
+# Null Hypothesis Testing
+
+$H_0$: There is no difference in the residuals between charter and public schools.
+
+$H_A$: There is a difference in the residuals between charter and public schools.
+
+```{r}
+t.test(residuals ~ Charter, data=reportCard)
+```
+
+---
+# Null Hypothesis Testing (log transform)
+
+```{r}
+t.test(residualsLog ~ Charter, data=reportCard)
+```
+
+---
+# Polynomial Models (e.g. Quadratic)
+
+It is possible to fit quatric models fairly easily in R, say of the following form:
+
+$$ y = b_1 x^2 + b_2 x + b_0 $$
+
+```{r}
+quad.out <- lm(Pass2013 ~ I(Pass2012^2) + Pass2012, data=reportCard)
+summary(quad.out)$r.squared
+summary(lm.out)$r.squared
+```
+
+---
+# Quadratic Model
+
+.code80[
+```{r}
+summary(quad.out)
+```
+]
+
+---
+# Scatter Plot 
+
+```{r, echo=TRUE, fig.height=5.7, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013)) + geom_point(alpha=0.2) + 
+	geom_smooth(method='lm', formula=y~poly(x,2,raw=TRUE), size=3, se=FALSE) +
+	coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+---
+# Let's go crazy, cubic!
+
+```{r}
+cube.out <- lm(Pass2013 ~ I(Pass2012^3) + I(Pass2012^2) + Pass2012, data=reportCard)
+summary(cube.out)$r.squared
+```
+
+```{r, echo=FALSE, fig.height=5.5, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013)) + 
+	geom_point(alpha=0.2) + 
+	geom_smooth(method='lm', formula=y~x, size=2, se=FALSE) +
+	geom_smooth(method='lm', formula=y~poly(x,2,raw=TRUE), size=2, se=FALSE) +
+	geom_smooth(method='lm', formula=y~poly(x,3,raw=TRUE), size=2, se=FALSE) +
+	coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+
+---
+# Shiny App
+
+```{r, eval=FALSE}
+shiny::runGitHub('NYSchools','jbryer',subdir='NYSReportCard')
+```
+
+
+See also the Github repository for more information: https://github.com/jbryer/NYSchools
+
+
+---
+class: inverse, middle, center
+
+# Analysis of Variance (ANOVA)
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+require(ggplot2)
+require(gdata)
+require(psych)
+require(granova)
+require(granovaGG)
+require(lattice)
+data(singer)
+data(rat)
+hand <- read.csv('../course_data/Hand_washing.csv')
+```
+
+---
+# Analysis of Variance (ANOVA)
+
+The goal of ANOVA is to test whether there is a discernible difference between the means of several groups.
+
+---
+# Example
+
+Is there a difference between washing hands with:  water only, regular soap, antibacterial soap (ABS), and antibacterial spray (AS)?
+
+* Each tested with 8 replications
+* Treatments randomly assigned
+
+For ANOVA:
+
+* The means all differ.
+* Is this just natural variability?
+* Null hypothesis:  All the means are the same.
+* Alternative hypothesis:  The means are not all the same.
+
+
+---
+# Hand Washing Comparison 
+
+
+```{r hand-boxplot, fig.height=6, tidy=FALSE}
+ggplot(hand, aes(x=Method, y=Bacterial.Counts)) + geom_boxplot() + 
+	stat_summary(fun = mean, color = 'blue', size = 1.5)
+```
+
+---
+# Hand Washing Comparison (cont.) 
+
+```{r, tidy=FALSE}
+desc <- describeBy(hand$Bacterial.Counts, hand$Method, mat=TRUE)[,c(2,4,5,6)]
+desc$Var <- desc$sd^2
+print(desc, row.names=FALSE)
+```
+
+
+---
+# Washing type all the same?
+
+* $H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4$
+* By Central Limit Theorem:   
+$$ Var(\bar{y}) = \frac{\sigma^2}{n} = \frac{\sigma^2}{8} $$
+* Variance of {`r paste(prettyNum(desc$sd, digits = 4), collapse=', ')`} is 1410.14.
+* $\frac{\sigma^2}{8} = 1410.14$
+* $\sigma^2 = 9960.64$
+* This estimate for $\sigma^2$ is called the Treatment Mean Square, Between Mean Square, or $MS_T$
+* Is this very high compared to what we would expect?
+
+
+---
+# How can we decide what $\sigma^2$ should be?
+
+* Assume each washing method has the same variance.
+* Then we can pool them all together to get the pooled variance ${ s }_{ p }^{ 2 }$
+* Since the sample sizes are all equal, we can average the four variances: ${ s }_{ p }^{ 2 } = 1410.14$
+* Other names for ${ s }_{ p }^{ 2 }$:  Error Mean Square, Within Mean Square, $MS_E$.
+
+
+---
+# Comparing $MS_T$ (between) and $MS_E$ (within)
+
+$MS_T$
+
+* Estimates $s^2$ if $H_0$ is true
+* Should be larger than $s^2$ if $H_0$ is false
+
+$MS_E$
+
+* Estimates $s^2$ whether $H_0$ is true or not
+* If $H_0$ is true, both close to $s^2$, so $MS_T$ is close to $MS_E$
+
+Comparing
+
+* If $H_0$ is true, $\frac{MS_T}{MS_E}$ should be close to 1
+* If $H_0$ is false, $\frac{MS_T}{MS_E}$ tends to be > 1
+
+
+---
+# The F-Distribution 
+
+* How do we tell whether $\frac{MS_T}{MS_E}$ is larger enough to not be due just to random chance
+* $\frac{MS_T}{MS_E}$ follows the F-Distribution
+	* Numerator df:  k - 1 (k = number of groups)
+	* Denominator df:  k(n - 1)  
+	* n = # observations in each group
+* $F = \frac{MS_T}{MS_E}$ is called the F-Statistic.
+
+A Shiny App by Dr. Dudek to explore the F-Distribution: <a href='https://shiny.rit.albany.edu/stat/fdist/' window='_new'>https://shiny.rit.albany.edu/stat/fdist/</a>
+
+---
+# The F-Distribution (cont.) 
+
+```{r fdistribution, fig.width=10, fig.height=6, tidy=FALSE}
+df.numerator <- 4 - 1
+df.denominator <- 4 * (8 - 1)
+plot(function(x)(df(x,df1=df.numerator,df2=df.denominator)),
+	 xlim=c(0,5), xlab='x', ylab='f(x)', main='F-Distribution')
+```
+
+
+---
+# Back to Bacteria
+
+
+| Source                  | Sum of Squares                                              | *df*  | MS                                   | F                                   | p                              |
+| ------------------------|:-----------------------------------------------------------:|:-----:|:------------------------------------:|:-----------------------------------:|--------------------------------|
+| Between Group (Factor)  | $\sum^{}_{k} n_{k}(\bar{x}_{k} -\bar{x} )^{2}$              | k - 1 | $\frac{SS_{between}}{df_{between}}$  | $\frac{MS_{between}}{MS_{within}}$  | area to right of $F_{k-1,n-k}$ |
+| Withing Group (Error)   | $\sum^{}_{k} \sum^{}_{i} (\bar{x}_{ik} -\bar{x}_{k} )^{2}$  | n - k | $\frac{SS_{within}}{df_{within}}$    |                                     |                                |
+| Total                   | $\sum^{}_{k} \sum^{}_{i} (\bar{x}_{ik} -\bar{x} )^{2}$      | n - 1 |                                      |                                     |                                |
+
+---
+class: code70
+# ANOVA Steps
+
+
+```{r}
+(grand.mean <- mean(hand$Bacterial.Counts))
+(n <- nrow(hand))
+(k <- length(unique(hand$Method)))
+(ss.total <- sum((hand$Bacterial.Counts - grand.mean)^2))
+```
+
+---
+class: code70
+# ANOVA Steps
+
+.pull-left[
+##### Between Groups
+```{r}
+(df.between <- k - 1)
+(ss.between <- sum(desc$n * (desc$mean - grand.mean)^2))
+(MS.between <- ss.between / df.between)
+```
+]
+.pull-right[
+#### Within Groups
+```{r}
+(df.within <- n - k)
+(ss.within <- ss.total - ss.between)
+(MS.within <- ss.within / df.within)
+```
+]
+
+
+---
+# F Statistic
+
+
+* $MS_T = `r prettyNum(MS.between, digits = 6)`$
+* $MS_E = `r prettyNum(MS.within, digits = 6)`$
+* Numerator df = 4 - 1 = 3
+* Denominator df = 4(8 - 1) = 28.
+
+
+```{r}
+(f.stat <- 9960.64 / 1410.14)
+1 - pf(f.stat, 3, 28)
+```
+
+P-value for $F_{3,28} = 0.0011$
+
+---
+# F Distribution
+
+```{r}
+DATA606::F_plot(df.numerator, df.denominator, cv = f.stat)
+```
+
+---
+# Assumptions and Conditions
+
+* To check the assumptions and conditions for ANOVA, always look at  the side-by-side boxplots.
+	* Check for outliers within any group.
+	* Check for similar spreads.
+	* Look for skewness.
+	* Consider re-expressing.
+* Independence Assumption
+	* Groups must be independent of each other.
+	* Data within each group must be independent.
+	* Randomization Condition
+* Equal Variance Assumption
+	* In ANOVA, we pool the variances.  This requires equal variances from each group:  Similar Spread Condition.
+
+---
+# ANOVA in R
+
+```{r}
+aov.out <- aov(Bacterial.Counts ~ Method, data=hand)
+summary(aov.out)
+```
+
+
+---
+# Graphical ANOVA 
+
+```{r hand-granova, echo=TRUE, fig.width=7, fig.height=7}
+hand.anova <- granova.1w(hand$Bacterial.Counts, group=hand$Method)
+```
+
+---
+# Graphical ANOVA 
+
+
+```{r, fig.width=4.5, fig.height=4.5}
+hand.anova
+```
+
+
+---
+# What Next? 
+
+* P-value large -> Nothing left to say
+* P-value small -> Which means are large and which means are small?
+* We can perform a t-test to compare two of them.
+* We assumed the standard deviations are all equal.
+* Use $s_p$, for pooled standard deviations.
+* Use the Students t-model, df = N - k.
+* If we wanted to do a t-test for each pair:
+	* P(Type I Error) = 0.05 for each test.
+	* Good chance at least one will have a Type I error.
+* **Bonferroni to the rescue!**
+	* Adjust a to $\alpha/J$ where J is the number of comparisons.
+	* 95% confidence (1 - 0.05) with 3 comparisons adjusts to $(1 - 0.05/3) \approx  0.98333$.
+	* Use this adjusted value to find t**.
+
+---
+# Multiple Comparisons (no Bonferroni adjustment)
+
+.code80[
+```{r, fig.height=5, tidy=FALSE}
+cv <- qt(0.05, df = 7)
+tab <- describeBy(hand$Bacterial.Counts, group = hand$Method, mat = TRUE)
+ggplot(hand, aes(x = Method, y = Bacterial.Counts)) + geom_boxplot() + 
+	geom_errorbar(data = tab, aes(x = group1, y = mean, 
+								  ymin = mean - cv * se, ymax = mean + cv * se), 
+				  color = 'darkgreen', width = 0.5, size = 1) +
+	geom_point(data = tab, aes(x = group1, y = mean), color = 'blue', size = 3)
+```
+]
+
+---
+# Multiple Comparisons (3 paired tests)
+
+.code80[
+```{r, fig.height=5, tidy=FALSE}
+cv <- qt(0.05 / 3, df = 7)
+tab <- describeBy(hand$Bacterial.Counts, group = hand$Method, mat = TRUE)
+ggplot(hand, aes(x = Method, y = Bacterial.Counts)) + geom_boxplot() + 
+	geom_errorbar(data = tab, aes(x = group1, y = mean, 
+								  ymin = mean - cv * se, ymax = mean + cv * se), 
+				  color = 'darkgreen', width = 0.5, size = 1) +
+	geom_point(data = tab, aes(x = group1, y = mean), color = 'blue', size = 3)
+```
+]
+
+---
+# Multiple Comparisons (6 paired tests)
+
+.code80[
+```{r, fig.height=5, tidy=FALSE}
+cv <- qt(0.05 / choose(4, 2), df = 7)
+tab <- describeBy(hand$Bacterial.Counts, group = hand$Method, mat = TRUE)
+ggplot(hand, aes(x = Method, y = Bacterial.Counts)) + geom_boxplot() + 
+	geom_errorbar(data = tab, aes(x = group1, y = mean, 
+								  ymin = mean - cv * se, ymax = mean + cv * se ), 
+				  color = 'darkgreen', width = 0.5, size = 1) +
+	geom_point(data = tab, aes(x = group1, y = mean), color = 'blue', size = 3)
+```
+]
+
+---
+# Assignments
+
+ANOVA lab.
+
+```{r, eval=FALSE}
+DATA606::startLab('Lab7b') # https://r.bryer.org/shiny/Lab7a/
+```
+
+
+---
+class: left
+# One Minute Paper
+
+.font140[
+Complete the one minute paper: 
+https://forms.gle/yB3ds6MYE89Z1pURA
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+]
+
+ 
