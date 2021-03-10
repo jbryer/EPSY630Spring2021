@@ -1,0 +1,12 @@
+---
+title: "Class 6 - ANOVA"
+author: "Jason Bryer"
+date: 2021-03-09
+draft: false
+categories: ["R"]
+tags: ["Annoucement"]
+---
+
+[Click here](/slides/2021-03-09-ANOVA.html) for the slides.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UU7GBgco88g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
