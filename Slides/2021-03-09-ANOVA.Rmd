@@ -407,7 +407,7 @@ plot(function(x)(df(x,df1=df.numerator,df2=df.denominator)),
 | Source                  | Sum of Squares                                              | *df*  | MS                                   | F                                   | p                              |
 | ------------------------|:-----------------------------------------------------------:|:-----:|:------------------------------------:|:-----------------------------------:|--------------------------------|
 | Between Group (Factor)  | $\sum^{}_{k} n_{k}(\bar{x}_{k} -\bar{x} )^{2}$              | k - 1 | $\frac{SS_{between}}{df_{between}}$  | $\frac{MS_{between}}{MS_{within}}$  | area to right of $F_{k-1,n-k}$ |
-| Withing Group (Error)   | $\sum^{}_{k} \sum^{}_{i} (\bar{x}_{ik} -\bar{x}_{k} )^{2}$  | n - k | $\frac{SS_{within}}{df_{within}}$    |                                     |                                |
+| Within Group (Error)    | $\sum^{}_{k} \sum^{}_{i} (\bar{x}_{ik} -\bar{x}_{k} )^{2}$  | n - k | $\frac{SS_{within}}{df_{within}}$    |                                     |                                |
 | Total                   | $\sum^{}_{k} \sum^{}_{i} (\bar{x}_{ik} -\bar{x} )^{2}$      | n - 1 |                                      |                                     |                                |
 
 ---
