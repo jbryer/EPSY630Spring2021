@@ -6,7 +6,17 @@
     <description>Recent content in R on EPSY 630 Statistics II - Spring 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Class 9 - Logistic Regression</title>
+      <link>/blog/2021-03-30-class9/</link>
+      <pubDate>Tue, 30 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-03-30-class9/</guid>
+      <description>  Click here for the slides.
+ </description>
+    </item>
+    
     <item>
       <title>Class 8 - Maximum Likelihood Estimation</title>
       <link>/blog/2021-03-23-class8/</link>

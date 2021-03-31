@@ -1,0 +1,573 @@
+---
+title: "Logistic Regression"
+subtitle: "EPSY 630 - Statistics II"
+author: Jason Bryer, Ph.D.
+date: "March 30, 2021"
+# knit: (function(inputFile, encoding) { source('myknit.R'); myknit(inputFile, encode); } )
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "EPSY630Spring2021"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+library(reshape2)
+library(latex2exp)
+library(psych)
+library(xtable)
+library(visualMLE)
+library(gganimate)
+library(magick)
+library(cowplot)
+library(DT)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6, fig.align = 'center',
+					  digits = 3) 
+options(width = 90)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+printLaTeXFormula <- function(fit, digits=2) {
+	vars <- all.vars(fit$terms)
+	result <- paste0('\\hat{', vars[1], '} = ', prettyNum(fit$coefficients[[1]], digits=2))
+	for(i in 2:length(vars)) {
+		val <- fit$coefficients[[i]]
+		result <- paste0(result, ifelse(val < 0, ' - ', ' + '),
+						 prettyNum(abs(val), digits=digits),
+						 ' ', names(fit$coefficients)[i])
+	}
+	return(result)
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+
+source('../R/roc.R')
+library(titanic)
+data("titanic")
+```
+
+# Agenda
+
+**Reminder:** No class next week. Have a relaxing and safe Spring break! 
+
+1 Logistic Regression
+
+2 Predictive Modeling
+
+3 Questions
+
+4 One minute papers
+
+---
+class: middle, center, inverse
+# Logistic Regression
+
+---
+class: font80
+# Relationship between dichotomous (x) and continuous (y) variables
+
+```{r}
+df <- data.frame(
+	x = rep(c(0, 1), each = 10),
+	y = c(rnorm(10, mean = 1, sd = 1),
+		  rnorm(10, mean = 2.5, sd = 1.5))
+)
+head(df)
+tab <- describeBy(df$y, group = df$x, mat = TRUE, skew = FALSE)
+tab$group1 <- as.integer(as.character(tab$group1))
+```
+
+---
+# Relationship between dichotomous (x) and continuous (y) variables
+
+
+```{r, fig.height = 5}
+ggplot(df, aes(x = x, y = y)) +	geom_point(alpha = 0.5) +
+	geom_point(data = tab, aes(x = group1, y = mean), color = 'red', size = 4) + 
+	geom_smooth(method = lm, se = FALSE, formula = y ~ x)
+```
+
+---
+# Regression so far...
+
+At this point we have covered: 
+
+* Simple linear regression
+	* Relationship between numerical response and a numerical or categorical predictor
+* Multiple regression
+	* Relationship between numerical response and multiple numerical and/or categorical predictors
+* Maximum Likelihood Estimation
+
+*All of the approaches we have used so far have a quantitative variable with normally distributed errors (i.e. residuals).*
+
+What we haven't seen is what to do when the predictors are weird (nonlinear, complicated dependence structure, etc.) or when the response is weird (categorical, count data, etc.)
+
+---
+# Odds
+
+Odds are another way of quantifying the probability of an event, commonly used in gambling (and logistic regression).
+
+For some event $E$,
+
+$$\text{odds}(E) = \frac{P(E)}{P(E^c)} = \frac{P(E)}{1-P(E)}$$
+
+--
+
+Similarly, if we are told the odds of E are $x$ to $y$ then
+
+$$\text{odds}(E) = \frac{x}{y} = \frac{x/(x+y)}{y/(x+y)}$$
+
+--
+
+which implies
+
+$$P(E) = x/(x+y),\quad P(E^c) = y/(x+y)$$
+
+---
+# Generalized Linear Models
+
+Generalized linear models (GLM) are a generalization of OLS that allows for the response variables (i.e. dependent variables) to have an error distribution that is ***not*** distributed normally. All generalized linear models have the following three characteristics:
+
+1. A probability distribution describing the outcome variable .
+
+2. A linear model: $\eta = \beta_0+\beta_1 X_1 + \cdots + \beta_n X_n$.
+
+3. A link function that relates the linear model to the parameter of the outcome distribution: $g(p) = \eta$ or $p = g^{-1}(\eta)$.
+
+We can estimate GLMs using maximum likelihood estimation (MLE). What will change is the log-likelihood function.
+
+---
+# Logistic Regression
+
+Logistic regression is a GLM used to model a binary categorical variable using numerical and categorical predictors.
+
+We assume a binomial distribution produced the outcome variable and we therefore want to model p the probability of success for a given set of predictors.
+
+To finish specifying the Logistic model we just need to establish a reasonable link function that connects $\eta$ to $p$. There are a variety of options but the most commonly used is the logit function.
+
+Logit function
+
+$$ logit(p) = \log\left(\frac{p}{1-p}\right),\text{ for $0\le p \le 1$} $$
+
+---
+# The Logistic Function
+
+$$ \sigma \left( t \right) =\frac { { e }^{ t } }{ { e }^{ t }+1 } =\frac { 1 }{ 1+{ e }^{ -t } }  $$
+
+```{r, fig.height=5}
+logistic <- function(t) { return(1 / (1 + exp(-t))) }
+ggplot() + stat_function(fun = logistic, n = 101) +  xlim(-4, 4) + xlab('x')
+```
+
+---
+# *t* as a Linear Function
+
+$$ t = \beta_0 + \beta_1 x $$
+
+The logistic function can now be rewritten as
+
+$$F\left( x \right) = \frac {1}{1+{e}^{-\left({\beta}_{0}+\beta_{1}x \right)}}$$
+
+Similar to OLS, we wish to minimize the errors. However, instead of minimizing the least squared residuals, we will use a maximum likelihood function.
+
+---
+# Example: Hours Studying Predicting Passing
+
+```{r}
+study <- data.frame(
+	Hours=c(0.50,0.75,1.00,1.25,1.50,1.75,1.75,2.00,2.25,2.50,2.75,3.00,
+			3.25,3.50,4.00,4.25,4.50,4.75,5.00,5.50),
+	Pass=c(0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1)
+)
+```
+```{r, fig.height = 4, fig.widht = 5}
+ggplot(study, aes(x=factor(Pass), y=Hours)) + geom_boxplot() + xlab('Pass') + ylab('Hours Studied')
+```
+
+---
+# Loglikelihood Function
+
+We need to define logit function and the log-likelihood function that will be used by the optim function. Instead of using the normal distribution as above (using the dnorm function), we are using a binomial distribution and the logit to link the linear combination of predictors.
+
+```{r}
+logit <- function(x, beta0, beta1) {
+    return( 1 / (1 + exp(-beta0 - beta1 * x)) )
+}
+loglikelihood.binomial <- function(parameters, predictor, outcome) {
+    a <- parameters[1] # Intercept
+    b <- parameters[2] # beta coefficient
+    p <- logit(predictor, a, b)
+    ll <- sum( outcome * log(p) + (1 - outcome) * log(1 - p))
+    return(ll)
+}
+```
+
+---
+# Estimating parameters using the `optim` function
+
+```{r}
+optim.binomial <- optim_save(
+    c(0, 1), # Initial values
+    loglikelihood.binomial,
+    method = "L-BFGS-B",
+    control = list(fnscale = -1),
+    predictor = study$Hours,
+    outcome = study$Pass
+)
+
+optim.binomial$par
+```
+
+---
+# How did the optimizer get this result?
+
+```{r, echo=FALSE, cache=TRUE}
+logistic <- function(x, b0, b1) {
+	return(1 / (1 + exp(-1 * (b0 + b1 * x)) ))
+}
+df <- optim.binomial$iterations_df
+names(df) <- c('Intercept', 'Hours', 'LogLikelihood', 'Iteration')
+xlim <- c(0, 6) # Hard coding for now
+df2 <- data.frame(Iteration = rep(1:nrow(df), each = 100))
+xvals <- seq(xlim[1], xlim[2], length.out = 100)
+tmp <- apply(
+    df, 1, FUN = function(x) {
+        logistic(xvals, x[1], x[2])
+    }
+) %>% as.data.frame()
+names(tmp) <- 1:ncol(tmp)
+tmp <- melt(tmp)
+names(tmp) <- c('Iteration', 'Pass')
+tmp$Hours <- rep(xvals, nrow(df))
+
+nFrames <- nrow(df) * 2
+p1 <- ggplot() + 
+    geom_smooth(data = study, aes(x = Hours, y = Pass),
+        method = 'glm', formula = y ~ x, se = FALSE, alpha = 0.5,
+        method.args = list(family = binomial(link = 'logit'))) +
+    geom_point(data = study, aes(x = Hours, y = Pass)) + 
+    geom_path(data = tmp, aes(x = Hours, y = Pass, group = Iteration)) +
+    transition_states(Iteration) +
+    labs(title = "Iteration: {round(frame/2)}") +
+    shadow_wake(wake_length = 0.1, alpha = FALSE) +
+    ease_aes("cubic-in")
+p1_gif <- animate(p1, nframes = nFrames, width = 480, height = 480)
+
+df.melt <- df %>% melt(id.var = 'Iteration')
+p2 <- ggplot(df.melt, aes(x = Iteration, y = value, color = variable)) +
+    geom_vline(data = data.frame(Iteration2 = df$Iteration),
+               aes(xintercept = Iteration2, frame = Iteration2)) +
+    geom_path() +
+    facet_wrap(~ variable, scales = "free_y", ncol = 1) +
+    xlab('Iteration') + ylab('Parameter Estimate') +
+    theme(legend.position = 'none') +
+    transition_time(Iteration2)
+p2_gif <- animate(p2, nframes = nFrames, width = 480, height = 480)
+
+new_gif <- image_append(c(p1_gif[1], p2_gif[1]))
+for(i in 2:nFrames){
+    combined <- image_append(c(p1_gif[i], p2_gif[i]))
+    new_gif <- c(new_gif, combined)
+}
+new_gif
+```
+
+---
+class: font80
+# The `glm` function
+
+```{r}
+( lr.out <- glm(Pass ~ Hours, data = study, family = binomial(link = 'logit')) )
+```
+
+How does this compare to the `optim` function?
+
+```{r}
+optim.binomial$par
+```
+
+---
+# Plotting the Results
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+beta0 <- optim.binomial$par[1]
+beta1 <- optim.binomial$par[2]
+
+binomial_smooth <- function(...) {
+	geom_smooth(method = "glm", method.args = list(family = "binomial"), ...)
+}
+study$Predict <- predict(lr.out, type = 'response')
+study$Predict_Pass <- study$Predict > 0.5
+study$p <- logit(study$Hours, beta0, beta1)
+ggplot(study, aes(x=Hours, y=Pass)) +
+	geom_segment(aes(x = Hours, xend = Hours, y = Pass, yend = p), 
+				 size = 1, color = 'maroon', alpha = 0.5) +
+	geom_point(aes(color = Predict_Pass), size = 3) + 
+	geom_point(aes(y = p, color = Predict_Pass), size = 3) +
+	binomial_smooth(formula = y ~ x, se=FALSE)
+```
+
+---
+class: inverse, middle, center
+# Predictive Modeling
+
+
+---
+# Prediction
+
+Odds (or probability) of passing if studied **zero** hours?
+
+$$log(\frac{p}{1-p}) = -4.078 + 1.505 \times 0$$
+$$\frac{p}{1-p} = exp(-4.078) = 0.0169$$
+$$p = \frac{0.0169}{1.169} = .016$$
+
+--
+
+Odds (or probability) of passing if studied **4** hours?
+
+$$log(\frac{p}{1-p}) = -4.078 + 1.505 \times 4$$
+$$\frac{p}{1-p} = exp(1.942) = 6.97$$
+$$p = \frac{6.97}{7.97} = 0.875$$
+
+---
+# Fitted Values
+
+```{r}
+study[1,]
+logistic <- function(x, b0, b1) {
+	return(1 / (1 + exp(-1 * (b0 + b1 * x)) ))
+}
+logistic(.5, b0=-4.078, b1=1.505)
+```
+
+---
+# Model Performance
+
+The use of statistical models to predict outcomes, typically on new data, is called predictive modeling. Logistic regression is a common statistical procedure used for prediction. We will utilize a **confusion matrix** to evaluate accuracy of the predictions.
+
+```{r, echo=FALSE, out.width=1100}
+knitr::include_graphics('images/Confusion_Matrix.png')
+```
+
+---
+class: font80
+# Predicting survivors of the Titanic
+
+```{r}
+str(titanic_train)
+```
+
+---
+# Data Setup
+
+We will split the data into a training set (70% of observations) and validation set (30%).
+
+```{r}
+train.rows <- sample(nrow(titanic), nrow(titanic) * .7)
+titanic_train <- titanic[train.rows,]
+titanic_test <- titanic[-train.rows,]
+```
+
+This is the proportions of survivors and defines what our "guessing" rate is. That is, if we guessed no one survived, we would be correct 62% of the time.
+
+```{r}
+(survived <- table(titanic_train$survived) %>% prop.table)
+```
+
+---
+class: font80
+# Model Training
+
+```{r}
+lr.out <- glm(survived ~ pclass + sex + sibsp + parch, data=titanic_train, family=binomial(link = 'logit'))
+summary(lr.out)
+```
+
+---
+# Predicted Values
+
+```{r}
+titanic_train$prediction <- predict(lr.out, type = 'response', newdata = titanic_train)
+ggplot(titanic_train, aes(x = prediction, color = survived)) + geom_density()
+```
+
+---
+# Results
+
+```{r}
+titanic_train$prediction_class <- titanic_train$prediction > 0.5
+tab <- table(titanic_train$prediction_class, 
+			 titanic_train$survived) %>% prop.table() %>% print()
+```
+
+For the training set, the overall accuracy is `r round((tab[1,1] + tab[2,2]) * 100, digits = 2)`%. Recall that `r round(survived[2] * 100, digits = 2)`% of passengers survived. Therefore, the simplest model would be to predict that everyone died, which would mean we would be correct `r round(survived[1] * 100, digits = 2)`% of the time. Therefore, our prediction model is `r  round((tab[1,1] + tab[2,2]) * 100 - survived[1] * 100, digits = 2)`% better than guessing.
+
+---
+# Checking with the validation dataset
+
+```{r}
+(survived_test <- table(titanic_test$survived) %>% prop.table())
+titanic_test$prediction <- predict(lr.out, newdata = titanic_test, type = 'response')
+titanic_test$prediciton_class <- titanic_test$prediction > 0.5
+tab_test <- table(titanic_test$prediciton_class, titanic_test$survived) %>%
+	prop.table() %>% print()
+```
+
+The overall accuracy is `r round((tab_test[1,1] + tab_test[2,2]) * 100, digits = 2)`%, or `r round( (tab_test[1,1] + tab_test[2,2] - max(survived_test) ) * 100, digits = 1)`% better than guessing.
+
+---
+# Receiver Operating Characteristic (ROC) Curve
+
+The ROC curve is created by plotting the true positive rate (TPR; AKA sensitivity) against the false positive rate (FPR; AKA probability of false alarm) at various threshold settings.
+
+```{r}
+roc <- calculate_roc(titanic_train$prediction, titanic_train$survived == 'Yes')
+summary(roc)
+```
+
+---
+# ROC Curve
+
+```{r}
+plot(roc)
+```
+
+---
+# ROC Curve
+
+```{r}
+plot(roc, curve = 'accuracy')
+```
+
+---
+class: font90
+# Caution on Interpreting Accuracy
+
+- [Loh, Sooo, and Zing](http://cs229.stanford.edu/proj2016/report/LohSooXing-PredictingSexualOrientationBasedOnFacebookStatusUpdates-report.pdf) (2016) predicted sexual orientation based on Facebook Status.
+
+- They reported model accuracies of approximately 90% using SVM, logistic regression and/or random forest methods.
+
+--
+
+- [Gallup](https://news.gallup.com/poll/234863/estimate-lgbt-population-rises.aspx) (2018) poll estimates that 4.5% of the Americal population identifies as LGBT.
+
+--
+
+- *My proposed model:* I predict all Americans are heterosexual.
+
+- The accuracy of my model is 95.5%, or *5.5% better than Facebook's model!*
+
+- Predicting "rare" events (i.e. when the proportion of one of the two outcomes large) is difficult and requires independent (predictor) variables that strongly associated with the dependent (outcome) variable.
+
+---
+# Fitted Values Revisited 
+
+What happens when the ratio of true-to-false increases (i.e. want to predict "rare" events)?
+
+Let's simulate a dataset where the ratio of true-to-false is 10-to-1. We can also define the distribution of the dependent variable. Here, there is moderate separation in the distributions.
+
+```{r, echo = FALSE}
+library(multilevelPSA)
+getSimulatedData <- function(nvars=3,
+							 ntreat=100, treat.mean=.6, treat.sd=.5,
+							 ncontrol=1000, control.mean=.4, control.sd=.5) {
+	if(length(treat.mean) == 1) { treat.mean = rep(treat.mean, nvars) }
+	if(length(treat.sd) == 1) { treat.sd = rep(treat.sd, nvars) }
+	if(length(control.mean) == 1) { control.mean = rep(control.mean, nvars) }
+	if(length(control.sd) == 1) { control.sd = rep(control.sd, nvars) }
+	
+	df <- c(rep(0, ncontrol), rep(1, ntreat))
+	for(i in 1:nvars) {
+		df <- cbind(df, c(rnorm(ncontrol, mean=control.mean[i], sd=control.sd[i]),
+						  rnorm(ntreat, mean=treat.mean[i], sd=treat.sd[i])))
+	}
+	df <- as.data.frame(df)
+	names(df) <- c('treat', letters[1:nvars])
+	return(df)
+}
+```
+
+```{r message=FALSE, results = 'hide'}
+test.df2 <- getSimulatedData(
+	treat.mean=.6, control.mean=.4)
+```
+
+The `multilevelPSA::psrange` function will sample with varying ratios from 1:10 to 1:1. It takes multiple samples and averages the ranges and distributions of the fitted values from logistic regression.
+
+```{r, results = 'hide'}
+psranges2 <- psrange(test.df2, test.df2$treat, treat ~ .,
+					 samples=seq(100,1000,by=100), nboot=20)
+```
+
+---
+# Fitted Values Revisited (cont.)
+
+```{r, fig.height = 7}
+plot(psranges2)
+```
+
+---
+# Additional Resources
+
+* [Logistic Regression Details Pt 2: Maximum Likelihood](https://www.youtube.com/watch?v=BfKanl1aSG0)
+
+* [StatQuest: Maximum Likelihood, clearly explained](https://www.youtube.com/watch?v=XepXtl9YKwc)
+
+* [Probability concepts explained: Maximum likelihood estimation](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1)
+
+---
+class: inverse, middle, center
+# Questions
+
+---
+class: left
+# One Minute Paper
+
+.font140[
+Complete the one minute paper: 
+https://forms.gle/yB3ds6MYE89Z1pURA
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+]
+
+ 

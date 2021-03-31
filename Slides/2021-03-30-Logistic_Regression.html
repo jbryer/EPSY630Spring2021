@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Logistic Regression</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jason Bryer, Ph.D." />
+    <meta name="date" content="2021-03-30" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/mtheme_max.css" type="text/css" />
+    <link rel="stylesheet" href="assets/fonts_mtheme_max.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Logistic Regression
+## EPSY 630 - Statistics II
+### Jason Bryer, Ph.D.
+### March 30, 2021
+
+---
+
+
+
+
+# Agenda
+
+**Reminder:** No class next week. Have a relaxing and safe Spring break! 
+
+1 Logistic Regression
+
+2 Predictive Modeling
+
+3 Questions
+
+4 One minute papers
+
+---
+class: middle, center, inverse
+# Logistic Regression
+
+---
+class: font80
+# Relationship between dichotomous (x) and continuous (y) variables
+
+
+```r
+df &lt;- data.frame(
+	x = rep(c(0, 1), each = 10),
+	y = c(rnorm(10, mean = 1, sd = 1),
+		  rnorm(10, mean = 2.5, sd = 1.5))
+)
+head(df)
+```
+
+```
+##   x           y
+## 1 0 -0.01985427
+## 2 0  1.18218159
+## 3 0 -0.68131870
+## 4 0  1.19697702
+## 5 0  1.11739711
+## 6 0 -0.32733012
+```
+
+```r
+tab &lt;- describeBy(df$y, group = df$x, mat = TRUE, skew = FALSE)
+tab$group1 &lt;- as.integer(as.character(tab$group1))
+```
+
+---
+# Relationship between dichotomous (x) and continuous (y) variables
+
+
+
+```r
+ggplot(df, aes(x = x, y = y)) +	geom_point(alpha = 0.5) +
+	geom_point(data = tab, aes(x = group1, y = mean), color = 'red', size = 4) + 
+	geom_smooth(method = lm, se = FALSE, formula = y ~ x)
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Regression so far...
+
+At this point we have covered: 
+
+* Simple linear regression
+	* Relationship between numerical response and a numerical or categorical predictor
+* Multiple regression
+	* Relationship between numerical response and multiple numerical and/or categorical predictors
+* Maximum Likelihood Estimation
+
+*All of the approaches we have used so far have a quantitative variable with normally distributed errors (i.e. residuals).*
+
+What we haven't seen is what to do when the predictors are weird (nonlinear, complicated dependence structure, etc.) or when the response is weird (categorical, count data, etc.)
+
+---
+# Odds
+
+Odds are another way of quantifying the probability of an event, commonly used in gambling (and logistic regression).
+
+For some event `\(E\)`,
+
+`$$\text{odds}(E) = \frac{P(E)}{P(E^c)} = \frac{P(E)}{1-P(E)}$$`
+
+--
+
+Similarly, if we are told the odds of E are `\(x\)` to `\(y\)` then
+
+`$$\text{odds}(E) = \frac{x}{y} = \frac{x/(x+y)}{y/(x+y)}$$`
+
+--
+
+which implies
+
+`$$P(E) = x/(x+y),\quad P(E^c) = y/(x+y)$$`
+
+---
+# Generalized Linear Models
+
+Generalized linear models (GLM) are a generalization of OLS that allows for the response variables (i.e. dependent variables) to have an error distribution that is ***not*** distributed normally. All generalized linear models have the following three characteristics:
+
+1. A probability distribution describing the outcome variable .
+
+2. A linear model: `\(\eta = \beta_0+\beta_1 X_1 + \cdots + \beta_n X_n\)`.
+
+3. A link function that relates the linear model to the parameter of the outcome distribution: `\(g(p) = \eta\)` or `\(p = g^{-1}(\eta)\)`.
+
+We can estimate GLMs using maximum likelihood estimation (MLE). What will change is the log-likelihood function.
+
+---
+# Logistic Regression
+
+Logistic regression is a GLM used to model a binary categorical variable using numerical and categorical predictors.
+
+We assume a binomial distribution produced the outcome variable and we therefore want to model p the probability of success for a given set of predictors.
+
+To finish specifying the Logistic model we just need to establish a reasonable link function that connects `\(\eta\)` to `\(p\)`. There are a variety of options but the most commonly used is the logit function.
+
+Logit function
+
+$$ logit(p) = \log\left(\frac{p}{1-p}\right),\text{ for `\(0\le p \le 1\)`} $$
+
+---
+# The Logistic Function
+
+$$ \sigma \left( t \right) =\frac { { e }^{ t } }{ { e }^{ t }+1 } =\frac { 1 }{ 1+{ e }^{ -t } }  $$
+
+
+```r
+logistic &lt;- function(t) { return(1 / (1 + exp(-t))) }
+ggplot() + stat_function(fun = logistic, n = 101) +  xlim(-4, 4) + xlab('x')
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# *t* as a Linear Function
+
+$$ t = \beta_0 + \beta_1 x $$
+
+The logistic function can now be rewritten as
+
+`$$F\left( x \right) = \frac {1}{1+{e}^{-\left({\beta}_{0}+\beta_{1}x \right)}}$$`
+
+Similar to OLS, we wish to minimize the errors. However, instead of minimizing the least squared residuals, we will use a maximum likelihood function.
+
+---
+# Example: Hours Studying Predicting Passing
+
+
+```r
+study &lt;- data.frame(
+	Hours=c(0.50,0.75,1.00,1.25,1.50,1.75,1.75,2.00,2.25,2.50,2.75,3.00,
+			3.25,3.50,4.00,4.25,4.50,4.75,5.00,5.50),
+	Pass=c(0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1)
+)
+```
+
+```r
+ggplot(study, aes(x=factor(Pass), y=Hours)) + geom_boxplot() + xlab('Pass') + ylab('Hours Studied')
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Loglikelihood Function
+
+We need to define logit function and the log-likelihood function that will be used by the optim function. Instead of using the normal distribution as above (using the dnorm function), we are using a binomial distribution and the logit to link the linear combination of predictors.
+
+
+```r
+logit &lt;- function(x, beta0, beta1) {
+    return( 1 / (1 + exp(-beta0 - beta1 * x)) )
+}
+loglikelihood.binomial &lt;- function(parameters, predictor, outcome) {
+    a &lt;- parameters[1] # Intercept
+    b &lt;- parameters[2] # beta coefficient
+    p &lt;- logit(predictor, a, b)
+    ll &lt;- sum( outcome * log(p) + (1 - outcome) * log(1 - p))
+    return(ll)
+}
+```
+
+---
+# Estimating parameters using the `optim` function
+
+
+```r
+optim.binomial &lt;- optim_save(
+    c(0, 1), # Initial values
+    loglikelihood.binomial,
+    method = "L-BFGS-B",
+    control = list(fnscale = -1),
+    predictor = study$Hours,
+    outcome = study$Pass
+)
+
+optim.binomial$par
+```
+
+```
+## [1] -4.077575  1.504624
+```
+
+---
+# How did the optimizer get this result?
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-8-1.gif" style="display: block; margin: auto;" /&gt;
+
+---
+class: font80
+# The `glm` function
+
+
+```r
+( lr.out &lt;- glm(Pass ~ Hours, data = study, family = binomial(link = 'logit')) )
+```
+
+```
+## 
+## Call:  glm(formula = Pass ~ Hours, family = binomial(link = "logit"), 
+##     data = study)
+## 
+## Coefficients:
+## (Intercept)        Hours  
+##      -4.078        1.505  
+## 
+## Degrees of Freedom: 19 Total (i.e. Null);  18 Residual
+## Null Deviance:	    27.73 
+## Residual Deviance: 16.06 	AIC: 20.06
+```
+
+How does this compare to the `optim` function?
+
+
+```r
+optim.binomial$par
+```
+
+```
+## [1] -4.077575  1.504624
+```
+
+---
+# Plotting the Results
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, middle, center
+# Predictive Modeling
+
+
+---
+# Prediction
+
+Odds (or probability) of passing if studied **zero** hours?
+
+`$$log(\frac{p}{1-p}) = -4.078 + 1.505 \times 0$$`
+`$$\frac{p}{1-p} = exp(-4.078) = 0.0169$$`
+`$$p = \frac{0.0169}{1.169} = .016$$`
+
+--
+
+Odds (or probability) of passing if studied **4** hours?
+
+`$$log(\frac{p}{1-p}) = -4.078 + 1.505 \times 4$$`
+`$$\frac{p}{1-p} = exp(1.942) = 6.97$$`
+`$$p = \frac{6.97}{7.97} = 0.875$$`
+
+---
+# Fitted Values
+
+
+```r
+study[1,]
+```
+
+```
+##   Hours Pass    Predict Predict_Pass          p
+## 1   0.5    0 0.03471034        FALSE 0.03471462
+```
+
+```r
+logistic &lt;- function(x, b0, b1) {
+	return(1 / (1 + exp(-1 * (b0 + b1 * x)) ))
+}
+logistic(.5, b0=-4.078, b1=1.505)
+```
+
+```
+## [1] 0.03470667
+```
+
+---
+# Model Performance
+
+The use of statistical models to predict outcomes, typically on new data, is called predictive modeling. Logistic regression is a common statistical procedure used for prediction. We will utilize a **confusion matrix** to evaluate accuracy of the predictions.
+
+&lt;img src="images/Confusion_Matrix.png" width="1100" style="display: block; margin: auto;" /&gt;
+
+---
+class: font80
+# Predicting survivors of the Titanic
+
+
+```r
+str(titanic_train)
+```
+
+```
+## 'data.frame':	891 obs. of  12 variables:
+##  $ PassengerId: int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Survived   : int  0 1 1 1 0 0 0 0 1 1 ...
+##  $ Pclass     : int  3 1 3 1 3 3 1 3 3 2 ...
+##  $ Name       : chr  "Braund, Mr. Owen Harris" "Cumings, Mrs. John Bradley (Florence Briggs Thayer)" "Heikkinen, Miss. Laina" "Futrelle, Mrs. Jacques Heath (Lily May Peel)" ...
+##  $ Sex        : chr  "male" "female" "female" "female" ...
+##  $ Age        : num  22 38 26 35 35 NA 54 2 27 14 ...
+##  $ SibSp      : int  1 1 0 1 0 0 0 3 0 1 ...
+##  $ Parch      : int  0 0 0 0 0 0 0 1 2 0 ...
+##  $ Ticket     : chr  "A/5 21171" "PC 17599" "STON/O2. 3101282" "113803" ...
+##  $ Fare       : num  7.25 71.28 7.92 53.1 8.05 ...
+##  $ Cabin      : chr  "" "C85" "" "C123" ...
+##  $ Embarked   : chr  "S" "C" "S" "S" ...
+```
+
+---
+# Data Setup
+
+We will split the data into a training set (70% of observations) and validation set (30%).
+
+
+```r
+train.rows &lt;- sample(nrow(titanic), nrow(titanic) * .7)
+titanic_train &lt;- titanic[train.rows,]
+titanic_test &lt;- titanic[-train.rows,]
+```
+
+This is the proportions of survivors and defines what our "guessing" rate is. That is, if we guessed no one survived, we would be correct 62% of the time.
+
+
+```r
+(survived &lt;- table(titanic_train$survived) %&gt;% prop.table)
+```
+
+```
+## 
+##       No      Yes 
+## 0.610262 0.389738
+```
+
+---
+class: font80
+# Model Training
+
+
+```r
+lr.out &lt;- glm(survived ~ pclass + sex + sibsp + parch, data=titanic_train, family=binomial(link = 'logit'))
+summary(lr.out)
+```
+
+```
+## 
+## Call:
+## glm(formula = survived ~ pclass + sex + sibsp + parch, family = binomial(link = "logit"), 
+##     data = titanic_train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.1159  -0.7289  -0.5305   0.6939   2.2804  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  1.34956    0.15925   8.474  &lt; 2e-16 ***
+## pclass.L    -1.07073    0.14306  -7.485 7.18e-14 ***
+## pclass.Q     0.04655    0.16216   0.287    0.774    
+## sexmale     -2.50139    0.17924 -13.955  &lt; 2e-16 ***
+## sibsp       -0.15301    0.09330  -1.640    0.101    
+## parch       -0.01051    0.09851  -0.107    0.915    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1224.93  on 915  degrees of freedom
+## Residual deviance:  896.35  on 910  degrees of freedom
+## AIC: 908.35
+## 
+## Number of Fisher Scoring iterations: 4
+```
+
+---
+# Predicted Values
+
+
+```r
+titanic_train$prediction &lt;- predict(lr.out, type = 'response', newdata = titanic_train)
+ggplot(titanic_train, aes(x = prediction, color = survived)) + geom_density()
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Results
+
+
+```r
+titanic_train$prediction_class &lt;- titanic_train$prediction &gt; 0.5
+tab &lt;- table(titanic_train$prediction_class, 
+			 titanic_train$survived) %&gt;% prop.table() %&gt;% print()
+```
+
+```
+##        
+##                 No        Yes
+##   FALSE 0.52620087 0.12991266
+##   TRUE  0.08406114 0.25982533
+```
+
+For the training set, the overall accuracy is 78.6%. Recall that 38.97% of passengers survived. Therefore, the simplest model would be to predict that everyone died, which would mean we would be correct 61.03% of the time. Therefore, our prediction model is 17.58% better than guessing.
+
+---
+# Checking with the validation dataset
+
+
+```r
+(survived_test &lt;- table(titanic_test$survived) %&gt;% prop.table())
+```
+
+```
+## 
+##        No       Yes 
+## 0.6361323 0.3638677
+```
+
+```r
+titanic_test$prediction &lt;- predict(lr.out, newdata = titanic_test, type = 'response')
+titanic_test$prediciton_class &lt;- titanic_test$prediction &gt; 0.5
+tab_test &lt;- table(titanic_test$prediciton_class, titanic_test$survived) %&gt;%
+	prop.table() %&gt;% print()
+```
+
+```
+##        
+##                 No        Yes
+##   FALSE 0.53689567 0.11195929
+##   TRUE  0.09923664 0.25190840
+```
+
+The overall accuracy is 78.88%, or 15.3% better than guessing.
+
+---
+# Receiver Operating Characteristic (ROC) Curve
+
+The ROC curve is created by plotting the true positive rate (TPR; AKA sensitivity) against the false positive rate (FPR; AKA probability of false alarm) at various threshold settings.
+
+
+```r
+roc &lt;- calculate_roc(titanic_train$prediction, titanic_train$survived == 'Yes')
+summary(roc)
+```
+
+```
+## AUC = 0.808
+## Cost of false-positive = 1
+## Cost of false-negative = 1
+## Threshold with minimum cost = 0.596
+```
+
+---
+# ROC Curve
+
+
+```r
+plot(roc)
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# ROC Curve
+
+
+```r
+plot(roc, curve = 'accuracy')
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+class: font90
+# Caution on Interpreting Accuracy
+
+- [Loh, Sooo, and Zing](http://cs229.stanford.edu/proj2016/report/LohSooXing-PredictingSexualOrientationBasedOnFacebookStatusUpdates-report.pdf) (2016) predicted sexual orientation based on Facebook Status.
+
+- They reported model accuracies of approximately 90% using SVM, logistic regression and/or random forest methods.
+
+--
+
+- [Gallup](https://news.gallup.com/poll/234863/estimate-lgbt-population-rises.aspx) (2018) poll estimates that 4.5% of the Americal population identifies as LGBT.
+
+--
+
+- *My proposed model:* I predict all Americans are heterosexual.
+
+- The accuracy of my model is 95.5%, or *5.5% better than Facebook's model!*
+
+- Predicting "rare" events (i.e. when the proportion of one of the two outcomes large) is difficult and requires independent (predictor) variables that strongly associated with the dependent (outcome) variable.
+
+---
+# Fitted Values Revisited 
+
+What happens when the ratio of true-to-false increases (i.e. want to predict "rare" events)?
+
+Let's simulate a dataset where the ratio of true-to-false is 10-to-1. We can also define the distribution of the dependent variable. Here, there is moderate separation in the distributions.
+
+
+
+
+```r
+test.df2 &lt;- getSimulatedData(
+	treat.mean=.6, control.mean=.4)
+```
+
+The `multilevelPSA::psrange` function will sample with varying ratios from 1:10 to 1:1. It takes multiple samples and averages the ranges and distributions of the fitted values from logistic regression.
+
+
+```r
+psranges2 &lt;- psrange(test.df2, test.df2$treat, treat ~ .,
+					 samples=seq(100,1000,by=100), nboot=20)
+```
+
+---
+# Fitted Values Revisited (cont.)
+
+
+```r
+plot(psranges2)
+```
+
+&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Additional Resources
+
+* [Logistic Regression Details Pt 2: Maximum Likelihood](https://www.youtube.com/watch?v=BfKanl1aSG0)
+
+* [StatQuest: Maximum Likelihood, clearly explained](https://www.youtube.com/watch?v=XepXtl9YKwc)
+
+* [Probability concepts explained: Maximum likelihood estimation](https://towardsdatascience.com/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1)
+
+---
+class: inverse, middle, center
+# Questions
+
+---
+class: left
+# One Minute Paper
+
+.font140[
+Complete the one minute paper: 
+https://forms.gle/yB3ds6MYE89Z1pURA
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+]
+
+ 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "solarized-light",
+"highlightLanguage": "R",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- Source: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/ -->
+<style>
+.logo {
+  background-image: url(images/hex/EPSY630.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 2em;
+  right: 0.7em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

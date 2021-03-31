@@ -1,0 +1,12 @@
+---
+title: "Class 9 - Logistic Regression"
+author: "Jason Bryer"
+date: 2021-03-30
+draft: false
+categories: ["R"]
+tags: ["Annoucement"]
+---
+
+[Click here](/slides/2021-03-30-Logistic_Regression.html) for the slides.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LD-lUvLs--c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
