@@ -55,13 +55,13 @@ head(df)
 ```
 
 ```
-##   x           y
-## 1 0 -0.01985427
-## 2 0  1.18218159
-## 3 0 -0.68131870
-## 4 0  1.19697702
-## 5 0  1.11739711
-## 6 0 -0.32733012
+##   x         y
+## 1 0 1.1858679
+## 2 0 0.7529346
+## 3 0 1.2359476
+## 4 0 2.0863606
+## 5 0 1.6318793
+## 6 0 0.5075317
 ```
 
 ```r
@@ -80,7 +80,7 @@ ggplot(df, aes(x = x, y = y)) +	geom_point(alpha = 0.5) +
 	geom_smooth(method = lm, se = FALSE, formula = y ~ x)
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Regression so far...
@@ -155,7 +155,7 @@ logistic &lt;- function(t) { return(1 / (1 + exp(-t))) }
 ggplot() + stat_function(fun = logistic, n = 101) +  xlim(-4, 4) + xlab('x')
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # *t* as a Linear Function
@@ -184,7 +184,7 @@ study &lt;- data.frame(
 ggplot(study, aes(x=factor(Pass), y=Hours)) + geom_boxplot() + xlab('Pass') + ylab('Hours Studied')
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Loglikelihood Function
@@ -229,7 +229,7 @@ optim.binomial$par
 ---
 # How did the optimizer get this result?
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-8-1.gif" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-8-1.gif" style="display: block; margin: auto;" /&gt;
 
 ---
 class: font80
@@ -268,7 +268,7 @@ optim.binomial$par
 ---
 # Plotting the Results
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse, middle, center
@@ -369,8 +369,8 @@ This is the proportions of survivors and defines what our "guessing" rate is. Th
 
 ```
 ## 
-##       No      Yes 
-## 0.610262 0.389738
+##        No       Yes 
+## 0.6124454 0.3875546
 ```
 
 ---
@@ -391,24 +391,24 @@ summary(lr.out)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -2.1159  -0.7289  -0.5305   0.6939   2.2804  
+## -2.2174  -0.6918  -0.4780   0.6890   2.3446  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  1.34956    0.15925   8.474  &lt; 2e-16 ***
-## pclass.L    -1.07073    0.14306  -7.485 7.18e-14 ***
-## pclass.Q     0.04655    0.16216   0.287    0.774    
-## sexmale     -2.50139    0.17924 -13.955  &lt; 2e-16 ***
-## sibsp       -0.15301    0.09330  -1.640    0.101    
-## parch       -0.01051    0.09851  -0.107    0.915    
+## (Intercept)  1.37944    0.16112   8.562  &lt; 2e-16 ***
+## pclass.L    -1.26861    0.14736  -8.609  &lt; 2e-16 ***
+## pclass.Q     0.07621    0.16802   0.454  0.65012    
+## sexmale     -2.62525    0.18446 -14.232  &lt; 2e-16 ***
+## sibsp       -0.28536    0.10716  -2.663  0.00775 ** 
+## parch        0.17332    0.11362   1.526  0.12713    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 1224.93  on 915  degrees of freedom
-## Residual deviance:  896.35  on 910  degrees of freedom
-## AIC: 908.35
+##     Null deviance: 1223.1  on 915  degrees of freedom
+## Residual deviance:  863.9  on 910  degrees of freedom
+## AIC: 875.9
 ## 
 ## Number of Fisher Scoring iterations: 4
 ```
@@ -422,7 +422,7 @@ titanic_train$prediction &lt;- predict(lr.out, type = 'response', newdata = tita
 ggplot(titanic_train, aes(x = prediction, color = survived)) + geom_density()
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Results
@@ -437,11 +437,11 @@ tab &lt;- table(titanic_train$prediction_class,
 ```
 ##        
 ##                 No        Yes
-##   FALSE 0.52620087 0.12991266
-##   TRUE  0.08406114 0.25982533
+##   FALSE 0.52292576 0.12117904
+##   TRUE  0.08951965 0.26637555
 ```
 
-For the training set, the overall accuracy is 78.6%. Recall that 38.97% of passengers survived. Therefore, the simplest model would be to predict that everyone died, which would mean we would be correct 61.03% of the time. Therefore, our prediction model is 17.58% better than guessing.
+For the training set, the overall accuracy is 78.93%. Recall that 38.76% of passengers survived. Therefore, the simplest model would be to predict that everyone died, which would mean we would be correct 61.24% of the time. Therefore, our prediction model is 17.69% better than guessing.
 
 ---
 # Checking with the validation dataset
@@ -454,7 +454,7 @@ For the training set, the overall accuracy is 78.6%. Recall that 38.97% of passe
 ```
 ## 
 ##        No       Yes 
-## 0.6361323 0.3638677
+## 0.6310433 0.3689567
 ```
 
 ```r
@@ -467,11 +467,11 @@ tab_test &lt;- table(titanic_test$prediciton_class, titanic_test$survived) %&gt;
 ```
 ##        
 ##                 No        Yes
-##   FALSE 0.53689567 0.11195929
-##   TRUE  0.09923664 0.25190840
+##   FALSE 0.55470738 0.13231552
+##   TRUE  0.07633588 0.23664122
 ```
 
-The overall accuracy is 78.88%, or 15.3% better than guessing.
+The overall accuracy is 79.13%, or 16% better than guessing.
 
 ---
 # Receiver Operating Characteristic (ROC) Curve
@@ -485,10 +485,10 @@ summary(roc)
 ```
 
 ```
-## AUC = 0.808
+## AUC = 0.827
 ## Cost of false-positive = 1
 ## Cost of false-negative = 1
-## Threshold with minimum cost = 0.596
+## Threshold with minimum cost = 0.576
 ```
 
 ---
@@ -499,7 +499,7 @@ summary(roc)
 plot(roc)
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # ROC Curve
@@ -509,7 +509,7 @@ plot(roc)
 plot(roc, curve = 'accuracy')
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: font90
@@ -562,7 +562,7 @@ psranges2 &lt;- psrange(test.df2, test.df2$treat, treat ~ .,
 plot(psranges2)
 ```
 
-&lt;img src="2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="/Users/jbryer/Dropbox/School/Teaching/EPSY630 2021 Spring/Slides/2021-03-30-Logistic_Regression_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Additional Resources
