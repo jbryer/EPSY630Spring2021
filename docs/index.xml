@@ -6,7 +6,7 @@
     <description>Recent content in Home on EPSY 630 Statistics II - Spring 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 1</title>
       <link>/chapters/chapter1/</link>
@@ -63,7 +63,7 @@ I am currently an Assistant Professor in Data Science and Information Systems at
       <guid>/course-overview/schedule/</guid>
       <description>Note: Schedule is subject to change. Last updated March 23, 2021 07:26PM.
 UAlbany Academic Calendar
- document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-04-06&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;Intro to the Course / Intro to R and RStudio&#34;</description>
+ document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-04-13&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;Intro to the Course / Intro to R and RStudio&#34;</description>
     </item>
     
     <item>
@@ -230,6 +230,16 @@ Occasionally you will need to type equations in homework and labs. R Markdown su
       <guid>/course-overview/materials/</guid>
       <description>  These are supplemental materials. Click to download.
  ggplot_aesthetics_cheatsheet.png R_Syntax_Comparison.jpeg stat_better_understand_anova.pdf Textbooks  lsr-0.6.pdf os4.pdf ProbStatBook.pdf Supplemental  OpenIntro_extra_interaction_effects.pdf OpenIntro_extra_nonlinear_relationships.pdf OpenIntro_handout.pdf os2_extra_inference_guide.pdf os2_prob_tables.pdf os4_tablet.pdf    </description>
+    </item>
+    
+    <item>
+      <title>Class 19 - Propensity Score Anslysis</title>
+      <link>/blog/2021-04-13-class10/</link>
+      <pubDate>Tue, 13 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-04-13-class10/</guid>
+      <description>  Click here for the slides.
+ </description>
     </item>
     
     <item>
