@@ -1,0 +1,12 @@
+---
+title: "Class 12 - Bayesian Anslysis"
+author: "Jason Bryer"
+date: 2021-04-27
+draft: false
+categories: ["R"]
+tags: ["Annoucement"]
+---
+
+[Click here](/slides/2021-04-27-Bayesian_Analysis.html) for the slides.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JIcDjJRZN2E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

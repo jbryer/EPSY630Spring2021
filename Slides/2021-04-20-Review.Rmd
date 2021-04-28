@@ -1,0 +1,460 @@
+---
+title: "Review"
+subtitle: "EPSY 630 - Statistics II"
+author: Jason Bryer, Ph.D.
+date: "April 20, 2021"
+# knit: (function(inputFile, encoding) { source('myknit.R'); myknit(inputFile, encode); } )
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "EPSY630Spring2021"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+library(reshape2)
+library(latex2exp)
+library(psych)
+library(xtable)
+library(visualMLE)
+library(gganimate)
+library(magick)
+library(cowplot)
+library(DT)
+
+source('../R/distributions.R')
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6, fig.align = 'center',
+					  digits = 3) 
+options(width = 90)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+printLaTeXFormula <- function(fit, digits=2) {
+	vars <- all.vars(fit$terms)
+	result <- paste0('\\hat{', vars[1], '} = ', prettyNum(fit$coefficients[[1]], digits=2))
+	for(i in 2:length(vars)) {
+		val <- fit$coefficients[[i]]
+		result <- paste0(result, ifelse(val < 0, ' - ', ' + '),
+						 prettyNum(abs(val), digits=digits),
+						 ' ', names(fit$coefficients)[i])
+	}
+	return(result)
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+
+```
+
+# Announcements and Agenda
+
+Sign-up for a presentation time for either May 4th or 11th on [this Google sheet](https://docs.google.com/spreadsheets/d/1nIPwb7_LVHZsuA-W5a0QaoiENGIfG9dQnp_Pe3BlT9s/edit?usp=sharing).
+
+Next week we will discuss Bayesian Analysis. This will be the last topic.
+
+
+**Today's Agenda:**
+
+1 Review the statistical procedures we learned this semester
+
+2 Questions
+
+3 One minute papers
+
+
+---
+# Tutoring Data
+
+.pull-left[
+An observational study that examined the effects of tutoring services on students' grades in English courses in an online college.
+
+```{r}
+data(tutoring, package = 'TriMatch')
+tutoring <- tutoring %>%
+	mutate(treat2 = treat %in% 
+		   	c('Treat1', 'Treat2'),
+		   Pass = Grade >= 2)
+```
+]
+.pull-right[
+.code70[
+```{r}
+str(tutoring)
+```
+]
+]
+
+---
+# Types of Data
+
+**Quantitative variables** represent amounts of things (e.g. the number of trees in a forest). Types of quantitative variables include:
+
+* **Continuous** (a.k.a ratio variables): represent measures and can usually be divided into units smaller than one (e.g. 0.75 grams).
+* **Discrete** (a.k.a integer variables): represent counts and usually can’t be divided into units smaller than one (e.g. 1 tree).
+
+**Categorical variables** represent groupings of things (e.g. the different tree species in a forest). Types of categorical variables include:
+
+* **Ordinal**: represent data with an order (e.g. rankings).
+* **Nominal**: represent group names (e.g. brands or species names).
+* **Binary**: represent data with a yes/no or 1/0 outcome (e.g. win or lose).
+
+---
+class: font80
+# Descriptive Statistics
+
+.pull-left[
+**Quantitative Variables**
+
+Measures of center:
+* Mean (`mean`)
+* Median (`median`)
+* Mode
+
+Measures of spread:
+* Variance (`var`)
+* Standard deviation (`sd`)
+* Interquartile range (`IQR`)
+
+Plots
+* Histogram
+* Density
+* Box plot
+]
+.pull-right[
+**Qualitative Variables**
+
+* Contingency table (`table`)
+* Proportional table (`prop.table`)
+
+Plots
+* Bar plot
+* Mosaic plot
+]
+
+
+---
+# Central Limit Theorem
+
+The distribution of the sample mean is well approximated by a normal model:
+
+$$ \bar { x } \sim N\left( mean=\mu ,SE=\frac { \sigma  }{ \sqrt { n }  }  \right)  $$
+
+where SE represents the **standard error**, which is defined as the standard deviation of the sampling distribution. In most cases $\sigma$ is not known, so use $s$.
+
+
+---
+# Central Limit Theorem (cont.)
+
+Consider the following population...
+
+```{r, fig.height = 5.3}
+N <- 1000000
+pop <- rbeta(N,2,20)
+ggplot(data.frame(x = pop), aes(x = x)) + geom_density()
+```
+
+---
+# Estimating Sampling Distributions
+
+Here, we will estimate 4 sampling distributions by taking 1,000 random samples from the population with sample sizes of 5, 10, 20, and 30 each.
+
+```{r, cache = TRUE}
+n_samples <- 1000
+df <- tibble(n = rep(c(5, 10, 20, 30), each = n_samples),
+			 mean = NA_real_)
+for(i in 1:nrow(df)) {
+	df[i,]$mean <- mean(sample(pop, size = df[i,]$n))
+}
+```
+
+---
+# Sampling Distributions
+
+```{r}
+ggplot(df) + geom_density(aes(x = mean, color = factor(n))) +
+	scale_color_brewer('Sample Size', type = 'qual', palette = 2)
+
+```
+
+---
+# Null Hypothesis Testing
+
+
+* We start with a null hypothesis ( $H_0$ ) that represents the status quo.
+* We also have an alternative hypothesis ( $H_A$ ) that represents our research question, i.e. what we're testing for.
+* We conduct a hypothesis test under the assumption that the null hypothesis is true, either via simulation or traditional methods based on the central limit theorem.
+* If the test results suggest that the data do not provide convincing evidence for the alternative hypothesis, we stick with the null hypothesis. If they do, then we reject the null hypothesis in favor of the alternative.
+
+---
+# Regression
+
+> Regression analysis is a set of statistical processes for estimating the relationships between a dependent variable (often called the 'outcome variable') and one or more independent variables (often called 'predictors', 'covariates', or 'features').  
+.right[.font70[[Wikipedia](https://en.wikipedia.org/wiki/Regression_analysis)]]
+
+Regression problems take on the following form:
+
+$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_i x_i$$
+For *i* predictor variables where $\beta_0$ is the intercept and $\beta_i$ is the slope for predictor $i$.
+
+---
+# Statistical Assumptions
+
+Statistical tests make some common assumptions about the data they are testing:
+
+1. **Independence of observations** (aka no autocorrelation): The observations/variables you include in your test are not related (for example, multiple measurements of a single test subject are not independent, while measurements of multiple different test subjects are independent).
+
+2. **Homogeneity of variance**: the variance within each group being compared is similar among all groups. If one group has much more variation than others, it will limit the test's effectiveness.
+
+3. **Normality of data**: the data follows a normal distribution (aka a bell curve). This assumption applies only to quantitative data.
+
+---
+# Choosing a statistical test
+
+ Test                | Predictor Variable      | Outcome variable          | R function
+:--------------------|:------------------------|:--------------------------|:-------------
+Paired t-test        | Categorical, 1          | Quantitative              | `t.test`
+Independent t-test   | Categorical, 1          | Quantitative              | `t.test`
+Chi-Squared test     | Categorical, 1 or more  | Categorical               | `chisq.test`
+ANOVA                | Categorical, 1 or more  | Quantitative              | `aov`
+MANOVA               | Categorical, 1 or more  | Quantitative, 2 or more   | `manova`
+Correlation          | Quantitative            | Quantitative              | `cor.test`
+Linear regression    | Quantitative            | Quantitative              | `lm`
+Multiple regression  | Any, 2 or more          | Quantitative              | `lm`
+Logistic regression  | Any, 1 or more          | Categorical (dichotomous) | `glm(family=binomial(link='logit'))`
+
+---
+# Choosing a statistical test
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics('images/flowchart-for-choosing-a-statistical-test.png', dpi = 275)
+```
+
+.font50[Source: https://www.scribbr.com/statistics/statistical-tests/]
+
+---
+# Normal Distribution
+
+```{r}
+plot_distributions(dist = 'norm', xvals = c(-1, 0, 0.5), xmin = -4, xmax = 4)
+```
+
+---
+# *t* Distribution
+
+```{r}
+plot_distributions(dist = 't', xvals = c(-1, 0, 0.5), xmin = -4, xmax = 4, 
+				   args = list(df = 5))
+```
+
+---
+# F Distribution
+
+```{r, eval = TRUE}
+plot_distributions(dist = 'f', xvals = c(0.5, 1, 2), xmin = 0, xmax = 10,
+				   args = list(df1 = 3, df2 = 12))
+```
+
+
+---
+# $\chi^2$ Distribution
+
+```{r}
+plot_distributions(dist = 'chisq', xvals = c(1, 2, 5), xmin = 0, xmax = 10,
+				   args = list(df = 3))
+```
+
+---
+class: inverse, middle, center
+# Examples
+
+---
+# Dependent (paired) *t*-test
+
+$RQ$: Is there a difference educational attainment between mothers and fathers for students?  
+$H_0$: There is no difference in the educational attainment between mothers and fathers.  
+$H_A$: There is a difference in the educational attaintment between mothers and fathers.
+
+```{r}
+t.test(tutoring$EdMother, tutoring$EdFather, paired = TRUE)
+```
+
+---
+# Dependent (paired) *t*-test
+
+```{r}
+distribution_plot(dt, df = 1141, cv = 2.0418, limits = c(-3, 3), tails = 'two.sided')
+```
+
+---
+# Independent *t*-test
+
+$RQ$: Is there a difference in GPA between military and civilian students?  
+$H_0$: There is no differences in GPA between military and civilian students?  
+$H_A$: There is a difference in GPA between military and civilian students?
+
+```{r}
+t.test(GPA ~ Military, data = tutoring)
+```
+
+---
+# Dependent (paired) *t*-test
+
+```{r}
+distribution_plot(dt, df = 480, cv = 0.99634, limits = c(-3, 3), tails = 'two.sided')
+```
+
+---
+# $\chi^2$ test
+
+$RQ$: Is there a difference in the passing rate between students who used tutoring services and those who did not?  
+$H_0$: There is no difference in the passing rate by treatment.  
+$H_A$: There is a difference in the passing rate by treatment.
+
+```{r}
+chisq.test(tutoring$treat, tutoring$Pass)
+```
+
+---
+# $\chi^2$ test
+
+```{r}
+distribution_plot(dchisq, df = 2, cv = 32.557, 
+				  limits = c(0, 40), tails = 'greater')
+```
+
+---
+# Analysis of Variance (ANOVA)
+
+$RQ$: Is there a difference in GPA by ethnicity?  
+$H_0$: The mean GPA is the same for all ethnicities.  
+$H_A$: The mean GPA is different by ethnicities.
+
+```{r}
+aov(GPA ~ Ethnicity, data = tutoring) %>% summary()
+```
+
+---
+# Analysis of Variance (ANOVA)
+
+```{r}
+distribution_plot(stats::df, df1 = 2, df2 = 1139, cv = 33.77, 
+				  limits = c(0, 40), tails = 'greater')
+```
+
+---
+# Correlation
+
+RQ: What is the relationship between age and GPA?
+
+```{r}
+cor.test(tutoring$Age, tutoring$GPA)
+```
+
+---
+# Linear Regression
+
+RQ: Does age predict GPA?
+
+```{r}
+lm.out <- lm(GPA ~ Age, data = tutoring)
+summary(lm.out)
+```
+
+---
+# Multiple Linear Regression
+
+.pull-left[
+RQ: What student characteristics predict GPA?
+```{r}
+lm.out <- lm(GPA ~ Gender + Ethnicity + 
+			 	Military + ESL + 
+			 	EdMother + EdFather + 
+			 	Age + Employment + 
+			 	Income + Transfer, 
+			 data = tutoring)
+```
+]
+.pull-right[
+.code60[
+```{r, echo = FALSE}
+summary(lm.out)
+```
+]
+]
+
+---
+# Logistic Regression
+
+RQ: What are the student characteristics that predict passing the course?
+
+```{r}
+lr.out <- glm(Pass ~ treat2 + Gender + Ethnicity + Military + ESL + 
+			  EdMother + EdFather + Age + Employment + Income + Transfer, 
+			  data = tutoring,
+			  family = binomial(link = 'logit'))
+```
+
+---
+# Logistic Regression (cont.)
+
+.code60[
+```{r}
+summary(lr.out)
+```
+]
+
+---
+class: inverse, middle, center
+# Questions
+
+---
+class: left
+# One Minute Paper
+
+.font140[
+Complete the one minute paper: 
+https://forms.gle/yB3ds6MYE89Z1pURA
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+]
+
+ 

@@ -6,9 +6,29 @@
     <description>Recent content in Annoucement on EPSY 630 Statistics II - Spring 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/annoucement/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/annoucement/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Class 19 - Propensity Score Anslysis</title>
+      <title>Class 12 - Bayesian Anslysis</title>
+      <link>/blog/2021-04-27-class12/</link>
+      <pubDate>Tue, 27 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-04-27-class12/</guid>
+      <description>  Click here for the slides.
+ </description>
+    </item>
+    
+    <item>
+      <title>Class 11 - Review</title>
+      <link>/blog/2021-04-20-class11/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-04-20-class11/</guid>
+      <description>  Click here for the slides.
+ </description>
+    </item>
+    
+    <item>
+      <title>Class 10 - Propensity Score Anslysis</title>
       <link>/blog/2021-04-13-class10/</link>
       <pubDate>Tue, 13 Apr 2021 00:00:00 +0000</pubDate>
       

@@ -1,5 +1,5 @@
 ---
-title: "Class 19 - Propensity Score Anslysis"
+title: "Class 10 - Propensity Score Anslysis"
 author: "Jason Bryer"
 date: 2021-04-13
 draft: false

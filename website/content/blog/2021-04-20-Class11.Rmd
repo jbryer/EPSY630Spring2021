@@ -1,0 +1,12 @@
+---
+title: "Class 11 - Review"
+author: "Jason Bryer"
+date: 2021-04-20
+draft: false
+categories: ["R"]
+tags: ["Annoucement"]
+---
+
+[Click here](/slides/2021-04-20-Review.html) for the slides.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XYKw-E1VbIc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
