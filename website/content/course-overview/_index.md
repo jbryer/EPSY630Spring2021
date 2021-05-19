@@ -34,12 +34,12 @@ One graduate level statistics course (EPSY 530 or equivalent).
 
 ### Grading
 
-* [DAACS](/assignments/daacs) (%)
-* [Participation](/assignments/participation) (10%)
-* [Homework](/assignments/homework) (%)
-* [Labs](/assignments/labs) (%)
-* [Data Project](/assignments/project) (%)
-* [Final exam](assignments/final/) (%)
+* [DAACS](/assignments/daacs) (5%)
+* [Participation](/assignments/participation) (15%)
+* [Homework](/assignments/homework) (10%)
+* [Labs](/assignments/labs) (25%)
+* [Data Project](/assignments/project) (25%)
+* [Final exam](assignments/final/) (20%)
 
 #### Grade Distribution
 
